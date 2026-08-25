@@ -40,9 +40,9 @@ revealElements.forEach(element => {
 });
 
 
-/* -----------------------------------------
+/* =========================================
    HAMBURGER MENU
------------------------------------------ */
+========================================= */
 
 const hamburger =
     document.getElementById("hamburger");
@@ -54,38 +54,20 @@ const mobileMenu =
 hamburger.addEventListener("click", () => {
 
     const isOpen =
-        mobileMenu.classList.contains("open");
+        mobileMenu.classList.toggle("open");
 
+    hamburger.classList.toggle("open", isOpen);
 
-    if (isOpen) {
-
-        mobileMenu.classList.remove("open");
-
-        mobileMenu.style.display = "none";
-
-        hamburger.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-    } else {
-
-        mobileMenu.classList.add("open");
-
-        mobileMenu.style.display = "flex";
-
-        hamburger.setAttribute(
-            "aria-expanded",
-            "true"
-        );
-
-    }
+    hamburger.setAttribute(
+        "aria-expanded",
+        isOpen
+    );
 
 });
 
 
 /* -----------------------------------------
-   CLOSE MOBILE MENU AFTER LINK CLICK
+   CLOSE MENU WHEN A LINK IS CLICKED
 ----------------------------------------- */
 
 const mobileLinks =
@@ -98,7 +80,7 @@ mobileLinks.forEach(link => {
 
         mobileMenu.classList.remove("open");
 
-        mobileMenu.style.display = "none";
+        hamburger.classList.remove("open");
 
         hamburger.setAttribute(
             "aria-expanded",
