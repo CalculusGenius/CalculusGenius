@@ -51,32 +51,50 @@ const mobileMenu =
     document.getElementById("mobileMenu");
 
 
-hamburger.addEventListener("click", () => {
+/* =========================================
+   OPEN / CLOSE MENU
+========================================= */
+
+hamburger.addEventListener("click", (event) => {
+
+    /*
+       Prevent this click from reaching
+       the document-level outside-click
+       detector.
+    */
+
+    event.stopPropagation();
 
     const isOpen =
         mobileMenu.classList.toggle("open");
 
-    hamburger.classList.toggle("open", isOpen);
+    hamburger.classList.toggle(
+        "open",
+        isOpen
+    );
 
     hamburger.setAttribute(
         "aria-expanded",
         isOpen
     );
-
 });
 
 
-/* -----------------------------------------
-   CLOSE MENU WHEN A LINK IS CLICKED
------------------------------------------ */
+/* =========================================
+   CLICK INSIDE THE MENU
+========================================= */
 
-const mobileLinks =
-    mobileMenu.querySelectorAll("a");
+mobileMenu.addEventListener("click", (event) => {
 
+    /*
+       Clicking inside the menu should NOT
+       cause the menu to roll back in.
 
-mobileLinks.forEach(link => {
+       However, clicking an actual link will
+       still close it after the link is chosen.
+    */
 
-    link.addEventListener("click", () => {
+    if (event.target.closest("a")) {
 
         mobileMenu.classList.remove("open");
 
@@ -86,7 +104,44 @@ mobileLinks.forEach(link => {
             "aria-expanded",
             "false"
         );
+    }
 
-    });
+    /*
+       Stop the click from reaching the
+       document-level outside-click detector.
+    */
 
+    event.stopPropagation();
+});
+
+
+/* =========================================
+   CLICK OUTSIDE → CLOSE MENU
+========================================= */
+
+document.addEventListener("click", () => {
+
+    /*
+       Because clicks on the hamburger and
+       inside the menu were stopped above,
+       reaching here means the user clicked
+       somewhere outside both.
+
+       Removing the class allows CSS to
+       perform the closing animation.
+    */
+
+    if (
+        mobileMenu.classList.contains("open")
+    ) {
+
+        mobileMenu.classList.remove("open");
+
+        hamburger.classList.remove("open");
+
+        hamburger.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+    }
 });
