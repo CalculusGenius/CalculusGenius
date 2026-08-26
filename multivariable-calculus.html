@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="CALCULUS — Basic Multivariable Calculus. This section is currently under development.">
+
+    <title>CALCULUS — Basic Multivariable Calculus</title>
+
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+
+    <!-- Main stylesheet -->
+
+    <link rel="stylesheet"
+          href="style.css">
+
+
+    <!-- Temporary page styling -->
+
+    <style>
+
+        .temporary-page {
+
+            min-height: 100vh;
+
+            box-sizing: border-box;
+
+            padding:
+                150px 6% 90px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .temporary-container {
+
+            width:
+                min(900px, 100%);
+
+            text-align: center;
+
+        }
+
+
+        .temporary-title {
+
+            margin:
+                0 0 3rem;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(
+                    3rem,
+                    8vw,
+                    7rem
+                );
+
+            line-height:
+                1;
+
+            font-weight:
+                600;
+
+            color:
+                #ffffff;
+
+            letter-spacing:
+                0.025em;
+
+        }
+
+
+        .temporary-card {
+
+            padding:
+                clamp(
+                    2rem,
+                    5vw,
+                    4rem
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,0.35);
+
+            background:
+                rgba(255,255,255,0.025);
+
+            box-shadow:
+                0 25px 80px
+                rgba(0,0,0,0.4);
+
+            backdrop-filter:
+                blur(10px);
+
+            -webkit-backdrop-filter:
+                blur(10px);
+
+        }
+
+
+        .temporary-image {
+
+            display:
+                block;
+
+            width:
+                min(500px, 100%);
+
+            max-height:
+                500px;
+
+            object-fit:
+                contain;
+
+            margin:
+                0 auto 3rem;
+
+        }
+
+
+        .temporary-message {
+
+            margin:
+                0;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(
+                    2rem,
+                    5vw,
+                    4rem
+                );
+
+            line-height:
+                1.1;
+
+            font-weight:
+                600;
+
+            color:
+                #ffffff;
+
+        }
+
+
+        .temporary-note {
+
+            margin:
+                1.5rem auto 0;
+
+            max-width:
+                650px;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                clamp(
+                    0.95rem,
+                    1.5vw,
+                    1.15rem
+                );
+
+            line-height:
+                1.8;
+
+            font-weight:
+                300;
+
+            color:
+                rgba(255,255,255,0.72);
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .temporary-page {
+
+                padding:
+                    120px 5% 70px;
+
+            }
+
+
+            .temporary-card {
+
+                padding:
+                    1.5rem 1.1rem 2rem;
+
+            }
+
+
+            .temporary-image {
+
+                max-height:
+                    360px;
+
+                margin-bottom:
+                    2rem;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Decorative mathematical background -->
+
+    <div class="math-background"
+         aria-hidden="true">
+
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+
+    </div>
+
+
+
+    <!-- Navigation -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+
+            <a href="index.html"
+               class="logo">
+
+                CALCULUS
+
+            </a>
+
+
+
+            <nav class="desktop-nav">
+
+
+                <a href="index.html"
+                   class="nav-link">
+
+                    Home
+
+                </a>
+
+
+                <a href="about.html"
+                   class="nav-link">
+
+                    About
+
+                </a>
+
+
+                <a href="books.html"
+                   class="nav-link">
+
+                    Books
+
+                </a>
+
+
+                <a href="topics.html"
+                   class="nav-link">
+
+                    Topics
+
+                </a>
+
+
+                <a href="other-websites.html"
+                   class="nav-link">
+
+                    Other Websites
+
+                </a>
+
+
+            </nav>
+
+
+
+            <!-- Hamburger -->
+
+            <button class="hamburger"
+                    id="hamburger"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- Mobile menu -->
+
+        <div class="mobile-menu"
+             id="mobileMenu">
+
+
+            <a href="index.html">
+                Home
+            </a>
+
+
+            <a href="about.html">
+                About
+            </a>
+
+
+            <a href="books.html">
+                Books
+            </a>
+
+
+
+            <!-- Topics submenu -->
+
+            <div class="topics-menu">
+
+
+                <button
+                    class="topics-menu-toggle"
+                    id="topicsMenuToggle"
+                    type="button"
+                    aria-expanded="false">
+
+                    <span>
+                        Topics
+                    </span>
+
+                    <span
+                        class="topics-arrow"
+                        aria-hidden="true">
+
+                        ▾
+
+                    </span>
+
+                </button>
+
+
+
+                <div
+                    class="topics-submenu"
+                    id="topicsSubmenu">
+
+
+                    <a href="single-variable-calculus.html">
+                        Single Variable Basic Calculus
+                    </a>
+
+
+                    <a href="multivariable-calculus.html">
+                        Basic Multivariable Calculus
+                    </a>
+
+
+                    <a href="vector-calculus.html">
+                        Vector Calculus
+                    </a>
+
+
+                    <a href="differential-geometry.html">
+                        Differential Geometry and Advanced Topics
+                    </a>
+
+
+                    <a href="relations.html">
+                        Relations with Other Branches
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <a href="other-websites.html">
+                Other Websites
+            </a>
+
+
+        </div>
+
+    </header>
+
+
+
+    <!-- Main content -->
+
+    <main class="temporary-page">
+
+
+        <div class="temporary-container">
+
+
+            <h1 class="temporary-title">
+
+                Basic Multivariable Calculus
+
+            </h1>
+
+
+
+            <div class="temporary-card">
+
+
+                <img
+                    class="temporary-image"
+                    src="dog.png"
+                    alt="Dog — this section is currently under development">
+
+
+                <p class="temporary-message">
+
+                    We are still working on it.
+
+                </p>
+
+
+                <p class="temporary-note">
+
+                    This section of the CALCULUS website
+                    is currently under development.
+                    Please check back later.
+
+                </p>
+
+
+            </div>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+            © Ankit Brahamachary 2026
+        </p>
+
+    </footer>
+
+
+
+    <!-- Main JavaScript -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+  </html>
