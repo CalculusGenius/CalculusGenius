@@ -383,48 +383,80 @@ body {
 ========================================= */
 
 .mobile-menu {
-    display: flex;
-
-    flex-direction: column;
 
     position: fixed;
 
-    top: 66px;
+    top: 76px;
     left: 0;
 
     width: 100%;
 
+    /*
+       Start completely collapsed.
+    */
     max-height: 0;
 
     overflow: hidden;
 
+    /*
+       Makes outside clicks impossible
+       while the menu is closed.
+    */
+    pointer-events: none;
+
     opacity: 0;
 
     transform:
-        translateY(-15px);
+        translateY(-25px);
 
     background:
         rgba(5, 5, 7, 0.97);
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
 
     border-top:
         1px solid
         transparent;
 
+    box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, 0);
+
+    /*
+       The vertical closing animation.
+    */
     transition:
-        max-height 0.65s cubic-bezier(.16, 1, .3, 1),
-        opacity 0.4s ease,
-        transform 0.5s cubic-bezier(.16, 1, .3, 1),
-        border-color 0.3s ease;
+        max-height 0.65s
+        cubic-bezier(.16, 1, .3, 1),
+
+        opacity 0.35s ease,
+
+        transform 0.55s
+        cubic-bezier(.16, 1, .3, 1),
+
+        border-color 0.35s ease,
+
+        box-shadow 0.5s ease;
 }
 
 
-/* Open mobile menu */
+/* =========================================
+   MENU OPEN
+========================================= */
 
 .mobile-menu.open {
+
+    /*
+       Large enough to contain all current
+       links while still allowing animation.
+    */
     max-height: 500px;
+
+    pointer-events: auto;
 
     opacity: 1;
 
@@ -433,7 +465,11 @@ body {
 
     border-top:
         1px solid
-        rgba(255, 255, 255, 0.08);
+        rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 20px 50px
+        rgba(0, 0, 0, 0.35);
 }
 
 
@@ -442,14 +478,17 @@ body {
 ========================================= */
 
 .mobile-menu a {
+
     position: relative;
+
+    display: block;
 
     padding:
         1.15rem
         6%;
 
     color:
-        rgba(255, 255, 255, 0.78);
+        rgba(255,255,255,0.78);
 
     text-decoration: none;
 
@@ -457,60 +496,88 @@ body {
         "Inter",
         sans-serif;
 
-    font-size: 1rem;
+    font-size:
+        1rem;
 
     border-bottom:
         1px solid
-        rgba(255, 255, 255, 0.06);
+        rgba(255,255,255,0.06);
 
+    /*
+       Initial link position.
+    */
     opacity: 0;
 
     transform:
-        translateX(-20px);
+        translateY(-12px);
 
     transition:
         color 0.25s ease,
+
         background 0.25s ease,
-        opacity 0.45s ease,
-        transform 0.45s cubic-bezier(.16, 1, .3, 1);
+
+        opacity 0.35s ease,
+
+        transform 0.45s
+        cubic-bezier(.16, 1, .3, 1);
 }
 
 
-/* Links appear sequentially */
+/* =========================================
+   LINKS WHEN MENU OPENS
+========================================= */
 
 .mobile-menu.open a {
+
     opacity: 1;
 
     transform:
-        translateX(0);
+        translateY(0);
 }
 
+
+/* Sequential appearance */
+
 .mobile-menu.open a:nth-child(1) {
-    transition-delay: 0.08s;
+    transition-delay:
+        0.08s;
 }
 
 .mobile-menu.open a:nth-child(2) {
-    transition-delay: 0.14s;
+    transition-delay:
+        0.14s;
 }
 
 .mobile-menu.open a:nth-child(3) {
-    transition-delay: 0.20s;
+    transition-delay:
+        0.20s;
 }
 
 .mobile-menu.open a:nth-child(4) {
-    transition-delay: 0.26s;
+    transition-delay:
+        0.26s;
 }
 
 .mobile-menu.open a:nth-child(5) {
-    transition-delay: 0.32s;
+    transition-delay:
+        0.32s;
 }
 
+
+/* =========================================
+   MENU LINK HOVER
+========================================= */
+
 .mobile-menu a:hover {
+
     color: #ffffff;
 
     background:
-        rgba(255, 255, 255, 0.035);
+        rgba(255,255,255,0.035);
 }
+
+    
+
 
 
 /* =========================================
