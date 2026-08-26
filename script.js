@@ -263,3 +263,77 @@ if (hamburger && mobileMenu) {
     );
 
 }
+/* =========================================
+   TOPICS SUBMENU
+========================================= */
+
+const topicsMenu =
+    document.getElementById("topicsMenuToggle");
+
+const topicsSubmenu =
+    document.getElementById("topicsSubmenu");
+
+const topicsMenuContainer =
+    document.querySelector(".topics-menu");
+
+
+if (
+    topicsMenu &&
+    topicsSubmenu &&
+    topicsMenuContainer
+) {
+
+    topicsMenu.addEventListener(
+        "click",
+        (event) => {
+
+            /*
+               Prevent the click from being
+               treated as an outside click.
+            */
+
+            event.stopPropagation();
+
+
+            const isOpen =
+                topicsMenuContainer.classList
+                    .toggle("open");
+
+
+            topicsMenu.setAttribute(
+                "aria-expanded",
+                isOpen
+            );
+
+        }
+    );
+
+
+    /*
+       Close submenu when one of its
+       links is selected.
+    */
+
+    topicsSubmenu
+        .querySelectorAll("a")
+        .forEach(link => {
+
+            link.addEventListener(
+                "click",
+                () => {
+
+                    topicsMenuContainer
+                        .classList
+                        .remove("open");
+
+                    topicsMenu.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+            );
+
+        });
+
+}
