@@ -2,14 +2,10 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-
-    <meta name="description"
-          content="CALCULUS — Books. This section is currently under development.">
 
     <title>CALCULUS — Books</title>
 
@@ -47,11 +43,10 @@
         .temporary-title {
             margin: 0 0 3rem;
             font-family: "Cormorant Garamond", serif;
-            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-size: clamp(3rem, 8vw, 7rem);
             line-height: 1;
             font-weight: 600;
             color: #ffffff;
-            letter-spacing: 0.025em;
         }
 
         .temporary-card {
@@ -60,7 +55,6 @@
             background: rgba(255,255,255,0.025);
             box-shadow: 0 25px 80px rgba(0,0,0,0.4);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
         }
 
         .temporary-image {
@@ -75,7 +69,6 @@
             margin: 0;
             font-family: "Cormorant Garamond", serif;
             font-size: clamp(2rem, 5vw, 4rem);
-            line-height: 1.1;
             font-weight: 600;
             color: #ffffff;
         }
@@ -90,32 +83,13 @@
             color: rgba(255,255,255,0.72);
         }
 
-        @media (max-width: 600px) {
-
-            .temporary-page {
-                padding: 120px 5% 70px;
-            }
-
-            .temporary-card {
-                padding: 1.5rem 1.1rem 2rem;
-            }
-
-            .temporary-image {
-                max-height: 360px;
-                margin-bottom: 2rem;
-            }
-
-        }
-
     </style>
 
 </head>
 
-
 <body>
 
     <div class="math-background" aria-hidden="true">
-
         <span>∫</span>
         <span>∫</span>
         <span>∫</span>
@@ -124,9 +98,7 @@
         <span>∫</span>
         <span>∫</span>
         <span>∫</span>
-
     </div>
-
 
     <header class="navbar">
 
@@ -146,7 +118,7 @@
                     About
                 </a>
 
-                <a href="books.html" class="nav-link">
+                <a href="books.html" class="nav-link active">
                     Books
                 </a>
 
@@ -159,7 +131,6 @@
                 </a>
 
             </nav>
-
 
             <button class="hamburger"
                     id="hamburger"
@@ -174,7 +145,6 @@
 
         </div>
 
-
         <div class="mobile-menu" id="mobileMenu">
 
             <a href="index.html">Home</a>
@@ -183,52 +153,7 @@
 
             <a href="books.html">Books</a>
 
-
-            <div class="topics-menu">
-
-                <button
-                    class="topics-menu-toggle"
-                    id="topicsMenuToggle"
-                    type="button"
-                    aria-expanded="false">
-
-                    <span>Topics</span>
-
-                    <span class="topics-arrow"
-                          aria-hidden="true">
-                        ▾
-                    </span>
-
-                </button>
-
-
-                <div class="topics-submenu"
-                     id="topicsSubmenu">
-
-                    <a href="single-variable-calculus.html">
-                        Single Variable Basic Calculus
-                    </a>
-
-                    <a href="multivariable-calculus.html">
-                        Basic Multivariable Calculus
-                    </a>
-
-                    <a href="vector-calculus.html">
-                        Vector Calculus
-                    </a>
-
-                    <a href="differential-geometry.html">
-                        Differential Geometry and Advanced Topics
-                    </a>
-
-                    <a href="relations.html">
-                        Relations with Other Branches
-                    </a>
-
-                </div>
-
-            </div>
-
+            <a href="topics.html">Topics</a>
 
             <a href="other-websites.html">
                 Other Websites
@@ -238,7 +163,6 @@
 
     </header>
 
-
     <main class="temporary-page">
 
         <div class="temporary-container">
@@ -247,21 +171,19 @@
                 Books
             </h1>
 
-
             <div class="temporary-card">
 
-                <img
-                    class="temporary-image"
-                    src="dog.png"
-                    alt="Dog — this section is currently under development">
+                <img src="dog.png"
+                     alt="Dog"
+                     class="temporary-image">
 
                 <p class="temporary-message">
                     We are still working on it.
                 </p>
 
                 <p class="temporary-note">
-                    This section of the CALCULUS website
-                    is currently under development.
+                    The Books section of the CALCULUS
+                    website is currently under development.
                     Please check back later.
                 </p>
 
@@ -271,7 +193,6 @@
 
     </main>
 
-
     <footer>
 
         <p>
@@ -279,7 +200,6 @@
         </p>
 
     </footer>
-
 
     <script src="script.js"></script>
 
