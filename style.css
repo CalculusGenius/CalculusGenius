@@ -59,21 +59,59 @@ body {
 
     pointer-events: none;
 
+    /*
+       Behind all actual website content,
+       but still visible above the body background.
+    */
     z-index: 0;
 }
 
+
+/* =========================================
+   INDIVIDUAL INTEGRALS
+========================================= */
+
 .math-background span {
+
     position: absolute;
 
-    font-family: "Cormorant Garamond", serif;
+    display: block;
 
-    font-size: clamp(14rem, 28vw, 32rem);
+    font-family:
+        "Cormorant Garamond",
+        serif;
+
+    font-size:
+        clamp(
+            14rem,
+            28vw,
+            32rem
+        );
+
+    line-height: 1;
 
     font-weight: 500;
 
-    color: rgba(255, 255, 255, 0.025);
+    /*
+       Slightly brighter than before.
+       Still intentionally subtle.
+    */
+    color:
+        rgba(255, 255, 255, 0.075);
+
+    text-shadow:
+        0 0 35px
+        rgba(255, 255, 255, 0.025);
 
     user-select: none;
+
+    pointer-events: none;
+
+    /*
+       Makes sure the symbols themselves
+       are rendered above the background.
+    */
+    z-index: 0;
 
     animation:
         floatingIntegral
@@ -83,7 +121,9 @@ body {
 }
 
 
-/* Individual integral positions */
+/* =========================================
+   INTEGRAL POSITIONS
+========================================= */
 
 .math-background span:nth-child(1) {
     top: -15%;
@@ -140,7 +180,9 @@ body {
 }
 
 
-/* Floating animation */
+/* =========================================
+   FLOATING ANIMATION
+========================================= */
 
 @keyframes floatingIntegral {
 
@@ -157,6 +199,8 @@ body {
             rotate(3deg);
     }
 }
+
+    
 
 
 /* =========================================
