@@ -1,1 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
 
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/</loc>
+    </url>
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/about.html</loc>
+    </url>
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/books.html</loc>
+    </url>
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/topics.html</loc>
+    </url>
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/other-websites.html</loc>
+    </url>
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/single-variable-calculus.html</loc>
+    </url>
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/multivariable-calculus.html</loc>
+    </url>
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/vector-calculus.html</loc>
+    </url>
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/differential-geometry.html</loc>
+    </url>
+
+    <url>
+        <loc>https://calculusgenius.github.io/CalculusGenius/relations.html</loc>
+    </url>
+
+</urlset>
