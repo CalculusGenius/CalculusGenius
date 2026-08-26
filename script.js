@@ -44,104 +44,154 @@ revealElements.forEach(element => {
    HAMBURGER MENU
 ========================================= */
 
-const hamburger =
-    document.getElementById("hamburger");
-
-const mobileMenu =
-    document.getElementById("mobileMenu");
+const hamburger = document.getElementById("hamburger");
+const mobileMenu = document.getElementById("mobileMenu");
 
 
 /* =========================================
-   OPEN / CLOSE MENU
+   OPEN / CLOSE FUNCTION
+========================================= */
+
+function closeMobileMenu() {
+
+    mobileMenu.classList.remove("open");
+
+    hamburger.classList.remove("open");
+
+    hamburger.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+}
+
+
+function openMobileMenu() {
+
+    mobileMenu.classList.add("open");
+
+    hamburger.classList.add("open");
+
+    hamburger.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+}
+
+
+/* =========================================
+   HAMBURGER BUTTON
 ========================================= */
 
 hamburger.addEventListener("click", (event) => {
 
     /*
-       Prevent this click from reaching
-       the document-level outside-click
-       detector.
+       Prevent this click from being treated
+       as an outside click.
     */
 
     event.stopPropagation();
 
-    const isOpen =
-        mobileMenu.classList.toggle("open");
+    const menuIsOpen =
+        mobileMenu.classList.contains("open");
 
-    hamburger.classList.toggle(
-        "open",
-        isOpen
-    );
+    if (menuIsOpen) {
 
-    hamburger.setAttribute(
-        "aria-expanded",
-        isOpen
-    );
+        closeMobileMenu();
+
+    } else {
+
+        openMobileMenu();
+
+    }
+
 });
 
 
 /* =========================================
-   CLICK INSIDE THE MENU
+   CLICK INSIDE MENU
 ========================================= */
 
 mobileMenu.addEventListener("click", (event) => {
 
     /*
-       Clicking inside the menu should NOT
-       cause the menu to roll back in.
-
-       However, clicking an actual link will
-       still close it after the link is chosen.
-    */
-
-    if (event.target.closest("a")) {
-
-        mobileMenu.classList.remove("open");
-
-        hamburger.classList.remove("open");
-
-        hamburger.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-    }
-
-    /*
-       Stop the click from reaching the
-       document-level outside-click detector.
+       Don't close the menu simply because
+       the user clicked somewhere inside it.
     */
 
     event.stopPropagation();
+
+
+    /*
+       A navigation link should close the menu.
+    */
+
+    const clickedLink =
+        event.target.closest("a");
+
+    if (clickedLink) {
+
+        closeMobileMenu();
+
+    }
+
 });
 
 
 /* =========================================
-   CLICK OUTSIDE → CLOSE MENU
+   CLICK ANYWHERE OUTSIDE
 ========================================= */
 
-document.addEventListener("click", () => {
+document.addEventListener(
+    "click",
+    (event) => {
 
-    /*
-       Because clicks on the hamburger and
-       inside the menu were stopped above,
-       reaching here means the user clicked
-       somewhere outside both.
+        const menuIsOpen =
+            mobileMenu.classList.contains("open");
 
-       Removing the class allows CSS to
-       perform the closing animation.
-    */
 
-    if (
-        mobileMenu.classList.contains("open")
-    ) {
+        if (!menuIsOpen) {
+            return;
+        }
 
-        mobileMenu.classList.remove("open");
 
-        hamburger.classList.remove("open");
+        /*
+           If the click is outside both the
+           hamburger and the menu, close it.
+        */
 
-        hamburger.setAttribute(
-            "aria-expanded",
-            "false"
-        );
+        const clickedInsideMenu =
+            mobileMenu.contains(event.target);
+
+        const clickedHamburger =
+            hamburger.contains(event.target);
+
+
+        if (
+            !clickedInsideMenu &&
+            !clickedHamburger
+        ) {
+
+            closeMobileMenu();
+
+        }
+
     }
-});
+);
+
+
+/* =========================================
+   ESC KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (event.key === "Escape") {
+
+            closeMobileMenu();
+
+        }
+
+    }
+);
