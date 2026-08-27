@@ -10,12 +10,11 @@ import {
     signOut
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
-import { app }
-    from "./firebase-config.js";
+import { app } from "./firebase-config.js";
 
 
 // =========================================
-// FIREBASE AUTHENTICATION
+// FIREBASE AUTH
 // =========================================
 
 const auth = getAuth(app);
@@ -28,7 +27,7 @@ const googleProvider =
 // GOOGLE SIGN-IN
 // =========================================
 
-async function signInWithGoogle() {
+export async function signInWithGoogle() {
 
     try {
 
@@ -41,9 +40,15 @@ async function signInWithGoogle() {
         const user = result.user;
 
         console.log(
-            "Signed in:",
+            "Signed in successfully:",
             user.displayName
         );
+
+        console.log(
+            "Email:",
+            user.email
+        );
+
 
         // Go to account page
         window.location.href =
@@ -58,6 +63,12 @@ async function signInWithGoogle() {
             error
         );
 
+
+        /*
+           Don't show Firebase's technical
+           error message directly to users.
+        */
+
         alert(
             "Google sign-in could not be completed. Please try again."
         );
@@ -71,7 +82,7 @@ async function signInWithGoogle() {
 // LOG OUT
 // =========================================
 
-async function logOut() {
+export async function logOut() {
 
     try {
 
@@ -98,41 +109,18 @@ async function logOut() {
 // AUTHENTICATION STATE
 // =========================================
 
-onAuthStateChanged(
-    auth,
-    (user) => {
+export function watchAuthState(callback) {
 
-        if (user) {
+    return onAuthStateChanged(
+        auth,
+        callback
+    );
 
-            console.log(
-                "Current user:",
-                user.displayName
-            );
-
-            console.log(
-                "Email:",
-                user.email
-            );
-
-        }
-        else {
-
-            console.log(
-                "No user is currently signed in."
-            );
-
-        }
-
-    }
-);
+}
 
 
 // =========================================
-// MAKE FUNCTIONS AVAILABLE TO HTML
+// GET CURRENT AUTH OBJECT
 // =========================================
 
-window.signInWithGoogle =
-    signInWithGoogle;
-
-window.logOut =
-    logOut;
+export { auth };
