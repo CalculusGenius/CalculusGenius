@@ -14,7 +14,9 @@
     <title>CALCULUS — Log In</title>
 
 
-    <!-- Fonts -->
+    <!-- =========================================
+         FONTS
+    ========================================== -->
 
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
@@ -59,7 +61,9 @@
 
             color: #ffffff;
 
-            font-family: "Inter", sans-serif;
+            font-family:
+                "Inter",
+                sans-serif;
 
             overflow-x: hidden;
         }
@@ -67,7 +71,7 @@
 
         /* =========================================
            MATHEMATICAL BACKGROUND
-        ========================================= */
+        ========================================== */
 
         .math-background {
 
@@ -133,10 +137,20 @@
             right: 5%;
         }
 
+        .math-background span:nth-child(7) {
+            top: 75%;
+            left: 45%;
+        }
+
+        .math-background span:nth-child(8) {
+            top: 30%;
+            left: 55%;
+        }
+
 
         /* =========================================
            PAGE
-        ========================================= */
+        ========================================== */
 
         .auth-page {
 
@@ -159,11 +173,12 @@
 
         /* =========================================
            AUTH CARD
-        ========================================= */
+        ========================================== */
 
         .auth-card {
 
-            width: min(480px, 100%);
+            width:
+                min(480px, 100%);
 
             padding:
                 clamp(2.5rem, 7vw, 4.5rem)
@@ -200,14 +215,18 @@
         @keyframes cardAppear {
 
             from {
+
                 opacity: 0;
+
                 transform:
                     translateY(35px)
                     scale(0.97);
             }
 
             to {
+
                 opacity: 1;
+
                 transform:
                     translateY(0)
                     scale(1);
@@ -218,7 +237,7 @@
 
         /* =========================================
            LOGO
-        ========================================= */
+        ========================================== */
 
         .auth-logo {
 
@@ -237,7 +256,7 @@
 
         /* =========================================
            TITLE
-        ========================================= */
+        ========================================== */
 
         .auth-title {
 
@@ -278,7 +297,7 @@
 
         /* =========================================
            GOOGLE BUTTON
-        ========================================= */
+        ========================================== */
 
         .google-button {
 
@@ -349,6 +368,23 @@
         }
 
 
+        .google-button:disabled {
+
+            opacity: 0.55;
+
+            cursor:
+                wait;
+
+            transform: none;
+
+            box-shadow: none;
+        }
+
+
+        /* =========================================
+           GOOGLE ICON
+        ========================================== */
+
         .google-icon {
 
             width: 20px;
@@ -361,7 +397,7 @@
 
         /* =========================================
            DIVIDER
-        ========================================= */
+        ========================================== */
 
         .divider {
 
@@ -408,7 +444,7 @@
 
         /* =========================================
            SIGN-UP LINK
-        ========================================= */
+        ========================================== */
 
         .switch-text {
 
@@ -446,8 +482,44 @@
 
 
         /* =========================================
+           ERROR MESSAGE
+        ========================================== */
+
+        .auth-error {
+
+            display: none;
+
+            margin-top: 1.3rem;
+
+            padding:
+                0.9rem 1rem;
+
+            border:
+                1px solid
+                rgba(255,100,100,0.25);
+
+            background:
+                rgba(255,100,100,0.06);
+
+            color:
+                rgba(255,190,190,0.9);
+
+            font-size:
+                0.82rem;
+
+            line-height: 1.5;
+        }
+
+
+        .auth-error.visible {
+
+            display: block;
+        }
+
+
+        /* =========================================
            FOOTER
-        ========================================= */
+        ========================================== */
 
         .auth-footer {
 
@@ -479,7 +551,7 @@
 
         /* =========================================
            MOBILE
-        ========================================= */
+        ========================================== */
 
         @media (max-width: 600px) {
 
@@ -514,7 +586,9 @@
 <body>
 
 
-    <!-- Mathematical background -->
+    <!-- =========================================
+         MATHEMATICAL BACKGROUND
+    ========================================== -->
 
     <div class="math-background"
          aria-hidden="true">
@@ -531,16 +605,19 @@
     </div>
 
 
-    <!-- Login -->
+    <!-- =========================================
+         LOGIN
+    ========================================== -->
 
     <main class="auth-page">
 
         <section class="auth-card">
 
 
-            <img src="logo.png"
-                 alt="CALCULUS Logo"
-                 class="auth-logo">
+            <img
+                src="logo.png"
+                alt="CALCULUS Logo"
+                class="auth-logo">
 
 
             <h1 class="auth-title">
@@ -549,32 +626,191 @@
 
 
             <p class="auth-subtitle">
+
                 Sign in to continue exploring
                 the world of mathematics.
+
             </p>
 
 
+            <!-- =====================================
+                 GOOGLE LOGIN BUTTON
+            ====================================== -->
+
             <button
+                type="button"
                 class="google-button"
                 id="googleLogin">
+
 
                 <svg
                     class="google-icon"
                     viewBox="0 0 24 24"
                     aria-hidden="true">
 
+
                     <path
                         fill="#4285F4"
                         d="M21.35 12.23c0-.79-.07-1.55-.2-2.28H12v4.31h5.23a4.47 4.47 0 0 1-1.94 2.93v2.43h3.14c1.84-1.69 2.92-4.18 2.92-7.39z"/>
+
 
                     <path
                         fill="#34A853"
                         d="M12 21.6c2.63 0 4.84-.87 6.45-2.35l-3.14-2.43c-.87.58-1.98.93-3.31.93-2.54 0-4.69-1.72-5.46-4.03H3.3v2.5A9.74 9.74 0 0 0 12 21.6z"/>
 
+
                     <path
                         fill="#FBBC05"
                         d="M6.54 13.72a5.85 5.85 0 0 1 0-3.44v-2.5H3.3a9.65 9.65 0 0 0 0 8.44l3.24-2.5z"/>
 
+
                     <path
                         fill="#EA4335"
-                        d="M12 6.25c1.43 0 2.72.49 3.73 1.46l2.8-2.8C16.83 3.35 14.63 2.4 12 2.4a9.74 9.74 0 0 0-8.
+                        d="M12 6.25c1.43 0 2.72.49 3.73 1.46l2.8-2.8C16.83 3.35 14.63 2.4 12 2.4a9.74 9.74 0 0 0-8.7 5.36l3.24 2.5C7.31 7.95 9.46 6.25 12 6.25z"/>
+
+                </svg>
+
+
+                <span>
+                    Continue with Google
+                </span>
+
+
+            </button>
+
+
+            <!-- Error -->
+
+            <div
+                id="authError"
+                class="auth-error"
+                role="alert">
+            </div>
+
+
+            <!-- Divider -->
+
+            <div class="divider">
+
+                <span>
+                    OR
+                </span>
+
+            </div>
+
+
+            <!-- Sign-up -->
+
+            <p class="switch-text">
+
+                Don't have an account?
+
+                <a href="signup.html">
+                    Sign Up
+                </a>
+
+            </p>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer class="auth-footer">
+
+        <p>
+            © Ankit Brahamachary 2026
+        </p>
+
+    </footer>
+
+
+    <!-- =========================================
+         GOOGLE AUTHENTICATION
+    ========================================== -->
+
+    <script type="module">
+
+        import {
+            signInWithGoogle
+        } from "./auth.js";
+
+
+        const googleButton =
+            document.getElementById(
+                "googleLogin"
+            );
+
+
+        const authError =
+            document.getElementById(
+                "authError"
+            );
+
+
+        googleButton.addEventListener(
+            "click",
+            async () => {
+
+
+                /*
+                   Clear previous error.
+                */
+
+                authError.textContent = "";
+
+                authError.classList.remove(
+                    "visible"
+                );
+
+
+                /*
+                   Prevent repeated clicks
+                   while the popup is opening.
+                */
+
+                googleButton.disabled =
+                    true;
+
+
+                try {
+
+                    await signInWithGoogle();
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+
+                    authError.textContent =
+                        "Google sign-in could not be completed. Please try again.";
+
+                    authError.classList.add(
+                        "visible"
+                    );
+
+
+                    googleButton.disabled =
+                        false;
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>
