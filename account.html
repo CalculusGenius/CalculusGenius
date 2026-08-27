@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Your CALCULUS account.">
+
+    <title>CALCULUS — Account</title>
+
+
+    <!-- Fonts -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+
+    <style>
+
+        /* =========================================
+           RESET
+        ========================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 50% 20%,
+                    rgba(255,255,255,0.045),
+                    transparent 35%
+                ),
+                #050507;
+
+            color: #ffffff;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================
+           MATHEMATICAL BACKGROUND
+        ========================================= */
+
+        .math-background {
+
+            position: fixed;
+
+            inset: 0;
+
+            overflow: hidden;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+
+        .math-background span {
+
+            position: absolute;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(5rem, 14vw, 13rem);
+
+            color:
+                rgba(255,255,255,0.025);
+
+            user-select: none;
+        }
+
+
+        .math-background span:nth-child(1) {
+            top: 5%;
+            left: 4%;
+        }
+
+        .math-background span:nth-child(2) {
+            top: 18%;
+            right: 8%;
+        }
+
+        .math-background span:nth-child(3) {
+            top: 45%;
+            left: 18%;
+        }
+
+        .math-background span:nth-child(4) {
+            top: 62%;
+            right: 18%;
+        }
+
+        .math-background span:nth-child(5) {
+            bottom: 5%;
+            left: 5%;
+        }
+
+        .math-background span:nth-child(6) {
+            bottom: 10%;
+            right: 5%;
+        }
+
+
+        /* =========================================
+           PAGE
+        ========================================= */
+
+        .account-page {
+
+            position: relative;
+
+            z-index: 2;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding:
+                70px 20px;
+        }
+
+
+        /* =========================================
+           ACCOUNT CARD
+        ========================================= */
+
+        .account-card {
+
+            width:
+                min(540px, 100%);
+
+            padding:
+                clamp(2.5rem, 7vw, 4.5rem)
+                clamp(1.7rem, 6vw, 4rem);
+
+            text-align: center;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.25);
+
+            background:
+                rgba(255,255,255,0.035);
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.55),
+
+                inset 0 0 40px
+                rgba(255,255,255,0.012);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            animation:
+                cardAppear 1s
+                cubic-bezier(.16,1,.3,1);
+        }
+
+
+        @keyframes cardAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(35px)
+                    scale(0.97);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+
+        /* =========================================
+           LOGO
+        ========================================= */
+
+        .auth-logo {
+
+            width: 58px;
+
+            height: 58px;
+
+            object-fit: contain;
+
+            display: block;
+
+            margin:
+                0 auto 1.8rem;
+        }
+
+
+        /* =========================================
+           TITLE
+        ========================================= */
+
+        .account-title {
+
+            margin: 0;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(2.8rem, 9vw, 4.5rem);
+
+            font-weight: 600;
+
+            line-height: 1;
+
+            letter-spacing:
+                0.02em;
+        }
+
+
+        .account-subtitle {
+
+            margin:
+                1rem 0 2.5rem;
+
+            font-size:
+                0.95rem;
+
+            line-height: 1.7;
+
+            font-weight: 300;
+
+            color:
+                rgba(255,255,255,0.62);
+        }
+
+
+        /* =========================================
+           USER PROFILE
+        ========================================= */
+
+        .profile-picture {
+
+            width: 100px;
+
+            height: 100px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            display: block;
+
+            margin:
+                0 auto 1.5rem;
+
+            border:
+                2px solid
+                rgba(255,255,255,0.3);
+
+            box-shadow:
+                0 10px 35px
+                rgba(0,0,0,0.4);
+
+            animation:
+                profileAppear 0.8s
+                cubic-bezier(.16,1,.3,1);
+        }
+
+
+        @keyframes profileAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    scale(0.7);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    scale(1);
+            }
+
+        }
+
+
+        .user-name {
+
+            margin: 0;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(2rem, 6vw, 3rem);
+
+            font-weight: 600;
+        }
+
+
+        .user-email {
+
+            margin:
+                0.5rem 0 2.5rem;
+
+            font-size:
+                0.9rem;
+
+            color:
+                rgba(255,255,255,0.55);
+        }
+
+
+        /* =========================================
+           BUTTONS
+        ========================================= */
+
+        .account-button {
+
+            width: 100%;
+
+            min-height: 52px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding:
+                0 1.2rem;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.3);
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: #ffffff;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.9rem;
+
+            font-weight: 500;
+
+            cursor: pointer;
+
+            text-decoration: none;
+
+            transition:
+                background 0.3s ease,
+                border-color 0.3s ease,
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+
+        .account-button:hover {
+
+            background:
+                rgba(255,255,255,0.11);
+
+            border-color:
+                rgba(255,255,255,0.55);
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,0.3);
+        }
+
+
+        .account-button:active {
+
+            transform:
+                translateY(0)
+                scale(0.985);
+        }
+
+
+        .logout-button {
+
+            margin-top: 12px;
+
+            background:
+                transparent;
+
+            color:
+                rgba(255,255,255,0.65);
+        }
+
+
+        /* =========================================
+           LOADING
+        ========================================= */
+
+        .loading {
+
+            font-size:
+                0.9rem;
+
+            color:
+                rgba(255,255,255,0.5);
+
+            animation:
+                pulse 1.5s ease-in-out
+                infinite;
+        }
+
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+        }
+
+
+        /* =========================================
+           HIDDEN STATE
+        ========================================= */
+
+        .account-content {
+
+            display: none;
+        }
+
+
+        .account-content.visible {
+
+            display: block;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        .account-footer {
+
+            position: fixed;
+
+            bottom: 20px;
+
+            left: 0;
+
+            width: 100%;
+
+            text-align: center;
+
+            z-index: 3;
+        }
+
+
+        .account-footer p {
+
+            margin: 0;
+
+            font-size:
+                0.75rem;
+
+            color:
+                rgba(255,255,255,0.35);
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 600px) {
+
+            .account-page {
+
+                padding:
+                    50px 16px 80px;
+            }
+
+
+            .account-card {
+
+                padding:
+                    2.7rem 1.4rem;
+            }
+
+
+            .auth-logo {
+
+                width: 50px;
+
+                height: 50px;
+            }
+
+
+            .profile-picture {
+
+                width: 85px;
+
+                height: 85px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- Mathematical background -->
+
+    <div class="math-background"
+         aria-hidden="true">
+
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+
+    </div>
+
+
+    <!-- Account -->
+
+    <main class="account-page">
+
+        <section class="account-card">
+
+
+            <img src="logo.png"
+                 alt="CALCULUS Logo"
+                 class="auth-logo">
+
+
+            <!-- Loading -->
+
+            <div id="loading">
+
+                <p class="loading">
+                    Loading account...
+                </p>
+
+            </div>
+
+
+            <!-- Account information -->
+
+            <div
+                class="account-content"
+                id="accountContent">
+
+
+                <h1 class="account-title">
+                    Welcome
+                </h1>
+
+
+                <p class="account-subtitle">
+                    Welcome to your CALCULUS account.
+                </p>
+
+
+                <img
+                    id="profilePicture"
+                    class="profile-picture"
+                    src=""
+                    alt="Profile picture">
+
+
+                <h2
+                    id="userName"
+                    class="user-name">
+                </h2>
+
+
+                <p
+                    id="userEmail"
+                    class="user-email">
+                </p>
+
+
+                <a
+                    href="index.html"
+                    class="account-button">
+
+                    Return to CALCULUS
+
+                </a>
+
+
+                <button
+                    id="logoutButton"
+                    class="account-button logout-button">
+
+                    Log Out
+
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+
+    <footer class="account-footer">
+
+        <p>
+            © Ankit Brahamachary 2026
+        </p>
+
+    </footer>
+
+
+    <!-- Firebase authentication -->
+
+    <script type="module">
+
+        import {
+            watchAuthState,
+            logOut
+        } from "./auth.js";
+
+
+        const loading =
+            document.getElementById(
+                "loading"
+            );
+
+
+        const accountContent =
+            document.getElementById(
+                "accountContent"
+            );
+
+
+        const profilePicture =
+            document.getElementById(
+                "profilePicture"
+            );
+
+
+        const userName =
+            document.getElementById(
+                "userName"
+            );
+
+
+        const userEmail =
+            document.getElementById(
+                "userEmail"
+            );
+
+
+        const logoutButton =
+            document.getElementById(
+                "logoutButton"
+            );
+
+
+        /*
+           Watch Firebase authentication
+           state.
+        */
+
+        watchAuthState(
+            (user) => {
+
+
+                /*
+                   No authenticated user.
+                */
+
+                if (!user) {
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                /*
+                   Authenticated user.
+                */
+
+                loading.style.display =
+                    "none";
+
+
+                accountContent.classList.add(
+                    "visible"
+                );
+
+
+                userName.textContent =
+                    user.displayName ||
+                    "CALCULUS User";
+
+
+                userEmail.textContent =
+                    user.email ||
+                    "";
+
+
+                if (user.photoURL) {
+
+                    profilePicture.src =
+                        user.photoURL;
+
+                }
+                else {
+
+                    profilePicture.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        /*
+           Log out.
+        */
+
+        logoutButton.addEventListener(
+            "click",
+            logOut
+        );
+
+    </script>
+
+</body>
+
+</html>
