@@ -3028,3 +3028,33 @@ footer {
     }
 
 }
+/* =========================================
+   DESKTOP NAVIGATION — NEWS SUPPORT
+========================================= */
+
+@media (min-width: 769px) {
+
+    .desktop-nav {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 1.5rem;
+
+        flex-wrap: nowrap;
+
+        min-width: 0;
+
+        white-space: nowrap;
+
+    }
+
+
+    .desktop-nav .nav-link {
+
+        flex-shrink: 0;
+
+    }
+
+}
