@@ -13,6 +13,11 @@
 
     <title>CALCULUS — Vector Calculus</title>
 
+
+    <!-- =========================================
+         GOOGLE FONTS
+    ========================================== -->
+
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
 
@@ -23,86 +28,184 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
           rel="stylesheet">
 
+
+    <!-- =========================================
+         MAIN STYLESHEET
+    ========================================== -->
+
     <link rel="stylesheet"
           href="style.css">
+
+
+    <!-- =========================================
+         TEMPORARY PAGE STYLES
+    ========================================== -->
 
     <style>
 
         .temporary-page {
+
             min-height: 100vh;
+
             box-sizing: border-box;
-            padding: 150px 6% 90px;
+
+            padding:
+                150px 6% 90px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             position: relative;
+
             z-index: 2;
         }
 
+
         .temporary-container {
-            width: min(900px, 100%);
+
+            width:
+                min(900px, 100%);
+
             text-align: center;
         }
 
+
         .temporary-title {
-            margin: 0 0 3rem;
-            font-family: "Cormorant Garamond", serif;
-            font-size: clamp(3rem, 8vw, 7rem);
+
+            margin:
+                0 0 3rem;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(3rem, 8vw, 7rem);
+
             line-height: 1;
+
             font-weight: 600;
+
             color: #ffffff;
-            letter-spacing: 0.025em;
+
+            letter-spacing:
+                0.025em;
         }
+
 
         .temporary-card {
-            padding: clamp(2rem, 5vw, 4rem);
-            border: 1px solid rgba(255,255,255,0.35);
-            background: rgba(255,255,255,0.025);
-            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+
+            padding:
+                clamp(2rem, 5vw, 4rem);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.35);
+
+            background:
+                rgba(255,255,255,0.025);
+
+            box-shadow:
+                0 25px 80px
+                rgba(0,0,0,0.4);
+
+            backdrop-filter:
+                blur(10px);
+
+            -webkit-backdrop-filter:
+                blur(10px);
         }
+
 
         .temporary-image {
+
             display: block;
-            width: min(500px, 100%);
-            max-height: 500px;
-            object-fit: contain;
-            margin: 0 auto 3rem;
+
+            width:
+                min(500px, 100%);
+
+            max-height:
+                500px;
+
+            object-fit:
+                contain;
+
+            margin:
+                0 auto 3rem;
         }
 
+
         .temporary-message {
+
             margin: 0;
-            font-family: "Cormorant Garamond", serif;
-            font-size: clamp(2rem, 5vw, 4rem);
-            line-height: 1.1;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(2rem, 5vw, 4rem);
+
+            line-height:
+                1.1;
+
             font-weight: 600;
+
             color: #ffffff;
         }
 
+
         .temporary-note {
-            margin: 1.5rem auto 0;
-            max-width: 650px;
-            font-family: "Inter", sans-serif;
-            font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-            line-height: 1.8;
+
+            margin:
+                1.5rem auto 0;
+
+            max-width:
+                650px;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                clamp(0.95rem, 1.5vw, 1.15rem);
+
+            line-height:
+                1.8;
+
             font-weight: 300;
-            color: rgba(255,255,255,0.72);
+
+            color:
+                rgba(255,255,255,0.72);
         }
+
 
         @media (max-width: 600px) {
 
             .temporary-page {
-                padding: 120px 5% 70px;
+
+                padding:
+                    120px 5% 70px;
             }
+
 
             .temporary-card {
-                padding: 1.5rem 1.1rem 2rem;
+
+                padding:
+                    1.5rem 1.1rem 2rem;
             }
 
+
             .temporary-image {
-                max-height: 360px;
-                margin-bottom: 2rem;
+
+                max-height:
+                    360px;
+
+                margin-bottom:
+                    2rem;
             }
 
         }
@@ -114,7 +217,13 @@
 
 <body>
 
-    <div class="math-background" aria-hidden="true">
+
+    <!-- =========================================
+         MATHEMATICAL BACKGROUND
+    ========================================== -->
+
+    <div class="math-background"
+         aria-hidden="true">
 
         <span>∫</span>
         <span>∫</span>
@@ -128,42 +237,297 @@
     </div>
 
 
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
     <header class="navbar">
 
         <div class="nav-container">
 
-            <a href="index.html" class="logo">
+
+            <!-- Logo -->
+
+            <a href="index.html"
+               class="logo">
+
                 CALCULUS
+
             </a>
+
+
+
+            <!-- Desktop navigation -->
 
             <nav class="desktop-nav">
 
-                <a href="index.html" class="nav-link">
+                <a href="index.html"
+                   class="nav-link">
+
                     Home
+
                 </a>
 
-                <a href="about.html" class="nav-link">
+
+                <a href="about.html"
+                   class="nav-link">
+
                     About
+
                 </a>
 
-                <a href="books.html" class="nav-link">
+
+                <a href="books.html"
+                   class="nav-link">
+
                     Books
+
                 </a>
 
-                <a href="topics.html" class="nav-link">
+
+                <a href="topics.html"
+                   class="nav-link active">
+
                     Topics
+
                 </a>
 
-                <a href="other-websites.html" class="nav-link">
+
+                <a href="other-websites.html"
+                   class="nav-link">
+
                     Other Websites
+
                 </a>
 
             </nav>
 
+
+
+            <!-- =================================
+                 HAMBURGER
+            ================================== -->
 
             <button class="hamburger"
                     id="hamburger"
                     aria-label="Open navigation menu"
                     aria-expanded="false">
 
-               
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =========================================
+             MOBILE MENU
+        ========================================== -->
+
+        <div class="mobile-menu"
+             id="mobileMenu">
+
+
+            <a href="index.html">
+
+                Home
+
+            </a>
+
+
+            <a href="about.html">
+
+                About
+
+            </a>
+
+
+            <a href="books.html">
+
+                Books
+
+            </a>
+
+
+
+            <!-- =====================================
+                 TOPICS SUBMENU
+            ====================================== -->
+
+            <div class="mobile-topics">
+
+                <div class="mobile-topics-header">
+
+
+                    <a href="topics.html"
+                       class="mobile-topics-title">
+
+                        Topics
+
+                    </a>
+
+
+                    <button
+                        class="topics-toggle"
+                        id="topicsToggle"
+                        aria-label="Expand Topics submenu"
+                        aria-expanded="false">
+
+                        <span></span>
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="topics-submenu"
+                     id="topicsSubmenu">
+
+
+                    <a href="single-variable-calculus.html">
+
+                        Single Variable Basic Calculus
+
+                    </a>
+
+
+                    <a href="multivariable-calculus.html">
+
+                        Basic Multivariable Calculus
+
+                    </a>
+
+
+                    <a href="vector-calculus.html">
+
+                        Vector Calculus
+
+                    </a>
+
+
+                    <a href="differential-geometry.html">
+
+                        Differential Geometry and Advanced Topics
+
+                    </a>
+
+
+                    <a href="relations.html">
+
+                        Relations with Other Branches
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <a href="other-websites.html">
+
+                Other Websites
+
+            </a>
+
+
+            <!-- Login -->
+
+            <a href="login.html">
+
+                Log In
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
+    <main class="temporary-page">
+
+        <div class="temporary-container">
+
+
+            <h1 class="temporary-title">
+
+                VECTOR CALCULUS
+
+            </h1>
+
+
+            <section class="temporary-card">
+
+
+                <!-- =================================
+                     DOG IMAGE
+                ================================== -->
+
+                <img src="dog.png"
+                     alt="A dog waiting patiently"
+                     class="temporary-image">
+
+
+                <!-- =================================
+                     MESSAGE
+                ================================== -->
+
+                <h2 class="temporary-message">
+
+                    We are still working on it
+
+                </h2>
+
+
+                <p class="temporary-note">
+
+                    This section of CALCULUS is currently
+                    under development. We are working on
+                    preparing the content and will bring
+                    it here soon.
+
+                </p>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <p>
+
+            © Ankit Brahamachary 2026
+
+        </p>
+
+    </footer>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+    ========================================== -->
+
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>
