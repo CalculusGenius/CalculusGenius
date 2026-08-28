@@ -287,7 +287,7 @@ if (mobileMenu) {
 
 
 // =====================================
-// DESKTOP NEWS
+// DESKTOP NEWS + ACTIVE PAGE
 // =====================================
 
 if (desktopNav) {
@@ -303,7 +303,7 @@ if (desktopNav) {
 
 
     /*
-       Create News if it does not exist.
+       Create News if it doesn't exist.
     */
 
     if (!desktopNewsLink) {
@@ -325,7 +325,7 @@ if (desktopNav) {
 
 
         /*
-           Keep News immediately before
+           Put News immediately before
            Log In / Log Out.
         */
 
@@ -347,31 +347,74 @@ if (desktopNav) {
     }
 
 
-    /*
-       Highlight News when news.html
-       is the current page.
-    */
+    // =====================================
+    // CURRENT PAGE DETECTION
+    // =====================================
 
     const currentPage =
         window.location.pathname
             .split("/")
-            .pop();
+            .pop() || "index.html";
 
 
-    if (currentPage === "news.html") {
+    /*
+       Look at every desktop navigation link.
+    */
 
-        desktopNewsLink.classList.add(
-            "active"
+    const allDesktopLinks =
+        desktopNav.querySelectorAll(
+            ".nav-link"
         );
 
-        desktopNewsLink.setAttribute(
-            "aria-current",
-            "page"
-        );
 
-    }
+    allDesktopLinks.forEach(
+        (link) => {
 
-} 
+            /*
+               Remove any previous dynamic
+               active state first.
+            */
+
+            link.classList.remove(
+                "active"
+            );
+
+            link.removeAttribute(
+                "aria-current"
+            );
+
+
+            /*
+               Get this link's filename.
+            */
+
+            const linkPage =
+                link.getAttribute("href");
+
+
+            /*
+               Compare it with the current page.
+            */
+
+            if (
+                linkPage === currentPage
+            ) {
+
+                link.classList.add(
+                    "active"
+                );
+
+                link.setAttribute(
+                    "aria-current",
+                    "page"
+                );
+
+            }
+
+        }
+    );
+
+}
     
     
     // =====================================
