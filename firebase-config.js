@@ -6,46 +6,40 @@ import { initializeApp } from
     "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
 
-// =========================================
-// FIREBASE PROJECT CONFIGURATION
-// =========================================
+// Firebase project configuration
 
 const firebaseConfig = {
 
     apiKey:
-        "AIzaSyAEjyOZUdSkY2k8XwlaUwGjt2q1eEr0TM8",
+        "AIzaSyAQN9Xuh9WbE4ccsMmO8dGGWoiBMxwBwkE",
 
     authDomain:
-        "calculus-afbeb.firebaseapp.com",
+        "calculus-732a5.firebaseapp.com",
 
     projectId:
-        "calculus-afbeb",
+        "calculus-732a5",
 
     storageBucket:
-        "calculus-afbeb.firebasestorage.app",
+        "calculus-732a5.firebasestorage.app",
 
     messagingSenderId:
-        "749477240428",
+        "174983915941",
 
     appId:
-        "1:749477240428:web:bf0ab3831bd32538100249",
+        "1:174983915941:web:f96942414788a71729e04c",
 
     measurementId:
-        "G-5H5WZKL51Q"
+        "G-G81YBFXTZY"
 
 };
 
 
-// =========================================
-// INITIALIZE FIREBASE
-// =========================================
+// Initialize Firebase
 
 const app =
     initializeApp(firebaseConfig);
 
 
-// =========================================
-// EXPORT FIREBASE APP
-// =========================================
+// Export the Firebase app
 
 export { app };
