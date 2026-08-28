@@ -1,6 +1,8 @@
 // =========================================
 // CALCULUS — GOOGLE AUTHENTICATION
+// + FIRESTORE USER PROFILES
 // =========================================
+
 
 import {
     getAuth,
@@ -10,7 +12,18 @@ import {
     signOut
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
+
+import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
 import { app } from "./firebase-config.js";
+
 
 
 // =========================================
@@ -21,6 +34,124 @@ const auth = getAuth(app);
 
 const googleProvider =
     new GoogleAuthProvider();
+
+
+
+// =========================================
+// FIRESTORE
+// =========================================
+
+const db = getFirestore(app);
+
+
+
+// =========================================
+// CREATE / UPDATE USER PROFILE
+// =========================================
+
+async function createOrUpdateUserProfile(user) {
+
+    /*
+       Every Firebase user has a unique UID.
+
+       We use that UID as the Firestore
+       document ID.
+    */
+
+    const userRef =
+        doc(
+            db,
+            "users",
+            user.uid
+        );
+
+
+    const userSnapshot =
+        await getDoc(userRef);
+
+
+
+    // =====================================
+    // FIRST LOGIN
+    // =====================================
+
+    if (!userSnapshot.exists()) {
+
+        await setDoc(
+            userRef,
+            {
+
+                uid:
+                    user.uid,
+
+                displayName:
+                    user.displayName || "",
+
+                email:
+                    user.email || "",
+
+                photoURL:
+                    user.photoURL || "",
+
+                createdAt:
+                    serverTimestamp(),
+
+                lastLogin:
+                    serverTimestamp(),
+
+                bio:
+                    ""
+
+            }
+        );
+
+
+        console.log(
+            "New CALCULUS profile created."
+        );
+
+    }
+
+
+    // =====================================
+    // RETURNING USER
+    // =====================================
+
+    else {
+
+        await setDoc(
+            userRef,
+            {
+
+                displayName:
+                    user.displayName || "",
+
+                email:
+                    user.email || "",
+
+                photoURL:
+                    user.photoURL || "",
+
+                lastLogin:
+                    serverTimestamp()
+
+            },
+
+            {
+                merge: true
+            }
+
+        );
+
+
+        console.log(
+            "CALCULUS profile updated."
+        );
+
+    }
+
+}
+
 
 
 // =========================================
@@ -37,12 +168,16 @@ export async function signInWithGoogle() {
                 googleProvider
             );
 
-        const user = result.user;
+
+        const user =
+            result.user;
+
 
         console.log(
             "Signed in successfully:",
             user.displayName
         );
+
 
         console.log(
             "Email:",
@@ -50,11 +185,24 @@ export async function signInWithGoogle() {
         );
 
 
-        // Go to account page
+        // =================================
+        // CREATE / UPDATE PROFILE
+        // =================================
+
+        await createOrUpdateUserProfile(
+            user
+        );
+
+
+        // =================================
+        // GO TO ACCOUNT PAGE
+        // =================================
+
         window.location.href =
             "account.html";
 
     }
+
 
     catch (error) {
 
@@ -65,8 +213,8 @@ export async function signInWithGoogle() {
 
 
         /*
-           Don't show Firebase's technical
-           error message directly to users.
+           Don't expose Firebase's technical
+           error messages to users.
         */
 
         alert(
@@ -76,6 +224,7 @@ export async function signInWithGoogle() {
     }
 
 }
+
 
 
 // =========================================
@@ -88,10 +237,12 @@ export async function logOut() {
 
         await signOut(auth);
 
+
         window.location.href =
             "index.html";
 
     }
+
 
     catch (error) {
 
@@ -103,6 +254,7 @@ export async function logOut() {
     }
 
 }
+
 
 
 // =========================================
@@ -119,8 +271,11 @@ export function watchAuthState(callback) {
 }
 
 
+
 // =========================================
 // GET CURRENT AUTH OBJECT
 // =========================================
 
-export { auth };
+export {
+    auth
+};
