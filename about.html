@@ -195,21 +195,33 @@
 
 .feedback-icon {
 
-    font-family:
-        "Cormorant Garamond",
-        serif;
+    width: 64px;
 
-    font-size: 3.2rem;
+    height: 64px;
 
-    line-height: 1;
+    margin:
+        0 auto 1.5rem;
 
-    margin-bottom: 1rem;
+    display: flex;
 
-    color: #ffffff;
+    align-items: center;
 
-    opacity: 0.9;
+    justify-content: center;
+
+    opacity: 0.95;
 }
 
+
+.feedback-icon img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+}
 
 /* =========================================
    HEADING
@@ -853,13 +865,15 @@
 
         <!-- Decorative icon -->
 
-        <div class="feedback-icon"
-             aria-hidden="true">
+        <!-- Feedback Logo -->
 
-            ∫
+<div class="feedback-icon"
+     aria-hidden="true">
 
-        </div>
+    <img src="logo.png"
+         alt="CALCULUS Logo">
 
+</div>
 
         <!-- Heading -->
 
