@@ -27,7 +27,7 @@ import { app } from "./firebase-config.js";
 
 
 // =========================================
-// FIREBASE AUTH
+// FIREBASE AUTHENTICATION
 // =========================================
 
 const auth = getAuth(app);
@@ -38,7 +38,7 @@ const googleProvider =
 
 
 // =========================================
-// FIRESTORE
+// FIRESTORE DATABASE
 // =========================================
 
 const db = getFirestore(app);
@@ -52,10 +52,13 @@ const db = getFirestore(app);
 async function createOrUpdateUserProfile(user) {
 
     /*
-       Every Firebase user has a unique UID.
+       The Firebase UID uniquely identifies
+       this particular Google account.
 
-       We use that UID as the Firestore
-       document ID.
+       Therefore each user gets their own
+       document inside:
+
+       users/{UID}
     */
 
     const userRef =
@@ -66,13 +69,16 @@ async function createOrUpdateUserProfile(user) {
         );
 
 
+    // Check whether this user already
+    // has a CALCULUS profile.
+
     const userSnapshot =
         await getDoc(userRef);
 
 
 
     // =====================================
-    // FIRST LOGIN
+    // NEW USER
     // =====================================
 
     if (!userSnapshot.exists()) {
@@ -114,7 +120,7 @@ async function createOrUpdateUserProfile(user) {
 
 
     // =====================================
-    // RETURNING USER
+    // EXISTING USER
     // =====================================
 
     else {
@@ -140,12 +146,11 @@ async function createOrUpdateUserProfile(user) {
             {
                 merge: true
             }
-
         );
 
 
         console.log(
-            "CALCULUS profile updated."
+            "Existing CALCULUS profile updated."
         );
 
     }
@@ -162,6 +167,10 @@ export async function signInWithGoogle() {
 
     try {
 
+        /*
+           Open Google's sign-in window.
+        */
+
         const result =
             await signInWithPopup(
                 auth,
@@ -169,12 +178,22 @@ export async function signInWithGoogle() {
             );
 
 
+        /*
+           Firebase has successfully
+           authenticated the user.
+        */
+
         const user =
             result.user;
 
 
         console.log(
-            "Signed in successfully:",
+            "Google authentication successful."
+        );
+
+
+        console.log(
+            "Name:",
             user.displayName
         );
 
@@ -185,8 +204,14 @@ export async function signInWithGoogle() {
         );
 
 
+        console.log(
+            "UID:",
+            user.uid
+        );
+
+
         // =================================
-        // CREATE / UPDATE PROFILE
+        // CREATE / UPDATE FIRESTORE PROFILE
         // =================================
 
         await createOrUpdateUserProfile(
@@ -194,8 +219,13 @@ export async function signInWithGoogle() {
         );
 
 
+        console.log(
+            "Firestore profile operation successful."
+        );
+
+
         // =================================
-        // GO TO ACCOUNT PAGE
+        // REDIRECT
         // =================================
 
         window.location.href =
@@ -206,19 +236,30 @@ export async function signInWithGoogle() {
 
     catch (error) {
 
-    console.error(
-        "Google sign-in error:",
-        error
-    );
+        /*
+           IMPORTANT:
 
-    alert(
-        "ERROR: " +
-        error.code +
-        "\n\n" +
-        error.message
-    );
+           We are temporarily showing the
+           Firebase error so we can identify
+           exactly what is wrong.
+        */
+
+        console.error(
+            "Google sign-in error:",
+            error
+        );
+
+
+        alert(
+            "ERROR:\n\n" +
+            error.code +
+            "\n\n" +
+            error.message
+        );
 
     }
+
+}
 
 
 
@@ -233,6 +274,11 @@ export async function logOut() {
         await signOut(auth);
 
 
+        console.log(
+            "User signed out."
+        );
+
+
         window.location.href =
             "index.html";
 
@@ -244,6 +290,11 @@ export async function logOut() {
         console.error(
             "Sign-out error:",
             error
+        );
+
+
+        alert(
+            "Sign-out could not be completed. Please try again."
         );
 
     }
@@ -268,7 +319,7 @@ export function watchAuthState(callback) {
 
 
 // =========================================
-// GET CURRENT AUTH OBJECT
+// EXPORT AUTH OBJECT
 // =========================================
 
 export {
