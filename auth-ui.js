@@ -221,6 +221,65 @@ function initializeAuthUI() {
 
 
     // =====================================
+// NEWS MENU ITEM
+// =====================================
+
+if (mobileMenu) {
+
+    /*
+       Check whether the News link already exists.
+    */
+
+    let newsLink =
+        mobileMenu.querySelector(
+            'a[href="news.html"]'
+        );
+
+
+    /*
+       Create it only if it doesn't already exist.
+    */
+
+    if (!newsLink) {
+
+        newsLink =
+            document.createElement("a");
+
+        newsLink.href =
+            "news.html";
+
+        newsLink.textContent =
+            "News";
+
+        newsLink.id =
+            "globalNewsLink";
+
+
+        /*
+           Put News before the authentication
+           link so Log In / Log Out remains last.
+        */
+
+        if (mobileAuthLink) {
+
+            mobileMenu.insertBefore(
+                newsLink,
+                mobileAuthLink
+            );
+
+        } else {
+
+            mobileMenu.appendChild(
+                newsLink
+            );
+
+        }
+
+    }
+
+}
+    
+    // =====================================
     // AUTH STATE
     // =====================================
 
