@@ -206,24 +206,19 @@ export async function signInWithGoogle() {
 
     catch (error) {
 
-        console.error(
-            "Google sign-in error:",
-            error
-        );
+    console.error(
+        "Google sign-in error:",
+        error
+    );
 
-
-        /*
-           Don't expose Firebase's technical
-           error messages to users.
-        */
-
-        alert(
-            "Google sign-in could not be completed. Please try again."
-        );
+    alert(
+        "ERROR: " +
+        error.code +
+        "\n\n" +
+        error.message
+    );
 
     }
-
-}
 
 
 
