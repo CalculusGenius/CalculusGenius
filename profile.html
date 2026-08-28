@@ -1,0 +1,1116 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Your CALCULUS user profile.">
+
+    <title>My Profile — CALCULUS</title>
+
+
+    <!-- =========================================
+         GOOGLE FONTS
+    ========================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+
+    <!-- =========================================
+         MAIN STYLESHEET
+    ========================================== -->
+
+    <link rel="stylesheet"
+          href="style.css">
+
+
+    <!-- =========================================
+         PROFILE PAGE STYLES
+    ========================================== -->
+
+    <style>
+
+        /* =========================================
+           PROFILE PAGE
+        ========================================= */
+
+        .profile-page {
+
+            min-height: 100vh;
+
+            padding:
+                150px 20px 100px;
+
+            position: relative;
+
+            z-index: 2;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .profile-container {
+
+            width:
+                min(760px, 100%);
+        }
+
+
+        /* =========================================
+           PROFILE HEADER
+        ========================================= */
+
+        .profile-heading {
+
+            text-align: center;
+
+            margin-bottom: 3rem;
+        }
+
+
+        .profile-title {
+
+            margin: 0;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(3rem, 8vw, 6rem);
+
+            font-weight: 600;
+
+            line-height: 1;
+
+            letter-spacing:
+                0.025em;
+
+            color:
+                #ffffff;
+        }
+
+
+        .profile-title-line {
+
+            width: 70px;
+
+            height: 1px;
+
+            margin:
+                1.5rem auto 0;
+
+            background:
+                rgba(255,255,255,0.55);
+        }
+
+
+        /* =========================================
+           PROFILE CARD
+        ========================================== */
+
+        .profile-card {
+
+            padding:
+                clamp(2.5rem, 7vw, 5rem);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.25);
+
+            background:
+                rgba(255,255,255,0.035);
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.5),
+
+                inset 0 0 50px
+                rgba(255,255,255,0.012);
+
+            backdrop-filter:
+                blur(18px);
+
+            -webkit-backdrop-filter:
+                blur(18px);
+
+            text-align: center;
+
+            animation:
+                profileAppear 0.9s
+                cubic-bezier(.16,1,.3,1);
+        }
+
+
+        @keyframes profileAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(30px)
+                    scale(0.97);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        /* =========================================
+           GOOGLE PROFILE IMAGE
+        ========================================== */
+
+        .profile-picture-wrapper {
+
+            width: 128px;
+
+            height: 128px;
+
+            margin:
+                0 auto 2rem;
+
+            border-radius: 50%;
+
+            padding: 4px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.45);
+
+            background:
+                rgba(255,255,255,0.05);
+
+            box-shadow:
+                0 15px 45px
+                rgba(0,0,0,0.4);
+        }
+
+
+        .profile-picture {
+
+            width: 100%;
+
+            height: 100%;
+
+            display: block;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+        }
+
+
+        /* =========================================
+           USER NAME
+        ========================================== */
+
+        .profile-name {
+
+            margin: 0;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(2.3rem, 6vw, 4rem);
+
+            line-height:
+                1.1;
+
+            font-weight: 600;
+
+            color:
+                #ffffff;
+        }
+
+
+        /* =========================================
+           EMAIL
+        ========================================== */
+
+        .profile-email {
+
+            margin:
+                0.8rem 0 0;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.95rem;
+
+            line-height:
+                1.6;
+
+            font-weight: 300;
+
+            color:
+                rgba(255,255,255,0.58);
+
+            word-break:
+                break-word;
+        }
+
+
+        /* =========================================
+           DIVIDER
+        ========================================== */
+
+        .profile-divider {
+
+            width: 100%;
+
+            height: 1px;
+
+            margin:
+                2.8rem 0;
+
+            background:
+                rgba(255,255,255,0.1);
+        }
+
+
+        /* =========================================
+           ACCOUNT INFORMATION
+        ========================================== */
+
+        .account-information {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 1px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            background:
+                rgba(255,255,255,0.08);
+        }
+
+
+        .account-information-item {
+
+            padding:
+                1.5rem;
+
+            background:
+                rgba(5,5,7,0.55);
+
+            text-align: left;
+        }
+
+
+        .account-information-label {
+
+            display: block;
+
+            margin-bottom:
+                0.45rem;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.7rem;
+
+            font-weight:
+                500;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                0.12em;
+
+            color:
+                rgba(255,255,255,0.38);
+        }
+
+
+        .account-information-value {
+
+            display: block;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.9rem;
+
+            line-height:
+                1.5;
+
+            font-weight:
+                400;
+
+            color:
+                rgba(255,255,255,0.82);
+
+            word-break:
+                break-word;
+        }
+
+
+        /* =========================================
+           LOGOUT BUTTON
+        ========================================== */
+
+        .profile-logout {
+
+            width: 100%;
+
+            min-height: 52px;
+
+            margin-top:
+                2rem;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.28);
+
+            background:
+                rgba(255,255,255,0.05);
+
+            color:
+                #ffffff;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.9rem;
+
+            font-weight:
+                500;
+
+            cursor:
+                pointer;
+
+            transition:
+                background 0.3s ease,
+                border-color 0.3s ease,
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+
+        .profile-logout:hover {
+
+            background:
+                rgba(255,255,255,0.1);
+
+            border-color:
+                rgba(255,255,255,0.55);
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,0.3);
+        }
+
+
+        .profile-logout:active {
+
+            transform:
+                translateY(0)
+                scale(0.985);
+        }
+
+
+        /* =========================================
+           LOADING STATE
+        ========================================== */
+
+        .profile-loading {
+
+            padding:
+                3rem;
+
+            text-align: center;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.9rem;
+
+            font-weight:
+                300;
+
+            color:
+                rgba(255,255,255,0.5);
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================== */
+
+        @media (max-width: 600px) {
+
+            .profile-page {
+
+                padding:
+                    120px 16px 80px;
+            }
+
+
+            .profile-card {
+
+                padding:
+                    2.5rem 1.3rem;
+            }
+
+
+            .profile-picture-wrapper {
+
+                width: 105px;
+
+                height: 105px;
+            }
+
+
+            .account-information {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .account-information-item {
+
+                padding:
+                    1.25rem;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         MATHEMATICAL BACKGROUND
+    ========================================== -->
+
+    <div class="math-background"
+         aria-hidden="true">
+
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+
+    </div>
+
+
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+
+            <!-- Logo -->
+
+            <a href="index.html"
+               class="logo">
+
+                CALCULUS
+
+            </a>
+
+
+
+            <!-- Desktop navigation -->
+
+            <nav class="desktop-nav">
+
+                <a href="index.html"
+                   class="nav-link">
+
+                    Home
+
+                </a>
+
+
+                <a href="about.html"
+                   class="nav-link">
+
+                    About
+
+                </a>
+
+
+                <a href="books.html"
+                   class="nav-link">
+
+                    Books
+
+                </a>
+
+
+                <a href="topics.html"
+                   class="nav-link">
+
+                    Topics
+
+                </a>
+
+
+                <a href="other-websites.html"
+                   class="nav-link">
+
+                    Other Websites
+
+                </a>
+
+            </nav>
+
+
+
+            <!-- Hamburger -->
+
+            <button class="hamburger"
+                    id="hamburger"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- =========================================
+             MOBILE MENU
+        ========================================== -->
+
+        <div class="mobile-menu"
+             id="mobileMenu">
+
+
+            <a href="index.html">
+
+                Home
+
+            </a>
+
+
+            <a href="about.html">
+
+                About
+
+            </a>
+
+
+            <a href="books.html">
+
+                Books
+
+            </a>
+
+
+
+            <!-- Topics -->
+
+            <div class="mobile-topics">
+
+                <div class="mobile-topics-header">
+
+                    <a href="topics.html"
+                       class="mobile-topics-title">
+
+                        Topics
+
+                    </a>
+
+
+                    <button
+                        class="topics-toggle"
+                        id="topicsToggle"
+                        aria-label="Expand Topics submenu"
+                        aria-expanded="false">
+
+                        <span></span>
+
+                    </button>
+
+                </div>
+
+
+                <div class="topics-submenu"
+                     id="topicsSubmenu">
+
+                    <a href="single-variable-calculus.html">
+
+                        Single Variable Basic Calculus
+
+                    </a>
+
+
+                    <a href="multivariable-calculus.html">
+
+                        Basic Multivariable Calculus
+
+                    </a>
+
+
+                    <a href="vector-calculus.html">
+
+                        Vector Calculus
+
+                    </a>
+
+
+                    <a href="differential-geometry.html">
+
+                        Differential Geometry and Advanced Topics
+
+                    </a>
+
+
+                    <a href="relations.html">
+
+                        Relations with Other Branches
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a href="other-websites.html">
+
+                Other Websites
+
+            </a>
+
+
+            <a href="login.html">
+
+                Log In
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================
+         PROFILE PAGE
+    ========================================== -->
+
+    <main class="profile-page">
+
+        <div class="profile-container">
+
+
+            <!-- =====================================
+                 HEADING
+            ====================================== -->
+
+            <div class="profile-heading">
+
+                <h1 class="profile-title">
+
+                    MY PROFILE
+
+                </h1>
+
+
+                <div class="profile-title-line"></div>
+
+            </div>
+
+
+
+            <!-- =====================================
+                 PROFILE CARD
+            ====================================== -->
+
+            <section class="profile-card"
+                     id="profileCard">
+
+
+                <!-- Loading state -->
+
+                <div class="profile-loading"
+                     id="profileLoading">
+
+                    Loading your profile...
+
+                </div>
+
+
+                <!-- =================================
+                     USER CONTENT
+                ================================== -->
+
+                <div id="profileContent"
+                     style="display: none;">
+
+
+                    <!-- Profile picture -->
+
+                    <div class="profile-picture-wrapper">
+
+                        <img id="profilePicture"
+                             class="profile-picture"
+                             src="logo.png"
+                             alt="Profile picture">
+
+                    </div>
+
+
+
+                    <!-- Name -->
+
+                    <h2 class="profile-name"
+                        id="profileName">
+
+                        User
+
+                    </h2>
+
+
+
+                    <!-- Email -->
+
+                    <p class="profile-email"
+                       id="profileEmail">
+
+                    </p>
+
+
+
+                    <div class="profile-divider"></div>
+
+
+
+                    <!-- =================================
+                         ACCOUNT INFORMATION
+                    ================================== -->
+
+                    <div class="account-information">
+
+
+                        <div class="account-information-item">
+
+                            <span class="account-information-label">
+
+                                Account
+
+                            </span>
+
+
+                            <span class="account-information-value">
+
+                                Google Account
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="account-information-item">
+
+                            <span class="account-information-label">
+
+                                Status
+
+                            </span>
+
+
+                            <span class="account-information-value"
+                                  id="accountStatus">
+
+                                Signed in
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Logout -->
+
+                    <button class="profile-logout"
+                            id="profileLogout">
+
+                        Log Out
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <p>
+
+            © Ankit Brahamachary 2026
+
+        </p>
+
+    </footer>
+
+
+
+    <!-- =========================================
+         EXISTING SITE INTERACTIONS
+    ========================================== -->
+
+    <script type="module"
+            src="script.js"></script>
+
+
+
+    <!-- =========================================
+         PROFILE LOGIC
+    ========================================== -->
+
+    <script type="module">
+
+        import {
+            watchAuthState,
+            logOut
+        } from "./auth.js";
+
+
+        /* =========================================
+           ELEMENTS
+        ========================================== */
+
+        const loading =
+            document.getElementById(
+                "profileLoading"
+            );
+
+
+        const content =
+            document.getElementById(
+                "profileContent"
+            );
+
+
+        const picture =
+            document.getElementById(
+                "profilePicture"
+            );
+
+
+        const name =
+            document.getElementById(
+                "profileName"
+            );
+
+
+        const email =
+            document.getElementById(
+                "profileEmail"
+            );
+
+
+        const logoutButton =
+            document.getElementById(
+                "profileLogout"
+            );
+
+
+        /* =========================================
+           AUTHENTICATION STATE
+        ========================================== */
+
+        watchAuthState(
+            (user) => {
+
+
+                /* =================================
+                   NOT LOGGED IN
+                ================================= */
+
+                if (!user) {
+
+                    /*
+                       Redirect to login page.
+                    */
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                /* =================================
+                   LOGGED IN
+                ================================= */
+
+
+                /*
+                   Profile picture
+                */
+
+                picture.src =
+                    user.photoURL ||
+                    "logo.png";
+
+
+                picture.alt =
+                    user.displayName
+                    ? `${user.displayName}'s profile picture`
+                    : "Profile picture";
+
+
+                /*
+                   Display name
+                */
+
+                name.textContent =
+                    user.displayName ||
+                    "CALCULUS User";
+
+
+                /*
+                   Email
+                */
+
+                email.textContent =
+                    user.email ||
+                    "";
+
+
+                /*
+                   Show profile
+                */
+
+                loading.style.display =
+                    "none";
+
+                content.style.display =
+                    "block";
+
+            }
+        );
+
+
+        /* =========================================
+           LOGOUT
+        ========================================== */
+
+        logoutButton.addEventListener(
+            "click",
+            async () => {
+
+                logoutButton.disabled =
+                    true;
+
+                logoutButton.textContent =
+                    "Logging Out...";
+
+
+                try {
+
+                    await logOut();
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Logout error:",
+                        error
+                    );
+
+
+                    logoutButton.disabled =
+                        false;
+
+                    logoutButton.textContent =
+                        "Log Out";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
+```
