@@ -337,3 +337,205 @@ if (
         });
 
 }
+/* =========================================
+   CALCULUS — AUTHENTICATION UI
+========================================= */
+
+import {
+    watchAuthState,
+    logOut
+} from "./auth.js";
+
+
+/* =========================================
+   PROFILE BUTTON
+========================================= */
+
+const userProfileButton =
+    document.getElementById(
+        "userProfileButton"
+    );
+
+
+const userProfilePicture =
+    document.getElementById(
+        "userProfilePicture"
+    );
+
+
+/* =========================================
+   MOBILE MENU
+========================================= */
+
+const authMenu =
+    document.getElementById(
+        "mobileMenu"
+    );
+
+
+/* =========================================
+   AUTH STATE
+========================================= */
+
+if (
+    userProfileButton &&
+    userProfilePicture
+) {
+
+    watchAuthState(
+        (user) => {
+
+
+            /* =================================
+               USER IS LOGGED IN
+            ================================= */
+
+            if (user) {
+
+                /*
+                   Show Google profile picture.
+                */
+
+                if (user.photoURL) {
+
+                    userProfilePicture.src =
+                        user.photoURL;
+
+                }
+
+                else {
+
+                    /*
+                       Fallback if Google does
+                       not provide a photo.
+                    */
+
+                    userProfilePicture.src =
+                        "logo.png";
+
+                }
+
+
+                userProfilePicture.alt =
+                    user.displayName
+                    ? user.displayName
+                    : "Your profile";
+
+
+                userProfileButton.style.display =
+                    "flex";
+
+
+                /*
+                   Change Login → Logout
+                */
+
+                if (authMenu) {
+
+                    const loginLink =
+                        authMenu.querySelector(
+                            'a[href="login.html"]'
+                        );
+
+
+                    if (loginLink) {
+
+                        loginLink.textContent =
+                            "Log Out";
+
+                        loginLink.href =
+                            "#";
+
+                        loginLink.id =
+                            "logoutLink";
+
+                    }
+
+                }
+
+            }
+
+
+            /* =================================
+               USER IS LOGGED OUT
+            ================================= */
+
+            else {
+
+                userProfileButton.style.display =
+                    "none";
+
+
+                if (authMenu) {
+
+                    const logoutLink =
+                        authMenu.querySelector(
+                            "#logoutLink"
+                        );
+
+
+                    if (logoutLink) {
+
+                        logoutLink.textContent =
+                            "Log In";
+
+                        logoutLink.href =
+                            "login.html";
+
+                        logoutLink.removeAttribute(
+                            "id"
+                        );
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   LOGOUT CLICK HANDLER
+========================================= */
+
+document.addEventListener(
+    "click",
+    async (event) => {
+
+        const logoutLink =
+            event.target.closest(
+                "#logoutLink"
+            );
+
+
+        if (!logoutLink) {
+
+            return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        try {
+
+            await logOut();
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Logout failed:",
+                error
+            );
+
+        }
+
+    }
+);
