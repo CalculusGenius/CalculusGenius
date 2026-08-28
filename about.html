@@ -33,6 +33,345 @@
 
     <link rel="stylesheet"
           href="style.css">
+    <style>
+
+/* =========================================
+   FEEDBACK POPUP
+========================================= */
+
+.feedback-overlay {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 20px;
+
+    background:
+        rgba(0,0,0,0.72);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.35s ease,
+        visibility 0.35s ease;
+}
+
+
+.feedback-overlay.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+/* =========================================
+   POPUP CARD
+========================================= */
+
+.feedback-popup {
+
+    position: relative;
+
+    width:
+        min(460px, 100%);
+
+    padding:
+        3rem 2.5rem;
+
+    text-align: center;
+
+    background:
+        rgba(18,18,21,0.96);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.25);
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,0.65);
+
+    transform:
+        translateY(25px)
+        scale(0.94);
+
+    opacity: 0;
+
+    transition:
+        transform 0.4s
+        cubic-bezier(.16,1,.3,1),
+
+        opacity 0.3s ease;
+}
+
+
+.feedback-overlay.show .feedback-popup {
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    opacity: 1;
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.feedback-close {
+
+    position: absolute;
+
+    top: 12px;
+
+    right: 15px;
+
+    width: 34px;
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    background: transparent;
+
+    color:
+        rgba(255,255,255,0.55);
+
+    font-size: 1.6rem;
+
+    font-weight: 300;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.feedback-close:hover {
+
+    color: #ffffff;
+
+    transform:
+        rotate(90deg);
+}
+
+
+/* =========================================
+   ICON
+========================================= */
+
+.feedback-icon {
+
+    font-family:
+        "Cormorant Garamond",
+        serif;
+
+    font-size: 3.2rem;
+
+    line-height: 1;
+
+    margin-bottom: 1rem;
+
+    color: #ffffff;
+
+    opacity: 0.9;
+}
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+.feedback-popup h2 {
+
+    margin: 0;
+
+    font-family:
+        "Cormorant Garamond",
+        serif;
+
+    font-size:
+        clamp(2rem, 7vw, 3rem);
+
+    font-weight: 600;
+
+    line-height: 1.1;
+}
+
+
+/* =========================================
+   TEXT
+========================================= */
+
+.feedback-popup p {
+
+    margin:
+        1rem auto 2rem;
+
+    max-width: 350px;
+
+    font-size: 0.9rem;
+
+    line-height: 1.7;
+
+    font-weight: 300;
+
+    color:
+        rgba(255,255,255,0.62);
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.feedback-actions {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+
+.feedback-button {
+
+    min-width: 145px;
+
+    padding:
+        0.85rem 1.4rem;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.3);
+
+    font-family:
+        "Inter",
+        sans-serif;
+
+    font-size: 0.85rem;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+/* Give Feedback */
+
+.feedback-primary {
+
+    background:
+        rgba(255,255,255,0.12);
+
+    color: #ffffff;
+}
+
+
+.feedback-primary:hover {
+
+    background:
+        rgba(255,255,255,0.2);
+
+    border-color:
+        rgba(255,255,255,0.55);
+
+    transform:
+        translateY(-2px);
+}
+
+
+/* Maybe Later */
+
+.feedback-secondary {
+
+    background: transparent;
+
+    color:
+        rgba(255,255,255,0.58);
+}
+
+
+.feedback-secondary:hover {
+
+    color: #ffffff;
+
+    border-color:
+        rgba(255,255,255,0.45);
+
+    transform:
+        translateY(-2px);
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .feedback-popup {
+
+        padding:
+            2.7rem 1.5rem;
+    }
+
+
+    .feedback-actions {
+
+        flex-direction: column;
+    }
+
+
+    .feedback-button {
+
+        width: 100%;
+    }
+
+}
+
+    </style>
 
 </head>
 
@@ -471,7 +810,92 @@
 
     </main>
 
+<!-- =========================================
+     FEEDBACK POPUP
+========================================= -->
 
+<div class="feedback-overlay"
+     id="feedbackOverlay"
+     aria-hidden="true">
+
+    <div class="feedback-popup"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="feedbackTitle">
+
+
+        <!-- Close -->
+
+        <button
+            class="feedback-close"
+            id="feedbackClose"
+            aria-label="Close feedback popup">
+
+            ×
+
+        </button>
+
+
+        <!-- Decorative icon -->
+
+        <div class="feedback-icon"
+             aria-hidden="true">
+
+            ∫
+
+        </div>
+
+
+        <!-- Heading -->
+
+        <h2 id="feedbackTitle">
+
+            What do you think?
+
+        </h2>
+
+
+        <!-- Description -->
+
+        <p>
+
+            Your feedback helps improve
+            CALCULUS and makes the project
+            more useful for everyone interested
+            in mathematical sciences.
+
+        </p>
+
+
+        <!-- Buttons -->
+
+        <div class="feedback-actions">
+
+
+            <button
+                class="feedback-button feedback-primary"
+                id="giveFeedback">
+
+                Give Feedback
+
+            </button>
+
+
+            <button
+                class="feedback-button feedback-secondary"
+                id="feedbackLater">
+
+                Maybe Later
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
 
     <!-- =========================================
          FOOTER
@@ -490,6 +914,164 @@
     <!-- JavaScript -->
 
     <script src="script.js"></script>
+
+
+<script>
+
+/* =========================================
+   FEEDBACK POPUP
+========================================= */
+
+const feedbackOverlay =
+    document.getElementById(
+        "feedbackOverlay"
+    );
+
+const feedbackClose =
+    document.getElementById(
+        "feedbackClose"
+    );
+
+const feedbackLater =
+    document.getElementById(
+        "feedbackLater"
+    );
+
+const giveFeedback =
+    document.getElementById(
+        "giveFeedback"
+    );
+
+
+/* =========================================
+   OPEN POPUP
+========================================= */
+
+function openFeedbackPopup() {
+
+    feedbackOverlay.classList.add("show");
+
+    feedbackOverlay.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+
+/* =========================================
+   CLOSE POPUP
+========================================= */
+
+function closeFeedbackPopup() {
+
+    feedbackOverlay.classList.remove("show");
+
+    feedbackOverlay.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+feedbackClose.addEventListener(
+    "click",
+    closeFeedbackPopup
+);
+
+
+/* =========================================
+   MAYBE LATER
+========================================= */
+
+feedbackLater.addEventListener(
+    "click",
+    closeFeedbackPopup
+);
+
+
+/* =========================================
+   CLICK OUTSIDE
+========================================= */
+
+feedbackOverlay.addEventListener(
+    "click",
+    (event) => {
+
+        if (
+            event.target ===
+            feedbackOverlay
+        ) {
+
+            closeFeedbackPopup();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   ESCAPE KEY
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (
+            event.key === "Escape" &&
+            feedbackOverlay.classList.contains("show")
+        ) {
+
+            closeFeedbackPopup();
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   GIVE FEEDBACK
+========================================= */
+
+giveFeedback.addEventListener(
+    "click",
+    () => {
+
+        window.location.href =
+            "mailto:calculusgenius67@gmail.com?subject=CALCULUS%20Website%20Feedback";
+
+    }
+);
+
+
+/* =========================================
+   SHOW AFTER SHORT DELAY
+========================================= */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        setTimeout(
+            openFeedbackPopup,
+            900
+        );
+
+    }
+);
+
+</script>
+
+
+</body>
 
 </body>
 
