@@ -325,8 +325,8 @@ if (desktopNav) {
 
 
         /*
-           Put News before the authentication
-           link so Log In / Log Out remains last.
+           Keep News immediately before
+           Log In / Log Out.
         */
 
         if (desktopAuthLink) {
@@ -346,7 +346,34 @@ if (desktopNav) {
 
     }
 
-}    
+
+    /*
+       Highlight News when news.html
+       is the current page.
+    */
+
+    const currentPage =
+        window.location.pathname
+            .split("/")
+            .pop();
+
+
+    if (currentPage === "news.html") {
+
+        desktopNewsLink.classList.add(
+            "active"
+        );
+
+        desktopNewsLink.setAttribute(
+            "aria-current",
+            "page"
+        );
+
+    }
+
+} 
+    
+    
     // =====================================
     // AUTH STATE
     // =====================================
