@@ -224,53 +224,58 @@ function initializeAuthUI() {
 // NEWS MENU ITEM
 // =====================================
 
+
+// =====================================
+// MOBILE NEWS
+// =====================================
+
 if (mobileMenu) {
 
     /*
-       Check whether the News link already exists.
+       Check whether News already exists.
     */
 
-    let newsLink =
+    let mobileNewsLink =
         mobileMenu.querySelector(
             'a[href="news.html"]'
         );
 
 
     /*
-       Create it only if it doesn't already exist.
+       Create News if it does not exist.
     */
 
-    if (!newsLink) {
+    if (!mobileNewsLink) {
 
-        newsLink =
+        mobileNewsLink =
             document.createElement("a");
 
-        newsLink.href =
+        mobileNewsLink.href =
             "news.html";
 
-        newsLink.textContent =
+        mobileNewsLink.textContent =
             "News";
 
-        newsLink.id =
-            "globalNewsLink";
+        mobileNewsLink.id =
+            "globalMobileNewsLink";
 
 
         /*
-           Put News before the authentication
-           link so Log In / Log Out remains last.
+           Keep authentication at the
+           bottom of the mobile menu.
         */
 
         if (mobileAuthLink) {
 
             mobileMenu.insertBefore(
-                newsLink,
+                mobileNewsLink,
                 mobileAuthLink
             );
 
         } else {
 
             mobileMenu.appendChild(
-                newsLink
+                mobileNewsLink
             );
 
         }
@@ -278,7 +283,70 @@ if (mobileMenu) {
     }
 
 }
-    
+
+
+
+// =====================================
+// DESKTOP NEWS
+// =====================================
+
+if (desktopNav) {
+
+    /*
+       Check whether News already exists.
+    */
+
+    let desktopNewsLink =
+        desktopNav.querySelector(
+            'a[href="news.html"]'
+        );
+
+
+    /*
+       Create News if it does not exist.
+    */
+
+    if (!desktopNewsLink) {
+
+        desktopNewsLink =
+            document.createElement("a");
+
+        desktopNewsLink.href =
+            "news.html";
+
+        desktopNewsLink.textContent =
+            "News";
+
+        desktopNewsLink.className =
+            "nav-link";
+
+        desktopNewsLink.id =
+            "globalDesktopNewsLink";
+
+
+        /*
+           Put News before the authentication
+           link so Log In / Log Out remains last.
+        */
+
+        if (desktopAuthLink) {
+
+            desktopNav.insertBefore(
+                desktopNewsLink,
+                desktopAuthLink
+            );
+
+        } else {
+
+            desktopNav.appendChild(
+                desktopNewsLink
+            );
+
+        }
+
+    }
+
+}    
     // =====================================
     // AUTH STATE
     // =====================================
