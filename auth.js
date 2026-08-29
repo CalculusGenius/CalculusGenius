@@ -1,4 +1,3 @@
-```javascript
 // =========================================
 // CALCULUS — GOOGLE AUTHENTICATION
 // + FIRESTORE USER PROFILES
@@ -13,6 +12,7 @@ import {
     signOut
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
+
 import {
     getFirestore,
     doc,
@@ -21,6 +21,7 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
+
 import { app } from "./firebase-config.js";
 
 
@@ -28,7 +29,9 @@ import { app } from "./firebase-config.js";
 // FIREBASE AUTHENTICATION
 // =========================================
 
-const auth = getAuth(app);
+const auth =
+    getAuth(app);
+
 
 const googleProvider =
     new GoogleAuthProvider();
@@ -38,7 +41,8 @@ const googleProvider =
 // FIRESTORE DATABASE
 // =========================================
 
-const db = getFirestore(app);
+const db =
+    getFirestore(app);
 
 
 // =========================================
@@ -53,6 +57,7 @@ async function createOrUpdateUserProfile(user) {
             "users",
             user.uid
         );
+
 
     const userSnapshot =
         await getDoc(userRef);
@@ -142,16 +147,6 @@ async function createOrUpdateUserProfile(user) {
 
 async function createOrUpdatePublicProfile(user) {
 
-    console.log(
-        "Creating/updating public Chat profile..."
-    );
-
-    console.log(
-        "User UID:",
-        user.uid
-    );
-
-
     const publicUserRef =
         doc(
             db,
@@ -163,6 +158,9 @@ async function createOrUpdatePublicProfile(user) {
     await setDoc(
         publicUserRef,
         {
+
+            uid:
+                user.uid,
 
             displayName:
                 user.displayName ||
@@ -179,9 +177,7 @@ async function createOrUpdatePublicProfile(user) {
 
 
     console.log(
-        "SUCCESS: publicUsers/" +
-        user.uid +
-        " created/updated."
+        "Public Chat profile created/updated."
     );
 
 }
@@ -196,6 +192,7 @@ async function createOrUpdateAllUserData(user) {
     await createOrUpdateUserProfile(
         user
     );
+
 
     await createOrUpdatePublicProfile(
         user
@@ -212,11 +209,17 @@ export async function signInWithGoogle() {
 
     try {
 
+        console.log(
+            "Starting Google sign-in..."
+        );
+
+
         const result =
             await signInWithPopup(
                 auth,
                 googleProvider
             );
+
 
         const user =
             result.user;
@@ -245,10 +248,6 @@ export async function signInWithGoogle() {
         );
 
 
-        // =================================
-        // CREATE FIRESTORE DATA
-        // =================================
-
         await createOrUpdateAllUserData(
             user
         );
@@ -258,10 +257,6 @@ export async function signInWithGoogle() {
             "All Firestore operations successful."
         );
 
-
-        // =================================
-        // REDIRECT
-        // =================================
 
         window.location.href =
             "account.html";
@@ -276,12 +271,12 @@ export async function signInWithGoogle() {
         );
 
 
-        alert(
-            "ERROR:\n\n" +
-            error.code +
-            "\n\n" +
-            error.message
-        );
+        /*
+           IMPORTANT:
+           Pass the error back to login.html.
+        */
+
+        throw error;
 
     }
 
@@ -296,11 +291,15 @@ export async function logOut() {
 
     try {
 
-        await signOut(auth);
+        await signOut(
+            auth
+        );
+
 
         console.log(
             "User signed out."
         );
+
 
         window.location.href =
             "index.html";
@@ -314,9 +313,8 @@ export async function logOut() {
             error
         );
 
-        alert(
-            "Sign-out could not be completed. Please try again."
-        );
+
+        throw error;
 
     }
 
@@ -344,4 +342,3 @@ export function watchAuthState(callback) {
 export {
     auth
 };
-```
