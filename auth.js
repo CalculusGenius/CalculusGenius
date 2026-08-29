@@ -2,7 +2,9 @@
 // CALCULUS — GOOGLE AUTHENTICATION
 // + FIRESTORE USER PROFILES
 // + PUBLIC CHAT DIRECTORY
+// + CALCULUS CHAT NAME
 // =========================================
+
 
 import {
     getAuth,
@@ -25,6 +27,7 @@ import {
 import { app } from "./firebase-config.js";
 
 
+
 // =========================================
 // FIREBASE AUTHENTICATION
 // =========================================
@@ -37,12 +40,14 @@ const googleProvider =
     new GoogleAuthProvider();
 
 
+
 // =========================================
 // FIRESTORE DATABASE
 // =========================================
 
 const db =
     getFirestore(app);
+
 
 
 // =========================================
@@ -60,7 +65,9 @@ async function createOrUpdateUserProfile(user) {
 
 
     const userSnapshot =
-        await getDoc(userRef);
+        await getDoc(
+            userRef
+        );
 
 
     // =====================================
@@ -97,6 +104,7 @@ async function createOrUpdateUserProfile(user) {
             }
         );
 
+
         console.log(
             "Private user profile created."
         );
@@ -127,10 +135,12 @@ async function createOrUpdateUserProfile(user) {
                     serverTimestamp()
 
             },
+
             {
                 merge: true
             }
         );
+
 
         console.log(
             "Private user profile updated."
@@ -139,6 +149,7 @@ async function createOrUpdateUserProfile(user) {
     }
 
 }
+
 
 
 // =========================================
@@ -155,6 +166,160 @@ async function createOrUpdatePublicProfile(user) {
         );
 
 
+    // =====================================
+    // CHECK EXISTING PUBLIC PROFILE
+    // =====================================
+
+    const publicUserSnapshot =
+        await getDoc(
+            publicUserRef
+        );
+
+
+    // =====================================
+    // EXISTING PUBLIC PROFILE
+    // =====================================
+
+    if (
+        publicUserSnapshot.exists()
+    ) {
+
+        /*
+           The user has already selected
+           their CALCULUS Chat Name.
+
+           IMPORTANT:
+
+           Do NOT overwrite chatName with
+           Google's displayName.
+        */
+
+        await setDoc(
+            publicUserRef,
+            {
+
+                uid:
+                    user.uid,
+
+                photoURL:
+                    user.photoURL || ""
+
+            },
+
+            {
+                merge: true
+            }
+        );
+
+
+        console.log(
+            "Existing public Chat profile updated."
+        );
+
+
+        return;
+
+    }
+
+
+
+    // =====================================
+    // NEW PUBLIC PROFILE
+    // =====================================
+
+    let chatName = null;
+
+
+    while (!chatName) {
+
+        chatName =
+            window.prompt(
+                "Choose your CALCULUS Chat Name:\n\n" +
+                "This is the name other CALCULUS " +
+                "users will see in Chat.\n\n" +
+                "Example: gamer45"
+            );
+
+
+        // =================================
+        // USER CANCELLED
+        // =================================
+
+        if (
+            chatName === null
+        ) {
+
+            alert(
+                "A CALCULUS Chat Name is required " +
+                "to use CALCULUS Chat."
+            );
+
+
+            throw new Error(
+                "CALCULUS Chat Name selection cancelled."
+            );
+
+        }
+
+
+        // =================================
+        // CLEAN INPUT
+        // =================================
+
+        chatName =
+            chatName.trim();
+
+
+        // =================================
+        // EMPTY NAME
+        // =================================
+
+        if (!chatName) {
+
+            alert(
+                "Please enter a Chat Name."
+            );
+
+
+            chatName =
+                null;
+
+
+            continue;
+
+        }
+
+
+        // =================================
+        // MAXIMUM LENGTH
+        // =================================
+
+        if (
+            chatName.length > 30
+        ) {
+
+            alert(
+                "Your Chat Name must be 30 " +
+                "characters or fewer."
+            );
+
+
+            chatName =
+                null;
+
+
+            continue;
+
+        }
+
+    }
+
+
+
+    // =====================================
+    // CREATE PUBLIC PROFILE
+    // =====================================
+
     await setDoc(
         publicUserRef,
         {
@@ -162,25 +327,28 @@ async function createOrUpdatePublicProfile(user) {
             uid:
                 user.uid,
 
-            displayName:
-                user.displayName ||
-                "CALCULUS User",
+            chatName:
+                chatName,
 
             photoURL:
                 user.photoURL || ""
 
-        },
-        {
-            merge: true
         }
     );
 
 
     console.log(
-        "Public Chat profile created/updated."
+        "New public Chat profile created."
+    );
+
+
+    console.log(
+        "CALCULUS Chat Name:",
+        chatName
     );
 
 }
+
 
 
 // =========================================
@@ -189,16 +357,25 @@ async function createOrUpdatePublicProfile(user) {
 
 async function createOrUpdateAllUserData(user) {
 
+    /*
+       Maintain the private profile.
+    */
+
     await createOrUpdateUserProfile(
         user
     );
 
+
+    /*
+       Maintain the public Chat profile.
+    */
 
     await createOrUpdatePublicProfile(
         user
     );
 
 }
+
 
 
 // =========================================
@@ -214,6 +391,10 @@ export async function signInWithGoogle() {
         );
 
 
+        // =================================
+        // GOOGLE SIGN-IN POPUP
+        // =================================
+
         const result =
             await signInWithPopup(
                 auth,
@@ -225,13 +406,17 @@ export async function signInWithGoogle() {
             result.user;
 
 
+        // =================================
+        // AUTHENTICATION SUCCESSFUL
+        // =================================
+
         console.log(
             "Google authentication successful."
         );
 
 
         console.log(
-            "Name:",
+            "Google Name:",
             user.displayName
         );
 
@@ -248,6 +433,10 @@ export async function signInWithGoogle() {
         );
 
 
+        // =================================
+        // FIRESTORE USER DATA
+        // =================================
+
         await createOrUpdateAllUserData(
             user
         );
@@ -258,10 +447,15 @@ export async function signInWithGoogle() {
         );
 
 
+        // =================================
+        // REDIRECT
+        // =================================
+
         window.location.href =
             "account.html";
 
     }
+
 
     catch (error) {
 
@@ -272,8 +466,8 @@ export async function signInWithGoogle() {
 
 
         /*
-           IMPORTANT:
-           Pass the error back to login.html.
+           Pass the error back to
+           login.html.
         */
 
         throw error;
@@ -281,6 +475,7 @@ export async function signInWithGoogle() {
     }
 
 }
+
 
 
 // =========================================
@@ -306,6 +501,7 @@ export async function logOut() {
 
     }
 
+
     catch (error) {
 
         console.error(
@@ -321,6 +517,7 @@ export async function logOut() {
 }
 
 
+
 // =========================================
 // AUTHENTICATION STATE
 // =========================================
@@ -333,6 +530,7 @@ export function watchAuthState(callback) {
     );
 
 }
+
 
 
 // =========================================
