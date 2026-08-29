@@ -3,6 +3,7 @@
 // =========================================
 // One-to-one text chat
 // Firebase Authentication + Firestore
+// Custom Chat Name system
 // =========================================
 
 
@@ -93,6 +94,34 @@ const chatSearch =
     );
 
 
+// =========================================
+// CHAT NAME MODAL ELEMENTS
+// =========================================
+
+const chatNameModal =
+    document.getElementById(
+        "chatNameModal"
+    );
+
+
+const chatNameInput =
+    document.getElementById(
+        "chatNameInput"
+    );
+
+
+const chatNameError =
+    document.getElementById(
+        "chatNameError"
+    );
+
+
+const saveChatNameButton =
+    document.getElementById(
+        "saveChatNameButton"
+    );
+
+
 
 // =========================================
 // STATE
@@ -114,12 +143,331 @@ let unsubscribeMessages =
     null;
 
 
+let chatNameReady =
+    false;
+
+
+let chatNameSaveResolver =
+    null;
+
+
 
 // =========================================
-// CHAT NAME
+// SHOW CHAT NAME MODAL
 // =========================================
-// This function runs ONLY on chat.html.
-// It does not modify auth.js.
+
+function showChatNameModal() {
+
+    if (!chatNameModal) {
+
+        console.error(
+            "Chat Name modal was not found in chat.html."
+        );
+
+        return;
+
+    }
+
+
+    chatNameModal.classList.add(
+        "active"
+    );
+
+
+    chatNameModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+
+    if (chatNameError) {
+
+        chatNameError.textContent =
+            "";
+
+    }
+
+
+    if (chatNameInput) {
+
+        chatNameInput.value =
+            "";
+
+        setTimeout(
+            () => {
+
+                chatNameInput.focus();
+
+            },
+            100
+        );
+
+    }
+
+}
+
+
+
+// =========================================
+// HIDE CHAT NAME MODAL
+// =========================================
+
+function hideChatNameModal() {
+
+    if (!chatNameModal) {
+
+        return;
+
+    }
+
+
+    chatNameModal.classList.remove(
+        "active"
+    );
+
+
+    chatNameModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+
+
+// =========================================
+// ASK FOR CHAT NAME
+// =========================================
+
+function requestChatName() {
+
+    return new Promise(
+        (resolve) => {
+
+            chatNameSaveResolver =
+                resolve;
+
+
+            showChatNameModal();
+
+        }
+    );
+
+}
+
+
+
+// =========================================
+// SAVE CHAT NAME BUTTON
+// =========================================
+
+if (saveChatNameButton) {
+
+    saveChatNameButton.addEventListener(
+        "click",
+
+        async () => {
+
+            if (!currentUser) {
+
+                return;
+
+            }
+
+
+            let chatName =
+                chatNameInput
+                    ? chatNameInput.value.trim()
+                    : "";
+
+
+            // =================================
+            // EMPTY NAME
+            // =================================
+
+            if (!chatName) {
+
+                if (chatNameError) {
+
+                    chatNameError.textContent =
+                        "Please enter a Chat Name.";
+
+                }
+
+
+                if (chatNameInput) {
+
+                    chatNameInput.focus();
+
+                }
+
+
+                return;
+
+            }
+
+
+            // =================================
+            // LENGTH
+            // =================================
+
+            if (
+                chatName.length > 30
+            ) {
+
+                if (chatNameError) {
+
+                    chatNameError.textContent =
+                        "Chat Name must be 30 characters or fewer.";
+
+                }
+
+
+                return;
+
+            }
+
+
+            // =================================
+            // SAVE
+            // =================================
+
+            saveChatNameButton.disabled =
+                true;
+
+
+            saveChatNameButton.textContent =
+                "Saving...";
+
+
+            try {
+
+                const publicUserRef =
+                    doc(
+                        db,
+                        "publicUsers",
+                        currentUser.uid
+                    );
+
+
+                await setDoc(
+                    publicUserRef,
+                    {
+
+                        uid:
+                            currentUser.uid,
+
+                        chatName:
+                            chatName,
+
+                        photoURL:
+                            currentUser.photoURL || ""
+
+                    },
+
+                    {
+                        merge: true
+                    }
+                );
+
+
+                console.log(
+                    "Chat Name saved:",
+                    chatName
+                );
+
+
+                hideChatNameModal();
+
+
+                chatNameReady =
+                    true;
+
+
+                if (chatNameSaveResolver) {
+
+                    chatNameSaveResolver(
+                        chatName
+                    );
+
+                    chatNameSaveResolver =
+                        null;
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Chat Name save failed:",
+                    error
+                );
+
+
+                if (chatNameError) {
+
+                    chatNameError.textContent =
+                        "Could not save your Chat Name. Please try again.";
+
+                }
+
+            }
+
+
+            finally {
+
+                saveChatNameButton.disabled =
+                    false;
+
+                saveChatNameButton.textContent =
+                    "Continue";
+
+            }
+
+        }
+    );
+
+}
+
+
+
+// =========================================
+// ENTER KEY IN CHAT NAME INPUT
+// =========================================
+
+if (chatNameInput) {
+
+    chatNameInput.addEventListener(
+        "keydown",
+
+        (event) => {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                event.preventDefault();
+
+
+                if (saveChatNameButton) {
+
+                    saveChatNameButton.click();
+
+                }
+
+            }
+
+        }
+    );
+
+}
+
+
+
+// =========================================
+// GET CURRENT CHAT NAME
 // =========================================
 
 async function ensureChatName(user) {
@@ -139,211 +487,77 @@ async function ensureChatName(user) {
         );
 
 
-    // =====================================
-    // GET PUBLIC PROFILE
-    // =====================================
-
-    let snapshot;
-
     try {
 
-        snapshot =
+        const snapshot =
             await getDoc(
                 publicUserRef
             );
 
-    }
-
-    catch (error) {
-
-        console.error(
-            "Could not read public profile:",
-            error
-        );
-
-
-        alert(
-            "Could not load your CALCULUS Chat profile. " +
-            "Please check your internet connection and try again."
-        );
-
-
-        return null;
-
-    }
-
-
-
-    // =====================================
-    // CHECK EXISTING CHAT NAME
-    // =====================================
-
-    if (
-        snapshot.exists()
-    ) {
-
-        const data =
-            snapshot.data();
-
 
         if (
-            typeof data.chatName === "string" &&
-            data.chatName.trim() !== ""
+            snapshot.exists()
         ) {
 
-            console.log(
-                "Existing Chat Name:",
-                data.chatName
-            );
+            const data =
+                snapshot.data();
 
 
-            return data.chatName.trim();
+            /*
+               IMPORTANT:
 
-        }
+               We ONLY check chatName.
 
-    }
+               We NEVER use Google's
+               displayName here.
+            */
 
+            if (
+                typeof data.chatName ===
+                    "string"
+                &&
+                data.chatName.trim() !== ""
+            ) {
 
-
-    // =====================================
-    // ASK FOR CHAT NAME
-    // =====================================
-
-    let chatName =
-        null;
-
-
-    while (!chatName) {
-
-        chatName =
-            window.prompt(
-                "Welcome to CALCULUS Chat!\n\n" +
-                "Choose the name that other members " +
-                "will see when they search for you.\n\n" +
-                "Example: gamer45"
-            );
+                console.log(
+                    "Existing Chat Name:",
+                    data.chatName
+                );
 
 
-        // =================================
-        // CANCEL
-        // =================================
-
-        if (
-            chatName === null
-        ) {
-
-            alert(
-                "You need to choose a Chat Name " +
-                "before using CALCULUS Chat."
-            );
+                chatNameReady =
+                    true;
 
 
-            return null;
+                return data.chatName.trim();
 
-        }
-
-
-        // =================================
-        // CLEAN NAME
-        // =================================
-
-        chatName =
-            chatName.trim();
-
-
-        // =================================
-        // EMPTY NAME
-        // =================================
-
-        if (!chatName) {
-
-            alert(
-                "Please enter a Chat Name."
-            );
-
-
-            chatName =
-                null;
-
-
-            continue;
-
-        }
-
-
-        // =================================
-        // LENGTH
-        // =================================
-
-        if (
-            chatName.length > 30
-        ) {
-
-            alert(
-                "Your Chat Name must be 30 characters or fewer."
-            );
-
-
-            chatName =
-                null;
-
-
-            continue;
-
-        }
-
-    }
-
-
-
-    // =====================================
-    // SAVE CHAT NAME
-    // =====================================
-
-    try {
-
-        await setDoc(
-            publicUserRef,
-            {
-
-                uid:
-                    user.uid,
-
-                chatName:
-                    chatName,
-
-                photoURL:
-                    user.photoURL || ""
-
-            },
-
-            {
-                merge: true
             }
-        );
+
+        }
 
 
-        console.log(
-            "Chat Name saved:",
-            chatName
-        );
+        // =================================
+        // NO CHAT NAME
+        // =================================
+
+        chatNameReady =
+            false;
 
 
-        return chatName;
+        return await requestChatName();
 
     }
 
     catch (error) {
 
         console.error(
-            "Could not save Chat Name:",
+            "Chat profile error:",
             error
         );
 
 
         alert(
-            "Your Chat Name could not be saved. " +
-            "Please try again."
+            "Could not load your Chat profile. Please refresh the page."
         );
 
 
@@ -383,6 +597,46 @@ watchAuthState(
             if (messageInput) {
 
                 messageInput.disabled =
+                    true;
+
+            }
+
+
+            if (emojiButton) {
+
+                emojiButton.disabled =
+                    true;
+
+            }
+
+
+            /*
+               First determine the user's
+               Chat Name.
+
+               This happens only on chat.html.
+            */
+
+            const chatName =
+                await ensureChatName(
+                    user
+                );
+
+
+            if (!chatName) {
+
+                return;
+
+            }
+
+
+            // =================================
+            // CHAT NAME READY
+            // =================================
+
+            if (messageInput) {
+
+                messageInput.disabled =
                     false;
 
             }
@@ -395,49 +649,6 @@ watchAuthState(
 
             }
 
-
-            // =================================
-            // CHAT NAME CHECK
-            // =================================
-
-            const chatName =
-                await ensureChatName(
-                    user
-                );
-
-
-            /*
-               If the user cancelled the
-               Chat Name popup, don't continue
-               with Chat functionality.
-            */
-
-            if (!chatName) {
-
-                if (messageInput) {
-
-                    messageInput.disabled =
-                        true;
-
-                }
-
-
-                if (emojiButton) {
-
-                    emojiButton.disabled =
-                        true;
-
-                }
-
-
-                return;
-
-            }
-
-
-            // =================================
-            // INITIAL CONVERSATION MESSAGE
-            // =================================
 
             if (conversationList) {
 
@@ -473,6 +684,10 @@ watchAuthState(
         // =====================================
 
         else {
+
+            chatNameReady =
+                false;
+
 
             if (chatLoginNotice) {
 
@@ -622,6 +837,13 @@ async function selectUser(user) {
     }
 
 
+    if (!chatNameReady) {
+
+        return;
+
+    }
+
+
     if (
         user.uid ===
         currentUser.uid
@@ -637,10 +859,14 @@ async function selectUser(user) {
 
 
     // =====================================
-    // UPDATE HEADER
+    // UPDATE CHAT HEADER
     // =====================================
 
     if (chatUserPlaceholder) {
+
+        /*
+           ONLY chatName is displayed.
+        */
 
         chatUserPlaceholder.textContent =
             user.chatName ||
@@ -682,6 +908,7 @@ async function selectUser(user) {
             "Conversation error:",
             error
         );
+
 
         return;
 
@@ -836,6 +1063,12 @@ function listenForMessages(
                         }
 
 
+                        /*
+                           textContent prevents
+                           message text from being
+                           interpreted as HTML.
+                        */
+
                         message.textContent =
                             data.text || "";
 
@@ -882,6 +1115,13 @@ if (messageComposer) {
 
 
             if (!currentUser) {
+
+                return;
+
+            }
+
+
+            if (!chatNameReady) {
 
                 return;
 
@@ -975,196 +1215,4 @@ if (messageComposer) {
 
                 console.error(
                     "Message sending failed:",
-                    error
-                );
-
-
-                alert(
-                    "Message could not be sent. Please try again."
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-
-// =========================================
-// EMOJI BUTTON
-// =========================================
-
-if (emojiButton) {
-
-    emojiButton.addEventListener(
-        "click",
-
-        () => {
-
-            if (!messageInput) {
-
-                return;
-
-            }
-
-
-            const emojis =
-                "😀 😂 😍 😎 🤔 😄 👍 ❤️ 🎉 🔥 😭 🙌";
-
-
-            const emojiArray =
-                emojis.split(" ");
-
-
-            const selectedEmoji =
-                emojiArray[
-                    Math.floor(
-                        Math.random() *
-                        emojiArray.length
-                    )
-                ];
-
-
-            messageInput.value +=
-                selectedEmoji;
-
-
-            messageInput.focus();
-
-        }
-    );
-
-}
-
-
-
-// =========================================
-// SEARCH PUBLIC USERS
-// =========================================
-
-if (chatSearch) {
-
-    chatSearch.addEventListener(
-        "input",
-
-        async () => {
-
-            if (!currentUser) {
-
-                return;
-
-            }
-
-
-            const searchText =
-                chatSearch.value
-                    .trim()
-                    .toLowerCase();
-
-
-            if (!searchText) {
-
-                if (conversationList) {
-
-                    conversationList.innerHTML =
-                        "";
-
-
-                    const placeholder =
-                        document.createElement(
-                            "div"
-                        );
-
-
-                    placeholder.className =
-                        "conversation-placeholder";
-
-
-                    placeholder.textContent =
-                        "Search for a member to start chatting.";
-
-
-                    conversationList.appendChild(
-                        placeholder
-                    );
-
-                }
-
-
-                return;
-
-            }
-
-
-            try {
-
-                const publicUsersRef =
-                    collection(
-                        db,
-                        "publicUsers"
-                    );
-
-
-                const snapshot =
-                    await getDocs(
-                        publicUsersRef
-                    );
-
-
-                if (!conversationList) {
-
-                    return;
-
-                }
-
-
-                conversationList.innerHTML =
-                    "";
-
-
-                let found =
-                    false;
-
-
-                snapshot.forEach(
-                    (userDoc) => {
-
-                        const user =
-                            userDoc.data();
-
-
-                        // =====================
-                        // NEVER SHOW YOURSELF
-                        // =====================
-
-                        if (
-                            user.uid ===
-                            currentUser.uid
-                        ) {
-
-                            return;
-
-                        }
-
-
-                        // =====================
-                        // USE CHAT NAME
-                        // =====================
-
-                        const chatName =
-                            (
-                                user.chatName ||
-                                ""
-                            ).trim();
-
-
-                        /*
-                           Ignore old public profiles
-                           that don't have a Chat Name yet.
-                        */
-
-                        if (!chatName) {
-
-          
+ 
