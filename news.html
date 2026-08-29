@@ -1,223 +1,1015 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 
-<head>
-    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="description"
+      content="CALCULUS — Daily mathematical news, discoveries, ideas, and updates.">
 
-    <title>CALCULUS — Books</title>
+<title>CALCULUS — News</title>
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
 
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+<!-- =========================================
+     GOOGLE FONTS
+========================================== -->
 
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
-          rel="stylesheet">
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
 
-    <link rel="stylesheet"
-          href="style.css">
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
 
-    <style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet">
 
-        .temporary-page {
-            min-height: 100vh;
-            box-sizing: border-box;
-            padding: 150px 6% 90px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
+
+<!-- =========================================
+     MAIN STYLESHEET
+========================================== -->
+
+<link rel="stylesheet"
+      href="style.css">
+
+
+<!-- =========================================
+     NEWS PAGE STYLES
+========================================== -->
+
+<style>
+
+    /* =========================================
+       NEWS HERO
+    ========================================= */
+
+    .news-hero {
+
+        min-height: 55vh;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding:
+            150px 6% 90px;
+
+        position: relative;
+
+        z-index: 2;
+
+        text-align: center;
+    }
+
+
+    .news-hero-content {
+
+        width: min(1000px, 100%);
+    }
+
+
+    .news-main-title {
+
+        margin: 0;
+
+        font-family:
+            "Cormorant Garamond",
+            serif;
+
+        font-size:
+            clamp(4rem, 12vw, 9rem);
+
+        line-height: 0.9;
+
+        font-weight: 600;
+
+        letter-spacing:
+            0.025em;
+
+        color: #ffffff;
+    }
+
+
+    .news-title-line {
+
+        width: 90px;
+
+        height: 1px;
+
+        margin:
+            2rem auto 0;
+
+        background:
+            rgba(255,255,255,0.65);
+    }
+
+
+    .news-introduction {
+
+        max-width: 700px;
+
+        margin:
+            2rem auto 0;
+
+        font-family:
+            "Inter",
+            sans-serif;
+
+        font-size:
+            clamp(0.95rem, 1.5vw, 1.1rem);
+
+        line-height: 1.8;
+
+        font-weight: 300;
+
+        color:
+            rgba(255,255,255,0.65);
+    }
+
+
+
+    /* =========================================
+       NEWS SECTION
+    ========================================== */
+
+    .news-section {
+
+        position: relative;
+
+        z-index: 2;
+
+        padding:
+            30px 6% 100px;
+    }
+
+
+    .news-container {
+
+        width:
+            min(1250px, 100%);
+
+        margin:
+            0 auto;
+    }
+
+
+
+    /* =========================================
+       DATE
+    ========================================== */
+
+    .news-date {
+
+        margin:
+            0 0 3rem;
+
+        text-align: center;
+
+        font-family:
+            "Cormorant Garamond",
+            serif;
+
+        font-size:
+            clamp(2rem, 5vw, 3.5rem);
+
+        font-weight: 600;
+
+        color:
+            #ffffff;
+
+        letter-spacing:
+            0.02em;
+    }
+
+
+
+    /* =========================================
+       NEWS GRID
+    ========================================== */
+
+    .news-grid {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap:
+            30px;
+    }
+
+
+
+    /* =========================================
+       NEWS CARD
+    ========================================== */
+
+    .news-card {
+
+        position: relative;
+
+        overflow: hidden;
+
+        border:
+            1px solid
+            rgba(255,255,255,0.22);
+
+        background:
+            rgba(255,255,255,0.035);
+
+        box-shadow:
+            0 25px 70px
+            rgba(0,0,0,0.35);
+
+        backdrop-filter:
+            blur(12px);
+
+        -webkit-backdrop-filter:
+            blur(12px);
+
+        transition:
+            transform 0.35s ease,
+            border-color 0.35s ease,
+            box-shadow 0.35s ease;
+    }
+
+
+    .news-card:hover {
+
+        transform:
+            translateY(-7px);
+
+        border-color:
+            rgba(255,255,255,0.42);
+
+        box-shadow:
+            0 35px 90px
+            rgba(0,0,0,0.48);
+    }
+
+
+
+    /* =========================================
+       IMAGE
+    ========================================== */
+
+    .news-image-wrapper {
+
+        width: 100%;
+
+        overflow: hidden;
+
+        background:
+            rgba(255,255,255,0.025);
+
+        aspect-ratio:
+            16 / 10;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+    }
+
+
+    .news-image {
+
+        display: block;
+
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover;
+
+        transition:
+            transform 0.5s
+            cubic-bezier(.16,1,.3,1);
+    }
+
+
+    .news-card:hover
+    .news-image {
+
+        transform:
+            scale(1.035);
+    }
+
+
+
+    /* =========================================
+       CARD CONTENT
+    ========================================== */
+
+    .news-card-content {
+
+        padding:
+            2rem 2rem 2.2rem;
+    }
+
+
+    .news-heading {
+
+        margin: 0;
+
+        font-family:
+            "Cormorant Garamond",
+            serif;
+
+        font-size:
+            clamp(1.8rem, 4vw, 2.7rem);
+
+        line-height:
+            1.05;
+
+        font-weight:
+            600;
+
+        color:
+            #ffffff;
+    }
+
+
+    .news-subheading {
+
+        margin:
+            0.9rem 0 0;
+
+        font-family:
+            "Inter",
+            sans-serif;
+
+        font-size:
+            0.9rem;
+
+        line-height:
+            1.75;
+
+        font-weight:
+            300;
+
+        color:
+            rgba(255,255,255,0.62);
+    }
+
+
+
+    /* =========================================
+       CARD NUMBER
+    ========================================== */
+
+    .news-number {
+
+        display:
+            inline-block;
+
+        margin-bottom:
+            0.9rem;
+
+        font-family:
+            "Inter",
+            sans-serif;
+
+        font-size:
+            0.7rem;
+
+        font-weight:
+            500;
+
+        letter-spacing:
+            0.18em;
+
+        text-transform:
+            uppercase;
+
+        color:
+            rgba(255,255,255,0.38);
+    }
+
+
+
+    /* =========================================
+       DIVIDER
+    ========================================== */
+
+    .news-divider {
+
+        width: 55px;
+
+        height: 1px;
+
+        margin:
+            1.1rem 0;
+
+        background:
+            rgba(255,255,255,0.25);
+    }
+
+
+
+    /* =========================================
+       MOBILE
+    ========================================== */
+
+    @media (max-width: 800px) {
+
+        .news-hero {
+
+            min-height:
+                48vh;
+
+            padding:
+                125px 5% 70px;
         }
 
-        .temporary-container {
-            width: min(900px, 100%);
-            text-align: center;
+
+        .news-section {
+
+            padding:
+                20px 5% 80px;
         }
 
-        .temporary-title {
-            margin: 0 0 3rem;
-            font-family: "Cormorant Garamond", serif;
-            font-size: clamp(3rem, 8vw, 7rem);
-            line-height: 1;
-            font-weight: 600;
-            color: #ffffff;
+
+        .news-grid {
+
+            grid-template-columns:
+                1fr;
+
+            gap:
+                24px;
         }
 
-        .temporary-card {
-            padding: clamp(2rem, 5vw, 4rem);
-            border: 1px solid rgba(255,255,255,0.35);
-            background: rgba(255,255,255,0.025);
-            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
+
+        .news-card-content {
+
+            padding:
+                1.6rem 1.4rem 1.8rem;
         }
 
-        .temporary-image {
-            display: block;
-            width: min(500px, 100%);
-            max-height: 500px;
-            object-fit: contain;
-            margin: 0 auto 3rem;
+    }
+
+
+    @media (max-width: 600px) {
+
+        .news-main-title {
+
+            font-size:
+                clamp(3.5rem, 17vw, 6rem);
         }
 
-        .temporary-message {
-            margin: 0;
-            font-family: "Cormorant Garamond", serif;
-            font-size: clamp(2rem, 5vw, 4rem);
-            font-weight: 600;
-            color: #ffffff;
+
+        .news-introduction {
+
+            font-size:
+                0.9rem;
         }
 
-        .temporary-note {
-            margin: 1.5rem auto 0;
-            max-width: 650px;
-            font-family: "Inter", sans-serif;
-            font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-            line-height: 1.8;
-            font-weight: 300;
-            color: rgba(255,255,255,0.72);
+
+        .news-date {
+
+            margin-bottom:
+                2rem;
         }
 
-    </style>
 
-</head>
+        .news-image-wrapper {
 
-<body>
+            aspect-ratio:
+                4 / 3;
+        }
 
-    <div class="math-background" aria-hidden="true">
-        <span>∫</span>
-        <span>∫</span>
-        <span>∫</span>
-        <span>∫</span>
-        <span>∫</span>
-        <span>∫</span>
-        <span>∫</span>
-        <span>∫</span>
+    }
+
+</style>
+
+</head><body><!-- =========================================
+     MATHEMATICAL BACKGROUND
+========================================== -->
+
+<div class="math-background"
+     aria-hidden="true">
+
+    <span>∫</span>
+    <span>∫</span>
+    <span>∫</span>
+    <span>∫</span>
+    <span>∫</span>
+    <span>∫</span>
+    <span>∫</span>
+    <span>∫</span>
+
+</div>
+
+
+
+<!-- =========================================
+     NAVIGATION
+========================================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+
+        <!-- Logo -->
+
+        <a href="index.html"
+           class="logo">
+
+            CALCULUS
+
+        </a>
+
+
+
+        <!-- Desktop Navigation -->
+
+        <nav class="desktop-nav">
+
+            <a href="index.html"
+               class="nav-link">
+
+                Home
+
+            </a>
+
+
+            <a href="about.html"
+               class="nav-link">
+
+                About
+
+            </a>
+
+
+            <a href="books.html"
+               class="nav-link">
+
+                Books
+
+            </a>
+
+
+            <a href="topics.html"
+               class="nav-link">
+
+                Topics
+
+            </a>
+
+
+            <a href="other-websites.html"
+               class="nav-link">
+
+                Other Websites
+
+            </a>
+
+        </nav>
+
+
+
+        <!-- =================================
+             HAMBURGER
+        ================================== -->
+
+        <button class="hamburger"
+                id="hamburger"
+                aria-label="Open navigation menu"
+                aria-expanded="false">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+
+        <!-- =================================
+             LOGGED-IN PROFILE
+        ================================== -->
+
+        <a href="profile.html"
+           class="user-profile-button"
+           id="userProfileButton"
+           aria-label="Open your profile"
+           style="display: none;">
+
+            <img id="userProfilePicture"
+                 src=""
+                 alt="Your profile">
+
+        </a>
+
     </div>
 
-    <header class="navbar">
 
-        <div class="nav-container">
 
-            <a href="index.html" class="logo">
-    <img src="logo.png" alt="CALCULUS logo" width="40" height="40">
-                CALCULUS
-            </a>
+    <!-- =================================
+         MOBILE MENU
+    ================================== -->
 
-            <nav class="desktop-nav">
+    <div class="mobile-menu"
+         id="mobileMenu">
 
-                <a href="index.html" class="nav-link">
-                    Home
-                </a>
 
-                <a href="about.html" class="nav-link">
-                    About
-                </a>
+        <a href="index.html">
+            Home
+        </a>
 
-                <a href="books.html" class="nav-link">
-                    Books
-                </a>
 
-                <a href="topics.html" class="nav-link">
+        <a href="about.html">
+            About
+        </a>
+
+
+        <a href="books.html">
+            Books
+        </a>
+
+
+
+        <!-- =================================
+             TOPICS SUBMENU
+        ================================== -->
+
+        <div class="mobile-topics">
+
+            <div class="mobile-topics-header">
+
+                <a href="topics.html"
+                   class="mobile-topics-title">
+
                     Topics
+
                 </a>
 
-                <a href="other-websites.html" class="nav-link">
-                    Other Websites
-                </a>
 
-            </nav>
-
-            <button class="hamburger"
-                    id="hamburger"
-                    aria-label="Open navigation menu"
+                <button
+                    class="topics-toggle"
+                    id="topicsToggle"
+                    aria-label="Expand Topics submenu"
                     aria-expanded="false">
 
-                <span></span>
-                <span></span>
-                <span></span>
+                    <span></span>
 
-            </button>
-            <!-- =========================================
-     LOGGED-IN PROFILE BUTTON
-========================================= -->
+                </button>
 
-<a href="profile.html"
-   class="user-profile-button"
-   id="userProfileButton"
-   aria-label="Open your profile"
-   style="display: none;">
+            </div>
 
-    <img id="userProfilePicture"
-         src=""
-         alt="Your profile">
 
-</a>
+            <div class="topics-submenu"
+                 id="topicsSubmenu">
 
-        </div>
+                <a href="single-variable-calculus.html">
 
-        <div class="mobile-menu" id="mobileMenu">
+                    Single Variable Basic Calculus
 
-            <a href="index.html">Home</a>
+                </a>
 
-            <a href="about.html">About</a>
 
-            <a href="books.html">Books</a>
+                <a href="multivariable-calculus.html">
 
-            <a href="topics.html">Topics</a>
+                    Basic Multivariable Calculus
 
-            <a href="other-websites.html">
-                Other Websites
-            </a>
+                </a>
 
-        </div>
 
-    </header>
+                <a href="vector-calculus.html">
 
-    <main class="temporary-page">
+                    Vector Calculus
 
-        <div class="temporary-container">
+                </a>
 
-            <h1 class="temporary-title">
-                News
-            </h1>
 
-            <div class="temporary-card">
+                <a href="differential-geometry.html">
 
-                <img src="dog.png"
-                     alt="Dog"
-                     class="temporary-image">
+                    Differential Geometry and Advanced Topics
 
-                <p class="temporary-message">
-                    We are still working on it.
-                </p>
+                </a>
 
-                <p class="temporary-note">
-                    The News section of the CALCULUS
-                    website is currently under development.
-                    Please check back later.
-                </p>
+
+                <a href="relations.html">
+
+                    Relations with Other Branches
+
+                </a>
 
             </div>
 
         </div>
 
-    </main>
 
-    <footer>
 
-        <p>
-            © Ankit Brahamachary 2026
-        </p>
+        <a href="other-websites.html">
 
-    </footer>
+            Other Websites
 
-    <script type="module" src="script.js"></script>
-</body>
+        </a>
 
-</html>
+
+        <!-- NEWS -->
+
+        <a href="news.html"
+           class="active">
+
+            News
+
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================
+     NEWS HERO
+========================================== -->
+
+<main>
+
+
+    <section class="news-hero">
+
+        <div class="news-hero-content">
+
+            <h1 class="news-main-title">
+
+                NEWS
+
+            </h1>
+
+
+            <div class="news-title-line"></div>
+
+
+            <p class="news-introduction">
+
+                Daily discoveries, developments,
+                ideas, and stories from the world
+                of mathematics and science.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         DAILY NEWS
+    ========================================== -->
+
+    <section class="news-section">
+
+        <div class="news-container">
+
+
+            <!-- =================================
+                 DATE
+            ================================== -->
+
+            <h2 class="news-date">
+
+                TODAY'S NEWS
+
+            </h2>
+
+
+
+            <!-- =================================
+                 NEWS GRID
+            ================================== -->
+
+            <div class="news-grid">
+
+
+                <!-- =================================
+                     NEWS CARD 1
+                ================================== -->
+
+                <article class="news-card reveal">
+
+
+                    <div class="news-image-wrapper">
+
+                        <img src="p1.png"
+                             alt="News image 1"
+                             class="news-image">
+
+                    </div>
+
+
+                    <div class="news-card-content">
+
+                        <span class="news-number">
+
+                            NEWS 01
+
+                        </span>
+
+
+                        <h2 class="news-heading">
+
+                            HEADING 1
+
+                        </h2>
+
+
+                        <div class="news-divider"></div>
+
+
+                        <p class="news-subheading">
+
+                            SUBHEADING 1
+
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================
+                     NEWS CARD 2
+                ================================== -->
+
+                <article class="news-card reveal">
+
+
+                    <div class="news-image-wrapper">
+
+                        <img src="p2.png"
+                             alt="News image 2"
+                             class="news-image">
+
+                    </div>
+
+
+                    <div class="news-card-content">
+
+                        <span class="news-number">
+
+                            NEWS 02
+
+                        </span>
+
+
+                        <h2 class="news-heading">
+
+                            HEADING 2
+
+                        </h2>
+
+
+                        <div class="news-divider"></div>
+
+
+                        <p class="news-subheading">
+
+                            SUBHEADING 2
+
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================
+                     NEWS CARD 3
+                ================================== -->
+
+                <article class="news-card reveal">
+
+
+                    <div class="news-image-wrapper">
+
+                        <img src="p3.png"
+                             alt="News image 3"
+                             class="news-image">
+
+                    </div>
+
+
+                    <div class="news-card-content">
+
+                        <span class="news-number">
+
+                            NEWS 03
+
+                        </span>
+
+
+                        <h2 class="news-heading">
+
+                            HEADING 3
+
+                        </h2>
+
+
+                        <div class="news-divider"></div>
+
+
+                        <p class="news-subheading">
+
+                            SUBHEADING 3
+
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+
+                <!-- =================================
+                     NEWS CARD 4
+                ================================== -->
+
+                <article class="news-card reveal">
+
+
+                    <div class="news-image-wrapper">
+
+                        <img src="p4.png"
+                             alt="News image 4"
+                             class="news-image">
+
+                    </div>
+
+
+                    <div class="news-card-content">
+
+                        <span class="news-number">
+
+                            NEWS 04
+
+                        </span>
+
+
+                        <h2 class="news-heading">
+
+                            HEADING 4
+
+                        </h2>
+
+
+                        <div class="news-divider"></div>
+
+
+                        <p class="news-subheading">
+
+                            SUBHEADING 4
+
+                        </p>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Bottom spacing -->
+
+    <div class="bottom-space"></div>
+
+</main>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================== -->
+
+<footer>
+
+    <p>
+        © Ankit Brahamachary 2026
+    </p>
+
+</footer>
+
+
+
+<!-- =========================================
+     JAVASCRIPT
+========================================== -->
+
+<script type="module"
+        src="script.js">
+</script>
+
+</body></html>
