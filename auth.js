@@ -1,6 +1,7 @@
 // =========================================
 // CALCULUS — GOOGLE AUTHENTICATION
 // + FIRESTORE USER PROFILES
+// + PUBLIC CHAT DIRECTORY
 // =========================================
 
 
@@ -32,6 +33,7 @@ import { app } from "./firebase-config.js";
 
 const auth = getAuth(app);
 
+
 const googleProvider =
     new GoogleAuthProvider();
 
@@ -46,17 +48,16 @@ const db = getFirestore(app);
 
 
 // =========================================
-// CREATE / UPDATE USER PROFILE
+// CREATE / UPDATE PRIVATE USER PROFILE
 // =========================================
 
 async function createOrUpdateUserProfile(user) {
 
     /*
-       The Firebase UID uniquely identifies
-       this particular Google account.
+       Firebase UID uniquely identifies
+       the user's account.
 
-       Therefore each user gets their own
-       document inside:
+       Private profile:
 
        users/{UID}
     */
@@ -68,9 +69,6 @@ async function createOrUpdateUserProfile(user) {
             user.uid
         );
 
-
-    // Check whether this user already
-    // has a CALCULUS profile.
 
     const userSnapshot =
         await getDoc(userRef);
@@ -160,6 +158,87 @@ async function createOrUpdateUserProfile(user) {
 
 
 // =========================================
+// CREATE / UPDATE PUBLIC CHAT PROFILE
+// =========================================
+
+async function createOrUpdatePublicProfile(user) {
+
+    /*
+       This document is deliberately separate
+       from the private users/{UID} document.
+
+       Public profile:
+
+       publicUsers/{UID}
+
+       Only information needed by the Chat
+       user directory is stored here.
+    */
+
+    const publicUserRef =
+        doc(
+            db,
+            "publicUsers",
+            user.uid
+        );
+
+
+    await setDoc(
+        publicUserRef,
+        {
+
+            displayName:
+                user.displayName || "CALCULUS User",
+
+            photoURL:
+                user.photoURL || ""
+
+        },
+
+        {
+            merge: true
+        }
+    );
+
+
+    console.log(
+        "Public Chat profile created/updated."
+    );
+
+}
+
+
+
+// =========================================
+// CREATE / UPDATE ALL USER DATA
+// =========================================
+
+async function createOrUpdateAllUserData(user) {
+
+    /*
+       First maintain the existing private
+       CALCULUS profile.
+    */
+
+    await createOrUpdateUserProfile(
+        user
+    );
+
+
+    /*
+       Then maintain the public profile
+       used by Chat.
+    */
+
+    await createOrUpdatePublicProfile(
+        user
+    );
+
+}
+
+
+
+// =========================================
 // GOOGLE SIGN-IN
 // =========================================
 
@@ -211,16 +290,16 @@ export async function signInWithGoogle() {
 
 
         // =================================
-        // CREATE / UPDATE FIRESTORE PROFILE
+        // CREATE / UPDATE FIRESTORE DATA
         // =================================
 
-        await createOrUpdateUserProfile(
+        await createOrUpdateAllUserData(
             user
         );
 
 
         console.log(
-            "Firestore profile operation successful."
+            "Firestore profile operations successful."
         );
 
 
@@ -235,14 +314,6 @@ export async function signInWithGoogle() {
 
 
     catch (error) {
-
-        /*
-           IMPORTANT:
-
-           We are temporarily showing the
-           Firebase error so we can identify
-           exactly what is wrong.
-        */
 
         console.error(
             "Google sign-in error:",
