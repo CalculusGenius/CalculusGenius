@@ -1826,3 +1826,8 @@ if (chatSearch) {
     );
 
 }
+window.calculusChat =
+    {
+        getConversationId:
+            () => currentConversationId
+    };
