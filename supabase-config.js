@@ -11,10 +11,10 @@ import { createClient } from
 // =========================================
 
 const supabaseUrl =
-    "YOUR_SUPABASE_API_URL";
+    "https://auutipwsbqmpvifzzrwq.supabase.co/rest/v1/";
 
 const supabasePublishableKey =
-    "YOUR_SUPABASE_PUBLISHABLE_KEY";
+    "sb_publishable_9TCU5KyPVqGrjpNBFXbR2g_Oy0Pna2Y";
 
 
 // =========================================
