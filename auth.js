@@ -1,29 +1,36 @@
 // =========================================
-// CALCULUS — AUTHENTICATION
-// + FIRESTORE USER PROFILES
-// + PUBLIC CHAT DIRECTORY
+// CALCULUS — GOOGLE AUTHENTICATION
+// =========================================
+// Google Authentication
+// + Private Firestore User Profiles
 // =========================================
 
 
 import {
+
     getAuth,
     GoogleAuthProvider,
     signInWithPopup,
     onAuthStateChanged,
     signOut
+
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 
 import {
+
     getFirestore,
     doc,
     getDoc,
     setDoc,
     serverTimestamp
+
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 
-import { app } from "./firebase-config.js";
+import {
+    app
+} from "./firebase-config.js";
 
 
 
@@ -50,10 +57,17 @@ const db =
 
 
 // =========================================
-// CREATE / UPDATE PRIVATE PROFILE
+// PRIVATE USER PROFILE
 // =========================================
 
 async function createOrUpdateUserProfile(user) {
+
+    if (!user) {
+
+        return;
+
+    }
+
 
     const userRef =
         doc(
@@ -63,168 +77,104 @@ async function createOrUpdateUserProfile(user) {
         );
 
 
-    const snapshot =
-        await getDoc(userRef);
+    try {
+
+        const userSnapshot =
+            await getDoc(
+                userRef
+            );
 
 
-    // =====================================
-    // NEW USER
-    // =====================================
+        // =====================================
+        // NEW USER
+        // =====================================
 
-    if (!snapshot.exists()) {
+        if (!userSnapshot.exists()) {
 
-        await setDoc(
-            userRef,
-            {
+            await setDoc(
+                userRef,
+                {
 
-                uid:
-                    user.uid,
+                    uid:
+                        user.uid,
 
-                displayName:
-                    user.displayName || "",
+                    displayName:
+                        user.displayName || "",
 
-                email:
-                    user.email || "",
+                    email:
+                        user.email || "",
 
-                photoURL:
-                    user.photoURL || "",
+                    photoURL:
+                        user.photoURL || "",
 
-                createdAt:
-                    serverTimestamp(),
+                    createdAt:
+                        serverTimestamp(),
 
-                lastLogin:
-                    serverTimestamp(),
+                    lastLogin:
+                        serverTimestamp(),
 
-                bio:
-                    ""
+                    bio:
+                        ""
 
-            }
-        );
-
-    }
+                }
+            );
 
 
-    // =====================================
-    // EXISTING USER
-    // =====================================
+            console.log(
+                "Private user profile created."
+            );
 
-    else {
-
-        await setDoc(
-            userRef,
-            {
-
-                lastLogin:
-                    serverTimestamp()
-
-            },
-            {
-                merge: true
-            }
-        );
-
-    }
-
-}
+        }
 
 
+        // =====================================
+        // EXISTING USER
+        // =====================================
 
-// =========================================
-// CREATE / UPDATE PUBLIC PROFILE
-// =========================================
+        else {
 
-async function createOrUpdatePublicProfile(user) {
+            await setDoc(
+                userRef,
+                {
 
-    const publicUserRef =
-        doc(
-            db,
-            "publicUsers",
-            user.uid
-        );
+                    displayName:
+                        user.displayName || "",
+
+                    email:
+                        user.email || "",
+
+                    photoURL:
+                        user.photoURL || "",
+
+                    lastLogin:
+                        serverTimestamp()
+
+                },
+
+                {
+                    merge: true
+                }
+            );
 
 
-    const snapshot =
-        await getDoc(publicUserRef);
+            console.log(
+                "Private user profile updated."
+            );
 
-
-    // =====================================
-    // NEW PUBLIC PROFILE
-    // =====================================
-
-    if (!snapshot.exists()) {
-
-        await setDoc(
-            publicUserRef,
-            {
-
-                uid:
-                    user.uid,
-
-                displayName:
-                    user.displayName ||
-                    "CALCULUS User",
-
-                photoURL:
-                    user.photoURL || "",
-
-                chatName:
-                    ""
-
-            }
-        );
+        }
 
     }
 
+    catch (error) {
 
-    // =====================================
-    // EXISTING PUBLIC PROFILE
-    // =====================================
-
-    else {
-
-        /*
-           IMPORTANT:
-
-           Do NOT overwrite chatName.
-
-           The user may have chosen something
-           completely different from their
-           Google account name.
-        */
-
-        await setDoc(
-            publicUserRef,
-            {
-
-                photoURL:
-                    user.photoURL || ""
-
-            },
-            {
-                merge: true
-            }
+        console.error(
+            "Private profile error:",
+            error
         );
 
+        throw error;
+
     }
-
-}
-
-
-
-// =========================================
-// CREATE / UPDATE USER DATA
-// =========================================
-
-async function createOrUpdateAllUserData(user) {
-
-    await createOrUpdateUserProfile(
-        user
-    );
-
-
-    await createOrUpdatePublicProfile(
-        user
-    );
 
 }
 
@@ -260,21 +210,50 @@ export async function signInWithGoogle() {
 
 
         console.log(
+            "Google account name:",
+            user.displayName
+        );
+
+
+        console.log(
+            "Email:",
+            user.email
+        );
+
+
+        console.log(
             "UID:",
             user.uid
         );
 
 
-        await createOrUpdateAllUserData(
+        /*
+           Only the PRIVATE profile is handled
+           here.
+
+           Chat name/publicUsers is deliberately
+           handled by chat.js when the user
+           actually visits Chat.
+        */
+
+        await createOrUpdateUserProfile(
             user
         );
 
+
+        console.log(
+            "Private Firestore profile ready."
+        );
+
+
+        /*
+           Keep the existing login flow.
+        */
 
         window.location.href =
             "account.html";
 
     }
-
 
     catch (error) {
 
@@ -305,11 +284,15 @@ export async function logOut() {
         );
 
 
+        console.log(
+            "User signed out."
+        );
+
+
         window.location.href =
             "index.html";
 
     }
-
 
     catch (error) {
 
@@ -331,7 +314,9 @@ export async function logOut() {
 // AUTHENTICATION STATE
 // =========================================
 
-export function watchAuthState(callback) {
+export function watchAuthState(
+    callback
+) {
 
     return onAuthStateChanged(
         auth,
@@ -343,7 +328,7 @@ export function watchAuthState(callback) {
 
 
 // =========================================
-// EXPORT AUTH
+// EXPORT AUTH OBJECT
 // =========================================
 
 export {
