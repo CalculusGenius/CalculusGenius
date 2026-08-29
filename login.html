@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,11 +30,15 @@
           rel="stylesheet">
 
 
+    <!-- =========================================
+         STYLES
+    ========================================== -->
+
     <style>
 
         /* =========================================
            RESET
-        ========================================= */
+        ========================================== */
 
         * {
             box-sizing: border-box;
@@ -112,35 +117,42 @@
             left: 4%;
         }
 
+
         .math-background span:nth-child(2) {
             top: 18%;
             right: 8%;
         }
+
 
         .math-background span:nth-child(3) {
             top: 45%;
             left: 18%;
         }
 
+
         .math-background span:nth-child(4) {
             top: 62%;
             right: 18%;
         }
+
 
         .math-background span:nth-child(5) {
             bottom: 5%;
             left: 5%;
         }
 
+
         .math-background span:nth-child(6) {
             bottom: 10%;
             right: 5%;
         }
 
+
         .math-background span:nth-child(7) {
             top: 75%;
             left: 45%;
         }
+
 
         .math-background span:nth-child(8) {
             top: 30%;
@@ -222,6 +234,7 @@
                     translateY(35px)
                     scale(0.97);
             }
+
 
             to {
 
@@ -460,7 +473,8 @@
 
         .switch-text a {
 
-            color: #ffffff;
+            color:
+                #ffffff;
 
             font-weight: 500;
 
@@ -489,7 +503,8 @@
 
             display: none;
 
-            margin-top: 1.3rem;
+            margin-top:
+                1.3rem;
 
             padding:
                 0.9rem 1rem;
@@ -507,7 +522,14 @@
             font-size:
                 0.82rem;
 
-            line-height: 1.5;
+            line-height:
+                1.5;
+
+            text-align:
+                left;
+
+            overflow-wrap:
+                anywhere;
         }
 
 
@@ -605,6 +627,7 @@
     </div>
 
 
+
     <!-- =========================================
          LOGIN
     ========================================== -->
@@ -679,7 +702,9 @@
             </button>
 
 
-            <!-- Error -->
+            <!-- =====================================
+                 ERROR
+            ====================================== -->
 
             <div
                 id="authError"
@@ -688,7 +713,9 @@
             </div>
 
 
-            <!-- Divider -->
+            <!-- =====================================
+                 DIVIDER
+            ====================================== -->
 
             <div class="divider">
 
@@ -699,7 +726,9 @@
             </div>
 
 
-            <!-- Sign-up -->
+            <!-- =====================================
+                 SIGN UP
+            ====================================== -->
 
             <p class="switch-text">
 
@@ -717,6 +746,7 @@
     </main>
 
 
+
     <!-- =========================================
          FOOTER
     ========================================== -->
@@ -728,6 +758,7 @@
         </p>
 
     </footer>
+
 
 
     <!-- =========================================
@@ -753,60 +784,89 @@
             );
 
 
-        googleButton.addEventListener(
-            "click",
-            async () => {
+        /*
+           Safety check.
+        */
+
+        if (
+            googleButton &&
+            authError
+        ) {
 
 
-                /*
-                   Clear previous error.
-                */
-
-                authError.textContent = "";
-
-                authError.classList.remove(
-                    "visible"
-                );
+            googleButton.addEventListener(
+                "click",
+                async () => {
 
 
-                /*
-                   Prevent repeated clicks
-                   while the popup is opening.
-                */
-
-                googleButton.disabled =
-                    true;
-
-
-                try {
-
-                    await signInWithGoogle();
-
-                }
-
-                catch (error) {
-
-                    console.error(
-                        "Login error:",
-                        error
-                    );
-
+                    /*
+                       Clear previous error.
+                    */
 
                     authError.textContent =
-                        "Google sign-in could not be completed. Please try again.";
+                        "";
 
-                    authError.classList.add(
+                    authError.classList.remove(
                         "visible"
                     );
 
 
+                    /*
+                       Prevent repeated clicks
+                       while Google is opening.
+                    */
+
                     googleButton.disabled =
-                        false;
+                        true;
+
+
+                    try {
+
+                        await signInWithGoogle();
+
+                    }
+
+
+                    catch (error) {
+
+                        console.error(
+                            "Login error:",
+                            error
+                        );
+
+
+                        /*
+                           Show Firebase's actual
+                           error temporarily so we
+                           can diagnose any problem.
+                        */
+
+                        authError.textContent =
+                            (
+                                error.code ||
+                                "unknown-error"
+                            ) +
+                            ": " +
+                            (
+                                error.message ||
+                                "Google sign-in could not be completed."
+                            );
+
+
+                        authError.classList.add(
+                            "visible"
+                        );
+
+
+                        googleButton.disabled =
+                            false;
+
+                    }
 
                 }
+            );
 
-            }
-        );
+        }
 
     </script>
 
@@ -814,3 +874,4 @@
 </body>
 
 </html>
+```
