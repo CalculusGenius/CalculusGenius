@@ -4,7 +4,6 @@
 // + PUBLIC CHAT DIRECTORY
 // =========================================
 
-
 import {
     getAuth,
     GoogleAuthProvider,
@@ -12,7 +11,6 @@ import {
     onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
 
 import {
     getFirestore,
@@ -22,9 +20,7 @@ import {
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-
 import { app } from "./firebase-config.js";
-
 
 
 // =========================================
@@ -33,10 +29,8 @@ import { app } from "./firebase-config.js";
 
 const auth = getAuth(app);
 
-
 const googleProvider =
     new GoogleAuthProvider();
-
 
 
 // =========================================
@@ -46,21 +40,11 @@ const googleProvider =
 const db = getFirestore(app);
 
 
-
 // =========================================
 // CREATE / UPDATE PRIVATE USER PROFILE
 // =========================================
 
 async function createOrUpdateUserProfile(user) {
-
-    /*
-       Firebase UID uniquely identifies
-       the user's account.
-
-       Private profile:
-
-       users/{UID}
-    */
 
     const userRef =
         doc(
@@ -69,10 +53,8 @@ async function createOrUpdateUserProfile(user) {
             user.uid
         );
 
-
     const userSnapshot =
         await getDoc(userRef);
-
 
 
     // =====================================
@@ -109,9 +91,8 @@ async function createOrUpdateUserProfile(user) {
             }
         );
 
-
         console.log(
-            "New CALCULUS profile created."
+            "Private user profile created."
         );
 
     }
@@ -140,21 +121,18 @@ async function createOrUpdateUserProfile(user) {
                     serverTimestamp()
 
             },
-
             {
                 merge: true
             }
         );
 
-
         console.log(
-            "Existing CALCULUS profile updated."
+            "Private user profile updated."
         );
 
     }
 
 }
-
 
 
 // =========================================
@@ -163,17 +141,15 @@ async function createOrUpdateUserProfile(user) {
 
 async function createOrUpdatePublicProfile(user) {
 
-    /*
-       This document is deliberately separate
-       from the private users/{UID} document.
+    console.log(
+        "Creating/updating public Chat profile..."
+    );
 
-       Public profile:
+    console.log(
+        "User UID:",
+        user.uid
+    );
 
-       publicUsers/{UID}
-
-       Only information needed by the Chat
-       user directory is stored here.
-    */
 
     const publicUserRef =
         doc(
@@ -188,13 +164,13 @@ async function createOrUpdatePublicProfile(user) {
         {
 
             displayName:
-                user.displayName || "CALCULUS User",
+                user.displayName ||
+                "CALCULUS User",
 
             photoURL:
                 user.photoURL || ""
 
         },
-
         {
             merge: true
         }
@@ -202,11 +178,12 @@ async function createOrUpdatePublicProfile(user) {
 
 
     console.log(
-        "Public Chat profile created/updated."
+        "SUCCESS: publicUsers/" +
+        user.uid +
+        " created/updated."
     );
 
 }
-
 
 
 // =========================================
@@ -215,27 +192,15 @@ async function createOrUpdatePublicProfile(user) {
 
 async function createOrUpdateAllUserData(user) {
 
-    /*
-       First maintain the existing private
-       CALCULUS profile.
-    */
-
     await createOrUpdateUserProfile(
         user
     );
-
-
-    /*
-       Then maintain the public profile
-       used by Chat.
-    */
 
     await createOrUpdatePublicProfile(
         user
     );
 
 }
-
 
 
 // =========================================
@@ -246,21 +211,11 @@ export async function signInWithGoogle() {
 
     try {
 
-        /*
-           Open Google's sign-in window.
-        */
-
         const result =
             await signInWithPopup(
                 auth,
                 googleProvider
             );
-
-
-        /*
-           Firebase has successfully
-           authenticated the user.
-        */
 
         const user =
             result.user;
@@ -290,7 +245,7 @@ export async function signInWithGoogle() {
 
 
         // =================================
-        // CREATE / UPDATE FIRESTORE DATA
+        // CREATE FIRESTORE DATA
         // =================================
 
         await createOrUpdateAllUserData(
@@ -299,7 +254,7 @@ export async function signInWithGoogle() {
 
 
         console.log(
-            "Firestore profile operations successful."
+            "All Firestore operations successful."
         );
 
 
@@ -311,7 +266,6 @@ export async function signInWithGoogle() {
             "account.html";
 
     }
-
 
     catch (error) {
 
@@ -333,7 +287,6 @@ export async function signInWithGoogle() {
 }
 
 
-
 // =========================================
 // LOG OUT
 // =========================================
@@ -344,17 +297,14 @@ export async function logOut() {
 
         await signOut(auth);
 
-
         console.log(
             "User signed out."
         );
-
 
         window.location.href =
             "index.html";
 
     }
-
 
     catch (error) {
 
@@ -363,7 +313,6 @@ export async function logOut() {
             error
         );
 
-
         alert(
             "Sign-out could not be completed. Please try again."
         );
@@ -371,7 +320,6 @@ export async function logOut() {
     }
 
 }
-
 
 
 // =========================================
@@ -386,7 +334,6 @@ export function watchAuthState(callback) {
     );
 
 }
-
 
 
 // =========================================
