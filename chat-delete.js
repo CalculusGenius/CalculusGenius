@@ -1,26 +1,37 @@
 // =========================================
 // CALCULUS — CHAT MESSAGE DELETION
 // =========================================
-// Delete for everyone + Delete for me
 // Separate feature module
+// Does NOT modify chat.js
+//
+// Features:
+// • Delete icon below own messages
+// • Delete for everyone
+// • Delete for me
+// • Independent conversation detection
+// • Persistent "delete for me"
 // =========================================
+
 
 import {
     watchAuthState
 } from "./auth.js";
 
+
 import {
     getFirestore,
+    collection,
+    getDocs,
+    getDoc,
     doc,
     deleteDoc,
     setDoc,
-    getDoc,
-    collection,
     query,
-    orderBy,
-    onSnapshot,
-    serverTimestamp
+    where,
+    serverTimestamp,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
 
 import {
     app
@@ -45,7 +56,10 @@ let currentUser =
 let currentConversationId =
     null;
 
-let unsubscribeConversation =
+let selectedMessageId =
+    null;
+
+let unsubscribeMessages =
     null;
 
 let deletedForMe =
@@ -61,9 +75,14 @@ const messagesArea =
         "messagesArea"
     );
 
+const chatUserPlaceholder =
+    document.getElementById(
+        "chatUserPlaceholder"
+    );
+
 
 // =========================================
-// ADD DELETE FEATURE CSS
+// CSS
 // =========================================
 
 const style =
@@ -74,29 +93,44 @@ const style =
 style.textContent = `
 
     .chat-delete-wrapper {
+
         display: flex;
-        flex-direction: column;
-        align-items: flex-end;
+        justify-content: flex-end;
+        align-items: center;
+
         margin-top: 3px;
+
+        width: 100%;
+
     }
 
-    .chat-message-other + .chat-delete-wrapper {
-        align-items: flex-start;
-    }
 
     .chat-delete-button {
+
         border: none;
+
         background: transparent;
-        color: rgba(255,255,255,0.42);
+
+        color:
+            rgba(255,255,255,0.42);
+
         cursor: pointer;
-        padding: 3px 6px;
-        font-size: 0.78rem;
+
+        padding:
+            4px 7px;
+
+        font-size:
+            0.78rem;
+
         opacity: 0;
+
         transition:
             opacity 0.2s ease,
             color 0.2s ease,
             background 0.2s ease;
+
     }
+
 
     .chat-message-own:hover
     + .chat-delete-wrapper
@@ -106,21 +140,38 @@ style.textContent = `
 
     }
 
+
     .chat-delete-button:hover {
 
         color: #fff;
-        background: rgba(255,255,255,0.08);
+
+        background:
+            rgba(255,255,255,0.08);
+
+    }
+
+
+    /* PHONE */
+
+    @media (max-width: 600px) {
+
+        .chat-delete-button {
+
+            opacity: 1;
+
+        }
 
     }
 
 
     /* =====================================
-       DELETE MODAL
+       MODAL
     ====================================== */
 
     .chat-delete-modal {
 
         position: fixed;
+
         inset: 0;
 
         z-index: 100000;
@@ -128,6 +179,7 @@ style.textContent = `
         display: none;
 
         align-items: center;
+
         justify-content: center;
 
         padding: 20px;
@@ -153,13 +205,17 @@ style.textContent = `
 
     .chat-delete-box {
 
-        width: min(430px, 100%);
+        width:
+            min(430px, 100%);
 
-        box-sizing: border-box;
+        box-sizing:
+            border-box;
 
-        padding: 2rem;
+        padding:
+            2rem;
 
-        background: #111;
+        background:
+            #111;
 
         border:
             1px solid
@@ -180,9 +236,11 @@ style.textContent = `
             "Cormorant Garamond",
             serif;
 
-        font-size: 2.1rem;
+        font-size:
+            2.1rem;
 
-        font-weight: 600;
+        font-weight:
+            600;
 
     }
 
@@ -212,7 +270,8 @@ style.textContent = `
 
         gap: 10px;
 
-        padding: 0.85rem 0;
+        padding:
+            0.85rem 0;
 
         cursor: pointer;
 
@@ -228,9 +287,8 @@ style.textContent = `
     .chat-delete-option input {
 
         width: 17px;
-        height: 17px;
 
-        accent-color: #fff;
+        height: 17px;
 
     }
 
@@ -241,7 +299,8 @@ style.textContent = `
 
         gap: 10px;
 
-        margin-top: 1.4rem;
+        margin-top:
+            1.4rem;
 
     }
 
@@ -272,28 +331,11 @@ style.textContent = `
     }
 
 
-    .chat-delete-confirm:hover,
-    .chat-delete-cancel:hover {
+    .chat-delete-cancel:hover,
+    .chat-delete-confirm:hover {
 
         background:
             rgba(255,255,255,0.15);
-
-    }
-
-
-    @media (max-width: 600px) {
-
-        .chat-delete-button {
-
-            opacity: 1;
-
-        }
-
-        .chat-delete-box {
-
-            padding: 1.5rem;
-
-        }
 
     }
 
@@ -305,7 +347,7 @@ document.head.appendChild(
 
 
 // =========================================
-// CREATE DELETE MODAL
+// CREATE MODAL
 // =========================================
 
 const modal =
@@ -315,6 +357,7 @@ const modal =
 
 modal.className =
     "chat-delete-modal";
+
 
 modal.innerHTML = `
 
@@ -328,6 +371,7 @@ modal.innerHTML = `
         <h2 id="chatDeleteTitle">
             Delete message
         </h2>
+
 
         <p>
             Choose how you want to delete
@@ -376,6 +420,7 @@ modal.innerHTML = `
                 Cancel
             </button>
 
+
             <button
                 type="button"
                 class="chat-delete-confirm"
@@ -389,6 +434,7 @@ modal.innerHTML = `
     </div>
 
 `;
+
 
 document.body.appendChild(
     modal
@@ -408,14 +454,6 @@ const confirmButton =
     document.getElementById(
         "chatDeleteConfirm"
     );
-
-
-// =========================================
-// CURRENT MESSAGE BEING DELETED
-// =========================================
-
-let selectedMessageId =
-    null;
 
 
 // =========================================
@@ -442,19 +480,25 @@ function openDeleteModal(
     messageId
 ) {
 
-    if (!messageId) {
+    if (
+        !messageId ||
+        !currentConversationId
+    ) {
 
         return;
 
     }
 
+
     selectedMessageId =
         messageId;
+
 
     const everyoneRadio =
         modal.querySelector(
             'input[value="everyone"]'
         );
+
 
     if (everyoneRadio) {
 
@@ -462,6 +506,7 @@ function openDeleteModal(
             true;
 
     }
+
 
     modal.classList.add(
         "active"
@@ -481,11 +526,12 @@ cancelButton.addEventListener(
 
 
 // =========================================
-// CLICK OUTSIDE MODAL
+// CLICK OUTSIDE
 // =========================================
 
 modal.addEventListener(
     "click",
+
     (event) => {
 
         if (
@@ -502,11 +548,12 @@ modal.addEventListener(
 
 
 // =========================================
-// ESCAPE KEY
+// ESCAPE
 // =========================================
 
 document.addEventListener(
     "keydown",
+
     (event) => {
 
         if (
@@ -523,7 +570,7 @@ document.addEventListener(
 
 
 // =========================================
-// GET SELECTED DELETE TYPE
+// GET DELETE TYPE
 // =========================================
 
 function getDeleteType() {
@@ -532,6 +579,7 @@ function getDeleteType() {
         modal.querySelector(
             'input[name="chatDeleteType"]:checked'
         );
+
 
     return selected
         ? selected.value
@@ -553,7 +601,9 @@ async function deleteForEveryone(
         !currentConversationId
     ) {
 
-        return;
+        throw new Error(
+            "Chat conversation is not available."
+        );
 
     }
 
@@ -594,7 +644,9 @@ async function deleteForMe(
         !currentConversationId
     ) {
 
-        return;
+        throw new Error(
+            "Chat conversation is not available."
+        );
 
     }
 
@@ -674,6 +726,7 @@ confirmButton.addEventListener(
         confirmButton.disabled =
             true;
 
+
         confirmButton.textContent =
             "Deleting...";
 
@@ -749,31 +802,34 @@ function hideMessage(
 
     const message =
         messagesArea.querySelector(
-            `.chat-message[data-message-id="${CSS.escape(messageId)}"]`
+            `[data-delete-message-id="${CSS.escape(messageId)}"]`
         );
 
 
-    if (message) {
+    if (!message) {
 
-        const wrapper =
-            message.nextElementSibling;
+        return;
+
+    }
 
 
-        message.style.display =
+    message.style.display =
+        "none";
+
+
+    const wrapper =
+        message.nextElementSibling;
+
+
+    if (
+        wrapper &&
+        wrapper.classList.contains(
+            "chat-delete-wrapper"
+        )
+    ) {
+
+        wrapper.style.display =
             "none";
-
-
-        if (
-            wrapper &&
-            wrapper.classList.contains(
-                "chat-delete-wrapper"
-            )
-        ) {
-
-            wrapper.style.display =
-                "none";
-
-        }
 
     }
 
@@ -781,18 +837,144 @@ function hideMessage(
 
 
 // =========================================
-// LOAD "DELETE FOR ME" RECORDS
+// FIND SELECTED USER
+// =========================================
+//
+// chat.js doesn't expose selectedUser.
+// We therefore use the visible name in
+// chatUserPlaceholder and locate that user
+// in publicUsers.
+//
 // =========================================
 
-async function loadDeletedMessages() {
-
-    deletedForMe =
-        new Set();
-
+async function detectConversation() {
 
     if (
         !currentUser ||
-        !currentConversationId
+        !chatUserPlaceholder
+    ) {
+
+        return null;
+
+    }
+
+
+    const selectedName =
+        chatUserPlaceholder.textContent.trim();
+
+
+    if (
+        !selectedName ||
+        selectedName ===
+        "Select a conversation to start chatting."
+    ) {
+
+        return null;
+
+    }
+
+
+    try {
+
+        const publicUsersRef =
+            collection(
+                db,
+                "publicUsers"
+            );
+
+
+        const snapshot =
+            await getDocs(
+                publicUsersRef
+            );
+
+
+        let otherUser =
+            null;
+
+
+        snapshot.forEach(
+            (userDoc) => {
+
+                const user =
+                    userDoc.data();
+
+
+                if (
+                    user.uid ===
+                    currentUser.uid
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    (
+                        user.displayName ||
+                        ""
+                    ).trim() ===
+                    selectedName
+                ) {
+
+                    otherUser =
+                        user;
+
+                }
+
+            }
+        );
+
+
+        if (!otherUser) {
+
+            return null;
+
+        }
+
+
+        const participantIds = [
+
+            currentUser.uid,
+            otherUser.uid
+
+        ].sort();
+
+
+        return participantIds.join(
+            "_"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Conversation detection failed:",
+            error
+        );
+
+
+        return null;
+
+    }
+
+}
+
+
+// =========================================
+// WATCH CURRENT CONVERSATION
+// =========================================
+
+async function updateConversation() {
+
+    const conversationId =
+        await detectConversation();
+
+
+    if (
+        !conversationId
     ) {
 
         return;
@@ -800,20 +982,291 @@ async function loadDeletedMessages() {
     }
 
 
-    /*
-       We cannot query all deletedForMe
-       documents without knowing the
-       individual message IDs.
+    if (
+        conversationId ===
+        currentConversationId
+    ) {
 
-       Instead, the feature checks each
-       rendered message individually.
-    */
+        return;
+
+    }
+
+
+    currentConversationId =
+        conversationId;
+
+
+    console.log(
+        "Delete feature conversation:",
+        currentConversationId
+    );
 
 }
 
 
 // =========================================
-// CHECK ONE MESSAGE
+// DECORATE RENDERED MESSAGES
+// =========================================
+//
+// chat.js does not expose message IDs.
+// We therefore independently retrieve the
+// selected conversation's messages and match
+// them to the rendered messages by sender,
+// text and order.
+//
+// =========================================
+
+async function decorateMessages() {
+
+    if (
+        !currentUser ||
+        !messagesArea
+    ) {
+
+        return;
+
+    }
+
+
+    await updateConversation();
+
+
+    if (!currentConversationId) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const messagesRef =
+            collection(
+                db,
+                "conversations",
+                currentConversationId,
+                "messages"
+            );
+
+
+        const snapshot =
+            await getDocs(
+                messagesRef
+            );
+
+
+        const firestoreMessages = [];
+
+
+        snapshot.forEach(
+            (messageDoc) => {
+
+                const data =
+                    messageDoc.data();
+
+
+                firestoreMessages.push({
+
+                    id:
+                        messageDoc.id,
+
+                    senderId:
+                        data.senderId,
+
+                    text:
+                        data.text || "",
+
+                    createdAt:
+                        data.createdAt
+
+                });
+
+            }
+        );
+
+
+        const renderedMessages =
+            Array.from(
+                messagesArea.querySelectorAll(
+                    ".chat-message"
+                )
+            );
+
+
+        /*
+           Match rendered messages with Firestore
+           messages in their rendered order.
+
+           chat.js displays messages in ascending
+           createdAt order, so the same ordering
+           can be used here.
+        */
+
+        const used =
+            new Set();
+
+
+        renderedMessages.forEach(
+            (messageElement) => {
+
+                if (
+                    messageElement.dataset
+                        .deleteMessageId
+                ) {
+
+                    return;
+
+                }
+
+
+                const text =
+                    messageElement.textContent;
+
+
+                const isOwn =
+                    messageElement.classList.contains(
+                        "chat-message-own"
+                    );
+
+
+                const senderId =
+                    isOwn
+                        ? currentUser.uid
+                        : null;
+
+
+                let match =
+                    null;
+
+
+                for (
+                    const firestoreMessage
+                    of firestoreMessages
+                ) {
+
+                    if (
+                        used.has(
+                            firestoreMessage.id
+                        )
+                    ) {
+
+                        continue;
+
+                    }
+
+
+                    if (
+                        senderId &&
+                        firestoreMessage.senderId !==
+                        senderId
+                    ) {
+
+                        continue;
+
+                    }
+
+
+                    if (
+                        firestoreMessage.text !==
+                        text
+                    ) {
+
+                        continue;
+
+                    }
+
+
+                    match =
+                        firestoreMessage;
+
+                    break;
+
+                }
+
+
+                if (!match) {
+
+                    return;
+
+                }
+
+
+                used.add(
+                    match.id
+                );
+
+
+                messageElement.dataset
+                    .deleteMessageId =
+                    match.id;
+
+
+                messageElement.dataset
+                    .senderId =
+                    match.senderId;
+
+
+                /*
+                   Check Delete for me.
+                */
+
+                checkDeletedForMe(
+                    match.id
+                )
+                .then(
+                    (deleted) => {
+
+                        if (deleted) {
+
+                            hideMessage(
+                                match.id
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                /*
+                   Delete button only for
+                   the sender.
+                */
+
+                if (
+                    match.senderId !==
+                    currentUser.uid
+                ) {
+
+                    return;
+
+                }
+
+
+                addDeleteButton(
+                    messageElement,
+                    match.id
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not decorate messages:",
+            error
+        );
+
+    }
+
+}
+
+
+// =========================================
+// CHECK DELETE FOR ME
 // =========================================
 
 async function checkDeletedForMe(
@@ -858,6 +1311,7 @@ async function checkDeletedForMe(
                 messageId
             );
 
+
             return true;
 
         }
@@ -867,7 +1321,7 @@ async function checkDeletedForMe(
     catch (error) {
 
         console.error(
-            "Could not check deleted message:",
+            "Delete-for-me check failed:",
             error
         );
 
@@ -883,54 +1337,14 @@ async function checkDeletedForMe(
 // ADD DELETE BUTTON
 // =========================================
 
-function decorateMessage(
-    message
+function addDeleteButton(
+    messageElement,
+    messageId
 ) {
 
-    if (!message) {
-
-        return;
-
-    }
-
-
-    const messageId =
-        message.dataset.messageId;
-
-
-    const senderId =
-        message.dataset.senderId;
-
-
-    if (!messageId) {
-
-        return;
-
-    }
-
-
-    /*
-       Delete button only appears
-       for the current user's messages.
-    */
-
     if (
-        senderId !==
-        currentUser?.uid
-    ) {
-
-        return;
-
-    }
-
-
-    /*
-       Prevent duplicate buttons.
-    */
-
-    if (
-        message.nextElementSibling &&
-        message.nextElementSibling.classList.contains(
+        messageElement.nextElementSibling &&
+        messageElement.nextElementSibling.classList.contains(
             "chat-delete-wrapper"
         )
     ) {
@@ -964,18 +1378,18 @@ function decorateMessage(
         "chat-delete-button";
 
 
-    button.setAttribute(
-        "aria-label",
-        "Delete message"
-    );
+    button.textContent =
+        "🗑";
 
 
     button.title =
         "Delete message";
 
 
-    button.textContent =
-        "🗑";
+    button.setAttribute(
+        "aria-label",
+        "Delete message"
+    );
 
 
     button.addEventListener(
@@ -996,38 +1410,15 @@ function decorateMessage(
     );
 
 
-    message.after(
+    messageElement.after(
         wrapper
-    );
-
-
-    /*
-       Check whether this message was
-       previously deleted for this user.
-    */
-
-    checkDeletedForMe(
-        messageId
-    )
-    .then(
-        (deleted) => {
-
-            if (deleted) {
-
-                hideMessage(
-                    messageId
-                );
-
-            }
-
-        }
     );
 
 }
 
 
 // =========================================
-// OBSERVE MESSAGE AREA
+// OBSERVE CHAT DOM
 // =========================================
 
 if (messagesArea) {
@@ -1043,15 +1434,25 @@ if (messagesArea) {
                 }
 
 
-                const messages =
-                    messagesArea.querySelectorAll(
-                        ".chat-message"
-                    );
+                /*
+                   Give chat.js a moment to finish
+                   rendering its snapshot.
+                */
 
-
-                messages.forEach(
-                    decorateMessage
+                clearTimeout(
+                    observer.decorateTimer
                 );
+
+
+                observer.decorateTimer =
+                    setTimeout(
+                        () => {
+
+                            decorateMessages();
+
+                        },
+                        100
+                    );
 
             }
         );
@@ -1060,8 +1461,59 @@ if (messagesArea) {
     observer.observe(
         messagesArea,
         {
-            childList: true,
-            subtree: true
+
+            childList:
+                true,
+
+            subtree:
+                true
+
+        }
+    );
+
+}
+
+
+// =========================================
+// WATCH HEADER FOR CONVERSATION CHANGES
+// =========================================
+
+if (chatUserPlaceholder) {
+
+    const headerObserver =
+        new MutationObserver(
+            () => {
+
+                if (!currentUser) {
+
+                    return;
+
+                }
+
+
+                currentConversationId =
+                    null;
+
+
+                decorateMessages();
+
+            }
+        );
+
+
+    headerObserver.observe(
+        chatUserPlaceholder,
+        {
+
+            childList:
+                true,
+
+            characterData:
+                true,
+
+            subtree:
+                true
+
         }
     );
 
@@ -1088,12 +1540,12 @@ watchAuthState(
 
 
         if (
-            unsubscribeConversation
+            unsubscribeMessages
         ) {
 
-            unsubscribeConversation();
+            unsubscribeMessages();
 
-            unsubscribeConversation =
+            unsubscribeMessages =
                 null;
 
         }
@@ -1113,41 +1565,6 @@ watchAuthState(
 
     }
 );
-
-
-// =========================================
-// DETECT CURRENT CONVERSATION
-// =========================================
-//
-// The stable chat.js does not expose
-// currentConversationId.
-//
-// We therefore discover it from the
-// message DOM's Firestore IDs and the
-// currently selected conversation by
-// observing the chat state.
-//
-// =========================================
-
-async function detectConversation() {
-
-    if (!currentUser) {
-
-        return;
-
-    }
-
-
-    /*
-       The parent chat.js already knows
-       the conversation internally.
-
-       To keep chat.js stable, this feature
-       watches Firestore conversations
-       belonging to the current user.
-    */
-
-}
 
 
 // =========================================
