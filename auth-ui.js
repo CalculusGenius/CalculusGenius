@@ -740,3 +740,45 @@ if (
     initializeAuthUI();
 
 }
+// =====================================
+// ACTIVE CHAT LINK
+// =====================================
+
+const currentPage =
+    window.location.pathname
+        .split("/")
+        .pop();
+
+
+if (currentPage === "chat.html") {
+
+    const desktopChatLink =
+        document.getElementById(
+            "globalDesktopChatLink"
+        );
+
+
+    const mobileChatLink =
+        document.getElementById(
+            "globalMobileChatLink"
+        );
+
+
+    if (desktopChatLink) {
+
+        desktopChatLink.classList.add(
+            "active"
+        );
+
+    }
+
+
+    if (mobileChatLink) {
+
+        mobileChatLink.classList.add(
+            "active"
+        );
+
+    }
+
+}
