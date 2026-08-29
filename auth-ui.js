@@ -221,126 +221,223 @@ function initializeAuthUI() {
 
 
     // =====================================
-// NEWS MENU ITEM
-// =====================================
+    // NEWS MENU ITEM
+    // =====================================
 
 
-// =====================================
-// MOBILE NEWS
-// =====================================
+    // =====================================
+    // MOBILE NEWS
+    // =====================================
 
-if (mobileMenu) {
+    if (mobileMenu) {
 
-    /*
-       Check whether News already exists.
-    */
-
-    let mobileNewsLink =
-        mobileMenu.querySelector(
-            'a[href="news.html"]'
-        );
-
-
-    /*
-       Create News if it does not exist.
-    */
-
-    if (!mobileNewsLink) {
-
-        mobileNewsLink =
-            document.createElement("a");
-
-        mobileNewsLink.href =
-            "news.html";
-
-        mobileNewsLink.textContent =
-            "News";
-
-        mobileNewsLink.id =
-            "globalMobileNewsLink";
-
-
-        /*
-           Keep authentication at the
-           bottom of the mobile menu.
-        */
-
-        if (mobileAuthLink) {
-
-            mobileMenu.insertBefore(
-                mobileNewsLink,
-                mobileAuthLink
+        let mobileNewsLink =
+            mobileMenu.querySelector(
+                'a[href="news.html"]'
             );
 
-        } else {
 
-            mobileMenu.appendChild(
-                mobileNewsLink
-            );
+        if (!mobileNewsLink) {
+
+            mobileNewsLink =
+                document.createElement("a");
+
+            mobileNewsLink.href =
+                "news.html";
+
+            mobileNewsLink.textContent =
+                "News";
+
+            mobileNewsLink.id =
+                "globalMobileNewsLink";
+
+
+            /*
+               Keep authentication at the
+               bottom of the mobile menu.
+            */
+
+            if (mobileAuthLink) {
+
+                mobileMenu.insertBefore(
+                    mobileNewsLink,
+                    mobileAuthLink
+                );
+
+            } else {
+
+                mobileMenu.appendChild(
+                    mobileNewsLink
+                );
+
+            }
 
         }
 
     }
 
-}
 
+    // =====================================
+    // DESKTOP NEWS
+    // =====================================
 
+    if (desktopNav) {
 
-// =====================================
-// DESKTOP NEWS + ACTIVE PAGE
-// =====================================
-
-if (desktopNav) {
-
-    /*
-       Check whether News already exists.
-    */
-
-    let desktopNewsLink =
-        desktopNav.querySelector(
-            'a[href="news.html"]'
-        );
-
-
-    /*
-       Create News if it doesn't exist.
-    */
-
-    if (!desktopNewsLink) {
-
-        desktopNewsLink =
-            document.createElement("a");
-
-        desktopNewsLink.href =
-            "news.html";
-
-        desktopNewsLink.textContent =
-            "News";
-
-        desktopNewsLink.className =
-            "nav-link";
-
-        desktopNewsLink.id =
-            "globalDesktopNewsLink";
-
-
-        /*
-           Put News immediately before
-           Log In / Log Out.
-        */
-
-        if (desktopAuthLink) {
-
-            desktopNav.insertBefore(
-                desktopNewsLink,
-                desktopAuthLink
+        let desktopNewsLink =
+            desktopNav.querySelector(
+                'a[href="news.html"]'
             );
 
-        } else {
 
-            desktopNav.appendChild(
-                desktopNewsLink
+        if (!desktopNewsLink) {
+
+            desktopNewsLink =
+                document.createElement("a");
+
+            desktopNewsLink.href =
+                "news.html";
+
+            desktopNewsLink.textContent =
+                "News";
+
+            desktopNewsLink.className =
+                "nav-link";
+
+            desktopNewsLink.id =
+                "globalDesktopNewsLink";
+
+
+            /*
+               Put News immediately before
+               Log In / Log Out.
+            */
+
+            if (desktopAuthLink) {
+
+                desktopNav.insertBefore(
+                    desktopNewsLink,
+                    desktopAuthLink
+                );
+
+            } else {
+
+                desktopNav.appendChild(
+                    desktopNewsLink
+                );
+
+            }
+
+        }
+
+    }
+
+
+    // =====================================
+    // CHAT MENU ITEM
+    // =====================================
+
+
+    // =====================================
+    // MOBILE CHAT
+    // =====================================
+
+    if (mobileMenu) {
+
+        let mobileChatLink =
+            mobileMenu.querySelector(
+                'a[href="chat.html"]'
             );
+
+
+        if (!mobileChatLink) {
+
+            mobileChatLink =
+                document.createElement("a");
+
+            mobileChatLink.href =
+                "chat.html";
+
+            mobileChatLink.textContent =
+                "Chat";
+
+            mobileChatLink.id =
+                "globalMobileChatLink";
+
+
+            /*
+               Keep Chat immediately before
+               the authentication option.
+            */
+
+            if (mobileAuthLink) {
+
+                mobileMenu.insertBefore(
+                    mobileChatLink,
+                    mobileAuthLink
+                );
+
+            } else {
+
+                mobileMenu.appendChild(
+                    mobileChatLink
+                );
+
+            }
+
+        }
+
+    }
+
+
+    // =====================================
+    // DESKTOP CHAT
+    // =====================================
+
+    if (desktopNav) {
+
+        let desktopChatLink =
+            desktopNav.querySelector(
+                'a[href="chat.html"]'
+            );
+
+
+        if (!desktopChatLink) {
+
+            desktopChatLink =
+                document.createElement("a");
+
+            desktopChatLink.href =
+                "chat.html";
+
+            desktopChatLink.textContent =
+                "Chat";
+
+            desktopChatLink.className =
+                "nav-link";
+
+            desktopChatLink.id =
+                "globalDesktopChatLink";
+
+
+            /*
+               Put Chat immediately before
+               Log In / Log Out.
+            */
+
+            if (desktopAuthLink) {
+
+                desktopNav.insertBefore(
+                    desktopChatLink,
+                    desktopAuthLink
+                );
+
+            } else {
+
+                desktopNav.appendChild(
+                    desktopChatLink
+                );
+
+            }
 
         }
 
@@ -357,167 +454,125 @@ if (desktopNav) {
             .pop() || "index.html";
 
 
-    /*
-       Look at every desktop navigation link.
-    */
+    // =====================================
+    // DESKTOP ACTIVE NAVIGATION
+    // =====================================
 
-    const allDesktopLinks =
-        desktopNav.querySelectorAll(
-            ".nav-link"
-        );
+    if (desktopNav) {
 
+        /*
+           Now that ALL dynamically created
+           links exist, determine the active
+           page.
+        */
 
-    allDesktopLinks.forEach(
-        (link) => {
-
-            /*
-               Remove any previous dynamic
-               active state first.
-            */
-
-            link.classList.remove(
-                "active"
-            );
-
-            link.removeAttribute(
-                "aria-current"
+        const allDesktopLinks =
+            desktopNav.querySelectorAll(
+                ".nav-link"
             );
 
 
-            /*
-               Get this link's filename.
-            */
+        allDesktopLinks.forEach(
+            (link) => {
 
-            const linkPage =
-                link.getAttribute("href");
+                /*
+                   Remove any previous active
+                   state.
+                */
 
-
-            /*
-               Compare it with the current page.
-            */
-
-            if (
-                linkPage === currentPage
-            ) {
-
-                link.classList.add(
+                link.classList.remove(
                     "active"
                 );
 
-                link.setAttribute(
-                    "aria-current",
-                    "page"
+                link.removeAttribute(
+                    "aria-current"
+                );
+
+
+                /*
+                   Get the destination page.
+                */
+
+                const linkPage =
+                    link.getAttribute(
+                        "href"
+                    );
+
+
+                /*
+                   Highlight the link matching
+                   the current page.
+                */
+
+                if (
+                    linkPage === currentPage
+                ) {
+
+                    link.classList.add(
+                        "active"
+                    );
+
+                    link.setAttribute(
+                        "aria-current",
+                        "page"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =====================================
+    // MOBILE ACTIVE NAVIGATION
+    // =====================================
+
+    if (mobileMenu) {
+
+        const allMobileLinks =
+            mobileMenu.querySelectorAll(
+                "a"
+            );
+
+
+        allMobileLinks.forEach(
+            (link) => {
+
+                link.classList.remove(
+                    "active"
                 );
 
             }
-
-        }
-    );
-
-}
-
-    // =====================================
-// CHAT MENU ITEM
-// =====================================
-
-
-// =====================================
-// MOBILE CHAT
-// =====================================
-
-if (mobileMenu) {
-
-    let mobileChatLink =
-        mobileMenu.querySelector(
-            'a[href="chat.html"]'
         );
 
 
-    if (!mobileChatLink) {
+        allMobileLinks.forEach(
+            (link) => {
 
-        mobileChatLink =
-            document.createElement("a");
-
-        mobileChatLink.href =
-            "chat.html";
-
-        mobileChatLink.textContent =
-            "Chat";
-
-        mobileChatLink.id =
-            "globalMobileChatLink";
+                const linkPage =
+                    link.getAttribute(
+                        "href"
+                    );
 
 
-        if (mobileAuthLink) {
+                if (
+                    linkPage === currentPage
+                ) {
 
-            mobileMenu.insertBefore(
-                mobileChatLink,
-                mobileAuthLink
-            );
+                    link.classList.add(
+                        "active"
+                    );
 
-        } else {
+                }
 
-            mobileMenu.appendChild(
-                mobileChatLink
-            );
-
-        }
-
-    }
-
-}
-
-
-// =====================================
-// DESKTOP CHAT
-// =====================================
-
-if (desktopNav) {
-
-    let desktopChatLink =
-        desktopNav.querySelector(
-            'a[href="chat.html"]'
+            }
         );
 
-
-    if (!desktopChatLink) {
-
-        desktopChatLink =
-            document.createElement("a");
-
-        desktopChatLink.href =
-            "chat.html";
-
-        desktopChatLink.textContent =
-            "Chat";
-
-        desktopChatLink.className =
-            "nav-link";
-
-        desktopChatLink.id =
-            "globalDesktopChatLink";
-
-
-        if (desktopAuthLink) {
-
-            desktopNav.insertBefore(
-                desktopChatLink,
-                desktopAuthLink
-            );
-
-        } else {
-
-            desktopNav.appendChild(
-                desktopChatLink
-            );
-
-        }
-
     }
 
-}
-    
-    
+
     // =====================================
     // AUTH STATE
     // =====================================
@@ -533,11 +588,9 @@ if (desktopNav) {
             if (user) {
 
 
-                /*
-                   -----------------------------
-                   PROFILE PICTURE
-                   -----------------------------
-                */
+                // -----------------------------
+                // PROFILE PICTURE
+                // -----------------------------
 
                 if (
                     profileButton &&
@@ -561,11 +614,9 @@ if (desktopNav) {
                 }
 
 
-                /*
-                   -----------------------------
-                   MOBILE MENU
-                   -----------------------------
-                */
+                // -----------------------------
+                // MOBILE LOGIN / LOGOUT
+                // -----------------------------
 
                 if (mobileAuthLink) {
 
@@ -581,11 +632,9 @@ if (desktopNav) {
                 }
 
 
-                /*
-                   -----------------------------
-                   DESKTOP NAV
-                   -----------------------------
-                */
+                // -----------------------------
+                // DESKTOP LOGIN / LOGOUT
+                // -----------------------------
 
                 if (desktopAuthLink) {
 
@@ -610,9 +659,9 @@ if (desktopNav) {
             else {
 
 
-                /*
-                   Hide profile picture.
-                */
+                // -----------------------------
+                // HIDE PROFILE PICTURE
+                // -----------------------------
 
                 if (profileButton) {
 
@@ -622,11 +671,9 @@ if (desktopNav) {
                 }
 
 
-                /*
-                   -----------------------------
-                   MOBILE MENU
-                   -----------------------------
-                */
+                // -----------------------------
+                // MOBILE LOGIN
+                // -----------------------------
 
                 if (mobileAuthLink) {
 
@@ -642,11 +689,9 @@ if (desktopNav) {
                 }
 
 
-                /*
-                   -----------------------------
-                   DESKTOP NAV
-                   -----------------------------
-                */
+                // -----------------------------
+                // DESKTOP LOGIN
+                // -----------------------------
 
                 if (desktopAuthLink) {
 
@@ -693,8 +738,7 @@ if (desktopNav) {
 
 
             /*
-               Prevent the mobile menu's
-               normal link behavior.
+               Prevent normal link behavior.
             */
 
             event.stopPropagation();
@@ -738,47 +782,5 @@ if (
 } else {
 
     initializeAuthUI();
-
-}
-// =====================================
-// ACTIVE CHAT LINK
-// =====================================
-
-const currentPage =
-    window.location.pathname
-        .split("/")
-        .pop();
-
-
-if (currentPage === "chat.html") {
-
-    const desktopChatLink =
-        document.getElementById(
-            "globalDesktopChatLink"
-        );
-
-
-    const mobileChatLink =
-        document.getElementById(
-            "globalMobileChatLink"
-        );
-
-
-    if (desktopChatLink) {
-
-        desktopChatLink.classList.add(
-            "active"
-        );
-
-    }
-
-
-    if (mobileChatLink) {
-
-        mobileChatLink.classList.add(
-            "active"
-        );
-
-    }
 
 }
