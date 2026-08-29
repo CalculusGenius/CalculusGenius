@@ -3,7 +3,7 @@
 // =========================================
 // One-to-one text chat
 // Firebase Authentication + Firestore
-// Custom CALCULUS Chat Name
+// Custom Chat Names
 // =========================================
 
 
@@ -15,15 +15,15 @@ import {
 import {
     getFirestore,
     collection,
-    getDocs,
+    query,
     doc,
     getDoc,
     setDoc,
     addDoc,
     serverTimestamp,
-    query,
     orderBy,
-    onSnapshot
+    onSnapshot,
+    getDocs
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 
@@ -71,19 +71,16 @@ const chatSearch =
     document.getElementById("chatSearch");
 
 
-// Chat Name modal
+// NAME POPUP
 
-const chatNameModal =
-    document.getElementById("chatNameModal");
+const chatNameOverlay =
+    document.getElementById("chatNameOverlay");
 
 const chatNameInput =
     document.getElementById("chatNameInput");
 
-const chatNameError =
-    document.getElementById("chatNameError");
-
-const saveChatNameButton =
-    document.getElementById("saveChatNameButton");
+const saveChatName =
+    document.getElementById("saveChatName");
 
 
 
@@ -95,7 +92,7 @@ let currentUser =
     null;
 
 let currentChatName =
-    null;
+    "";
 
 let selectedUser =
     null;
@@ -106,45 +103,138 @@ let currentConversationId =
 let unsubscribeMessages =
     null;
 
-let allPublicUsers =
-    [];
-
 
 
 // =========================================
-// SHOW CHAT NAME MODAL
+// HELPER — PLACEHOLDER
 // =========================================
 
-function showChatNameModal() {
+function showPlaceholder(text) {
 
-    if (!chatNameModal) {
-
-        console.error(
-            "chatNameModal not found."
-        );
-
+    if (!conversationList) {
         return;
+    }
+
+    conversationList.innerHTML = "";
+
+    const placeholder =
+        document.createElement("div");
+
+    placeholder.className =
+        "conversation-placeholder";
+
+    placeholder.textContent =
+        text;
+
+    conversationList.appendChild(
+        placeholder
+    );
+}
+
+
+
+// =========================================
+// ENABLE / DISABLE CHAT
+// =========================================
+
+function setChatEnabled(enabled) {
+
+    if (messageInput) {
+
+        messageInput.disabled =
+            !enabled;
 
     }
 
+    if (emojiButton) {
 
-    chatNameModal.classList.add(
-        "active"
-    );
+        emojiButton.disabled =
+            !enabled;
 
+    }
 
-    chatNameModal.setAttribute(
-        "aria-hidden",
-        "false"
-    );
+}
 
 
-    if (chatNameError) {
 
-        chatNameError.textContent =
+// =========================================
+// LOAD CHAT NAME
+// =========================================
+
+async function loadChatName(user) {
+
+    try {
+
+        const publicUserRef =
+            doc(
+                db,
+                "publicUsers",
+                user.uid
+            );
+
+
+        const snapshot =
+            await getDoc(
+                publicUserRef
+            );
+
+
+        // =====================================
+        // EXISTING CHAT NAME
+        // =====================================
+
+        if (
+            snapshot.exists() &&
+            snapshot.data().displayName
+        ) {
+
+            currentChatName =
+                snapshot.data().displayName;
+
+            return true;
+
+        }
+
+
+        // =====================================
+        // NO CHAT NAME YET
+        // =====================================
+
+        currentChatName =
             "";
 
+        return false;
+
     }
+
+    catch (error) {
+
+        console.error(
+            "Could not load Chat name:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+
+// =========================================
+// SHOW NAME POPUP
+// =========================================
+
+function showNamePopup() {
+
+    if (!chatNameOverlay) {
+        return;
+    }
+
+
+    chatNameOverlay.style.display =
+        "flex";
 
 
     if (chatNameInput) {
@@ -154,9 +244,7 @@ function showChatNameModal() {
 
         setTimeout(
             () => {
-
                 chatNameInput.focus();
-
             },
             100
         );
@@ -168,114 +256,18 @@ function showChatNameModal() {
 
 
 // =========================================
-// HIDE CHAT NAME MODAL
+// HIDE NAME POPUP
 // =========================================
 
-function hideChatNameModal() {
+function hideNamePopup() {
 
-    if (!chatNameModal) {
-
+    if (!chatNameOverlay) {
         return;
-
     }
 
 
-    chatNameModal.classList.remove(
-        "active"
-    );
-
-
-    chatNameModal.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-}
-
-
-
-// =========================================
-// GET / CREATE CHAT PROFILE
-// =========================================
-
-async function prepareChatProfile(
-    user
-) {
-
-    const userRef =
-        doc(
-            db,
-            "publicUsers",
-            user.uid
-        );
-
-
-    let snapshot;
-
-    try {
-
-        snapshot =
-            await getDoc(
-                userRef
-            );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Could not read public user profile:",
-            error
-        );
-
-
-        return null;
-
-    }
-
-
-    // =====================================
-    // EXISTING CHAT NAME
-    // =====================================
-
-    if (
-        snapshot.exists()
-    ) {
-
-        const data =
-            snapshot.data();
-
-
-        if (
-            typeof data.chatName === "string" &&
-            data.chatName.trim() !== ""
-        ) {
-
-            currentChatName =
-                data.chatName.trim();
-
-
-            return currentChatName;
-
-        }
-
-    }
-
-
-    // =====================================
-    // NO CHAT NAME
-    // =====================================
-
-    showChatNameModal();
-
-    return new Promise(
-        (resolve) => {
-
-            window.calculusChatNameResolve =
-                resolve;
-
-        }
-    );
+    chatNameOverlay.style.display =
+        "none";
 
 }
 
@@ -285,66 +277,71 @@ async function prepareChatProfile(
 // SAVE CHAT NAME
 // =========================================
 
-async function saveChatName() {
+async function saveUserChatName() {
 
     if (!currentUser) {
-
         return;
-
     }
 
 
-    let chatName =
-        chatNameInput
-            ? chatNameInput.value.trim()
-            : "";
+    if (!chatNameInput) {
+        return;
+    }
+
+
+    const name =
+        chatNameInput.value.trim();
 
 
     // =====================================
     // VALIDATION
     // =====================================
 
-    if (!chatName) {
+    if (!name) {
 
-        if (chatNameError) {
+        alert(
+            "Please enter a Chat name."
+        );
 
-            chatNameError.textContent =
-                "Please enter a Chat Name.";
-
-        }
-
-        return;
-
-    }
-
-
-    if (
-        chatName.length > 30
-    ) {
-
-        if (chatNameError) {
-
-            chatNameError.textContent =
-                "Chat Name must be 30 characters or fewer.";
-
-        }
+        chatNameInput.focus();
 
         return;
 
     }
 
 
-    saveChatNameButton.disabled =
-        true;
+    if (name.length < 2) {
+
+        alert(
+            "Your Chat name must contain at least 2 characters."
+        );
+
+        chatNameInput.focus();
+
+        return;
+
+    }
 
 
-    saveChatNameButton.textContent =
-        "Saving...";
+    if (name.length > 30) {
+
+        alert(
+            "Your Chat name cannot exceed 30 characters."
+        );
+
+        return;
+
+    }
+
+
+    if (!currentUser) {
+        return;
+    }
 
 
     try {
 
-        const userRef =
+        const publicUserRef =
             doc(
                 db,
                 "publicUsers",
@@ -353,14 +350,14 @@ async function saveChatName() {
 
 
         await setDoc(
-            userRef,
+            publicUserRef,
             {
 
                 uid:
                     currentUser.uid,
 
-                chatName:
-                    chatName,
+                displayName:
+                    name,
 
                 photoURL:
                     currentUser.photoURL || ""
@@ -374,65 +371,35 @@ async function saveChatName() {
 
 
         currentChatName =
-            chatName;
+            name;
 
 
-        hideChatNameModal();
+        hideNamePopup();
 
 
-        /*
-           Resolve the promise created by
-           prepareChatProfile().
-        */
-
-        if (
-            typeof window.calculusChatNameResolve ===
-            "function"
-        ) {
-
-            window.calculusChatNameResolve(
-                chatName
-            );
-
-            window.calculusChatNameResolve =
-                null;
-
-        }
+        showPlaceholder(
+            "Search for a member to start chatting."
+        );
 
 
         console.log(
-            "Chat Name saved:",
-            chatName
+            "Chat name saved:",
+            name
         );
-
 
     }
 
     catch (error) {
 
         console.error(
-            "Chat Name could not be saved:",
+            "Could not save Chat name:",
             error
         );
 
 
-        if (chatNameError) {
-
-            chatNameError.textContent =
-                "Could not save your Chat Name. Please try again.";
-
-        }
-
-    }
-
-
-    finally {
-
-        saveChatNameButton.disabled =
-            false;
-
-        saveChatNameButton.textContent =
-            "Continue";
+        alert(
+            "Your Chat name could not be saved. Please try again."
+        );
 
     }
 
@@ -441,14 +408,14 @@ async function saveChatName() {
 
 
 // =========================================
-// SAVE BUTTON
+// NAME POPUP BUTTON
 // =========================================
 
-if (saveChatNameButton) {
+if (saveChatName) {
 
-    saveChatNameButton.addEventListener(
+    saveChatName.addEventListener(
         "click",
-        saveChatName
+        saveUserChatName
     );
 
 }
@@ -456,7 +423,7 @@ if (saveChatNameButton) {
 
 
 // =========================================
-// ENTER KEY
+// ENTER KEY IN NAME BOX
 // =========================================
 
 if (chatNameInput) {
@@ -466,12 +433,13 @@ if (chatNameInput) {
         (event) => {
 
             if (
-                event.key === "Enter"
+                event.key ===
+                "Enter"
             ) {
 
                 event.preventDefault();
 
-                saveChatName();
+                saveUserChatName();
 
             }
 
@@ -483,7 +451,7 @@ if (chatNameInput) {
 
 
 // =========================================
-// AUTHENTICATION
+// AUTHENTICATION STATE
 // =========================================
 
 watchAuthState(
@@ -494,13 +462,101 @@ watchAuthState(
 
 
         // =====================================
+        // LOGGED IN
+        // =====================================
+
+        if (user) {
+
+            console.log(
+                "Chat user authenticated:",
+                user.uid
+            );
+
+
+            // Hide login notice
+
+            if (chatLoginNotice) {
+
+                chatLoginNotice.style.display =
+                    "none";
+
+            }
+
+
+            // Enable chat controls
+
+            setChatEnabled(
+                true
+            );
+
+
+            // =================================
+            // LOAD CUSTOM CHAT NAME
+            // =================================
+
+            const hasChatName =
+                await loadChatName(
+                    user
+                );
+
+
+            // =================================
+            // SHOW POPUP IF NECESSARY
+            // =================================
+
+            if (!hasChatName) {
+
+                showNamePopup();
+
+            }
+
+
+            // =================================
+            // INITIAL CHAT STATE
+            // =================================
+
+            showPlaceholder(
+                "Search for a member to start chatting."
+            );
+
+        }
+
+
+        // =====================================
         // LOGGED OUT
         // =====================================
 
-        if (!user) {
+        else {
+
+            console.log(
+                "No authenticated Chat user."
+            );
+
+
+            // Show login notice
+
+            if (chatLoginNotice) {
+
+                chatLoginNotice.style.display =
+                    "block";
+
+            }
+
+
+            // Disable chat
+
+            setChatEnabled(
+                false
+            );
+
+
+            // Hide name popup
+
+            hideNamePopup();
+
 
             currentChatName =
-                null;
+                "";
 
             selectedUser =
                 null;
@@ -508,6 +564,8 @@ watchAuthState(
             currentConversationId =
                 null;
 
+
+            // Stop old message listener
 
             if (unsubscribeMessages) {
 
@@ -519,138 +577,11 @@ watchAuthState(
             }
 
 
-            if (chatLoginNotice) {
-
-                chatLoginNotice.style.display =
-                    "block";
-
-            }
-
-
-            if (messageInput) {
-
-                messageInput.disabled =
-                    true;
-
-            }
-
-
-            if (emojiButton) {
-
-                emojiButton.disabled =
-                    true;
-
-            }
-
-
-            if (chatSearch) {
-
-                chatSearch.disabled =
-                    true;
-
-            }
-
-
-            return;
-
-        }
-
-
-
-        // =====================================
-        // LOGGED IN
-        // =====================================
-
-        /*
-           Hide the login notice FIRST.
-
-           The Chat Name check must never
-           make the login notice appear for
-           an authenticated user.
-        */
-
-        if (chatLoginNotice) {
-
-            chatLoginNotice.style.display =
-                "none";
-
-        }
-
-
-        if (messageInput) {
-
-            messageInput.disabled =
-                true;
-
-        }
-
-
-        if (emojiButton) {
-
-            emojiButton.disabled =
-                true;
-
-        }
-
-
-        if (chatSearch) {
-
-            chatSearch.disabled =
-                true;
-
-        }
-
-
-        // =====================================
-        // CHAT NAME
-        // =====================================
-
-        const chatName =
-            await prepareChatProfile(
-                user
+            showPlaceholder(
+                "Please sign in to use Chat."
             );
 
-
-        if (!chatName) {
-
-            return;
-
         }
-
-
-        currentChatName =
-            chatName;
-
-
-        // =====================================
-        // CHAT READY
-        // =====================================
-
-        if (messageInput) {
-
-            messageInput.disabled =
-                false;
-
-        }
-
-
-        if (emojiButton) {
-
-            emojiButton.disabled =
-                false;
-
-        }
-
-
-        if (chatSearch) {
-
-            chatSearch.disabled =
-                false;
-
-        }
-
-
-        showSearchPlaceholder();
 
     }
 );
@@ -658,376 +589,7 @@ watchAuthState(
 
 
 // =========================================
-// SEARCH PLACEHOLDER
-// =========================================
-
-function showSearchPlaceholder() {
-
-    if (!conversationList) {
-
-        return;
-
-    }
-
-
-    conversationList.innerHTML =
-        "";
-
-
-    const placeholder =
-        document.createElement("div");
-
-
-    placeholder.className =
-        "conversation-placeholder";
-
-
-    placeholder.textContent =
-        "Search for a member to start chatting.";
-
-
-    conversationList.appendChild(
-        placeholder
-    );
-
-}
-
-
-
-// =========================================
-// LOAD PUBLIC USERS
-// =========================================
-
-async function loadPublicUsers() {
-
-    if (!currentUser) {
-
-        return;
-
-    }
-
-
-    try {
-
-        const usersRef =
-            collection(
-                db,
-                "publicUsers"
-            );
-
-
-        const snapshot =
-            await getDocs(
-                usersRef
-            );
-
-
-        allPublicUsers =
-            [];
-
-
-        snapshot.forEach(
-            (userDoc) => {
-
-                const data =
-                    userDoc.data();
-
-
-                /*
-                   Never include yourself.
-                */
-
-                if (
-                    userDoc.id ===
-                    currentUser.uid
-                ) {
-
-                    return;
-
-                }
-
-
-                /*
-                   ONLY chatName is used.
-
-                   Google displayName is
-                   deliberately ignored.
-                */
-
-                if (
-                    typeof data.chatName !== "string" ||
-                    data.chatName.trim() === ""
-                ) {
-
-                    return;
-
-                }
-
-
-                allPublicUsers.push(
-                    {
-
-                        uid:
-                            userDoc.id,
-
-                        chatName:
-                            data.chatName.trim(),
-
-                        photoURL:
-                            data.photoURL || ""
-
-                    }
-                );
-
-            }
-        );
-
-
-        allPublicUsers.sort(
-            (a, b) =>
-                a.chatName.localeCompare(
-                    b.chatName
-                )
-        );
-
-
-        return allPublicUsers;
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Could not load public users:",
-            error
-        );
-
-
-        return [];
-
-    }
-
-}
-
-
-
-// =========================================
-// DISPLAY SEARCH RESULTS
-// =========================================
-
-function displaySearchResults(
-    users
-) {
-
-    if (!conversationList) {
-
-        return;
-
-    }
-
-
-    conversationList.innerHTML =
-        "";
-
-
-    if (
-        users.length === 0
-    ) {
-
-        const empty =
-            document.createElement(
-                "div"
-            );
-
-
-        empty.className =
-            "conversation-placeholder";
-
-
-        empty.textContent =
-            "No members found.";
-
-
-        conversationList.appendChild(
-            empty
-        );
-
-
-        return;
-
-    }
-
-
-    users.forEach(
-        (user) => {
-
-            const button =
-                document.createElement(
-                    "button"
-                );
-
-
-            button.type =
-                "button";
-
-
-            button.className =
-                "conversation-user";
-
-
-            button.dataset.uid =
-                user.uid;
-
-
-            /*
-               User name.
-            */
-
-            const name =
-                document.createElement(
-                    "span"
-                );
-
-
-            name.className =
-                "conversation-user-name";
-
-
-            name.textContent =
-                user.chatName;
-
-
-            /*
-               Profile image.
-            */
-
-            const image =
-                document.createElement(
-                    "img"
-                );
-
-
-            image.className =
-                "conversation-user-image";
-
-
-            image.src =
-                user.photoURL ||
-                "logo.png";
-
-
-            image.alt =
-                user.chatName;
-
-
-            image.onerror =
-                () => {
-
-                    image.src =
-                        "logo.png";
-
-                };
-
-
-            button.appendChild(
-                image
-            );
-
-
-            button.appendChild(
-                name
-            );
-
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    selectUser(
-                        user
-                    );
-
-                }
-            );
-
-
-            conversationList.appendChild(
-                button
-            );
-
-        }
-    );
-
-}
-
-
-
-// =========================================
-// SEARCH USERS
-// =========================================
-
-if (chatSearch) {
-
-    chatSearch.addEventListener(
-        "input",
-
-        async () => {
-
-            if (!currentUser) {
-
-                return;
-
-            }
-
-
-            if (!currentChatName) {
-
-                return;
-
-            }
-
-
-            const search =
-                chatSearch.value
-                    .trim()
-                    .toLowerCase();
-
-
-            const users =
-                await loadPublicUsers();
-
-
-            if (!search) {
-
-                showSearchPlaceholder();
-
-                return;
-
-            }
-
-
-            const results =
-                users.filter(
-                    (user) =>
-                        user.chatName
-                            .toLowerCase()
-                            .includes(search)
-                );
-
-
-            displaySearchResults(
-                results
-            );
-
-        }
-    );
-
-}
-
-
-
-// =========================================
-// CREATE / GET CONVERSATION
+// FIND / CREATE CONVERSATION
 // =========================================
 
 async function getOrCreateConversation(
@@ -1090,11 +652,17 @@ async function getOrCreateConversation(
 // SELECT USER
 // =========================================
 
-async function selectUser(
-    user
-) {
+async function selectUser(user) {
 
     if (!currentUser) {
+        return;
+    }
+
+
+    if (
+        user.uid ===
+        currentUser.uid
+    ) {
 
         return;
 
@@ -1105,13 +673,22 @@ async function selectUser(
         user;
 
 
+    // =====================================
+    // UPDATE HEADER
+    // =====================================
+
     if (chatUserPlaceholder) {
 
         chatUserPlaceholder.textContent =
-            user.chatName;
+            user.displayName ||
+            "CALCULUS User";
 
     }
 
+
+    // =====================================
+    // STOP OLD LISTENER
+    // =====================================
 
     if (unsubscribeMessages) {
 
@@ -1123,6 +700,10 @@ async function selectUser(
     }
 
 
+    // =====================================
+    // GET CONVERSATION
+    // =====================================
+
     try {
 
         currentConversationId =
@@ -1130,28 +711,43 @@ async function selectUser(
                 user
             );
 
-
-        listenForMessages(
-            currentConversationId
-        );
-
     }
 
     catch (error) {
 
         console.error(
-            "Could not open conversation:",
+            "Conversation error:",
             error
         );
 
+        alert(
+            "Could not open this conversation."
+        );
+
+        return;
+
     }
+
+
+    if (!currentConversationId) {
+        return;
+    }
+
+
+    // =====================================
+    // LISTEN FOR MESSAGES
+    // =====================================
+
+    listenForMessages(
+        currentConversationId
+    );
 
 }
 
 
 
 // =========================================
-// RECEIVE MESSAGES IN REAL TIME
+// LISTEN FOR MESSAGES
 // =========================================
 
 function listenForMessages(
@@ -1159,9 +755,7 @@ function listenForMessages(
 ) {
 
     if (!messagesArea) {
-
         return;
-
     }
 
 
@@ -1186,6 +780,7 @@ function listenForMessages(
 
     unsubscribeMessages =
         onSnapshot(
+
             messagesQuery,
 
             (snapshot) => {
@@ -1201,7 +796,6 @@ function listenForMessages(
                             "div"
                         );
 
-
                     empty.className =
                         "messages-empty";
 
@@ -1210,7 +804,6 @@ function listenForMessages(
                         document.createElement(
                             "h2"
                         );
-
 
                     heading.textContent =
                         "Start the conversation";
@@ -1221,7 +814,6 @@ function listenForMessages(
                             "p"
                         );
 
-
                     paragraph.textContent =
                         "Send the first message.";
 
@@ -1229,7 +821,6 @@ function listenForMessages(
                     empty.appendChild(
                         heading
                     );
-
 
                     empty.appendChild(
                         paragraph
@@ -1283,4 +874,371 @@ function listenForMessages(
                         }
 
 
-          
+                        message.textContent =
+                            data.text || "";
+
+
+                        messagesArea.appendChild(
+                            message
+                        );
+
+                    }
+                );
+
+
+                messagesArea.scrollTop =
+                    messagesArea.scrollHeight;
+
+            },
+
+            (error) => {
+
+                console.error(
+                    "Message listener error:",
+                    error
+                );
+
+            }
+
+        );
+
+}
+
+
+
+// =========================================
+// SEND MESSAGE
+// =========================================
+
+if (messageComposer) {
+
+    messageComposer.addEventListener(
+        "submit",
+
+        async (event) => {
+
+            event.preventDefault();
+
+
+            if (!currentUser) {
+
+                return;
+
+            }
+
+
+            if (!selectedUser) {
+
+                alert(
+                    "Select a user before sending a message."
+                );
+
+                return;
+
+            }
+
+
+            const text =
+                messageInput
+                    ? messageInput.value.trim()
+                    : "";
+
+
+            if (!text) {
+                return;
+            }
+
+
+            if (text.length > 2000) {
+
+                alert(
+                    "Messages cannot exceed 2000 characters."
+                );
+
+                return;
+
+            }
+
+
+            if (!currentConversationId) {
+
+                return;
+
+            }
+
+
+            try {
+
+                const messagesRef =
+                    collection(
+                        db,
+                        "conversations",
+                        currentConversationId,
+                        "messages"
+                    );
+
+
+                await addDoc(
+                    messagesRef,
+                    {
+
+                        senderId:
+                            currentUser.uid,
+
+                        text:
+                            text,
+
+                        createdAt:
+                            serverTimestamp()
+
+                    }
+                );
+
+
+                if (messageInput) {
+
+                    messageInput.value =
+                        "";
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Message sending failed:",
+                    error
+                );
+
+
+                alert(
+                    "Message could not be sent. Please try again."
+                );
+
+            }
+
+        }
+
+    );
+
+}
+
+
+
+// =========================================
+// EMOJI BUTTON
+// =========================================
+
+if (emojiButton) {
+
+    emojiButton.addEventListener(
+        "click",
+
+        () => {
+
+            if (!messageInput) {
+                return;
+            }
+
+
+            const emojis =
+                "😀 😂 😍 😎 🤔 😄 👍 ❤️ 🎉 🔥 😭 🙌";
+
+
+            const list =
+                emojis.split(" ");
+
+
+            const selectedEmoji =
+                list[
+                    Math.floor(
+                        Math.random() *
+                        list.length
+                    )
+                ];
+
+
+            messageInput.value +=
+                selectedEmoji;
+
+
+            messageInput.focus();
+
+        }
+
+    );
+
+}
+
+
+// =========================================
+// SEARCH PUBLIC USERS
+// =========================================
+
+if (chatSearch) {
+
+    chatSearch.addEventListener(
+        "input",
+
+        async () => {
+
+            if (!currentUser) {
+                return;
+            }
+
+
+            const searchText =
+                chatSearch.value
+                    .trim()
+                    .toLowerCase();
+
+
+            if (!searchText) {
+
+                showPlaceholder(
+                    "Search for a member to start chatting."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                const publicUsersRef =
+                    collection(
+                        db,
+                        "publicUsers"
+                    );
+
+
+                const snapshot =
+                    await getDocs(
+                        publicUsersRef
+                    );
+
+
+                if (!conversationList) {
+                    return;
+                }
+
+
+                conversationList.innerHTML =
+                    "";
+
+
+                let found =
+                    false;
+
+
+                snapshot.forEach(
+                    (userDoc) => {
+
+                        const user =
+                            userDoc.data();
+
+
+                        // Never show yourself
+
+                        if (
+                            userDoc.id ===
+                            currentUser.uid
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        const displayName =
+                            (
+                                user.displayName ||
+                                ""
+                            ).toLowerCase();
+
+
+                        if (
+                            !displayName.includes(
+                                searchText
+                            )
+                        ) {
+
+                            return;
+
+                        }
+
+
+                        found =
+                            true;
+
+
+                        const button =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        button.type =
+                            "button";
+
+
+                        button.className =
+                            "conversation-user";
+
+
+                        button.textContent =
+                            user.displayName ||
+                            "CALCULUS User";
+
+
+                        button.addEventListener(
+                            "click",
+                            () => {
+
+                                selectUser(
+                                    user
+                                );
+
+                            }
+                        );
+
+
+                        conversationList.appendChild(
+                            button
+                        );
+
+                    }
+                );
+
+
+                if (!found) {
+
+                    showPlaceholder(
+                        "No members found."
+                    );
+
+                }
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "User search failed:",
+                    error
+                );
+
+
+                showPlaceholder(
+                    "Could not search members."
+                );
+
+            }
+
+        }
+
+    );
+
+}      
