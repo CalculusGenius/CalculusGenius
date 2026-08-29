@@ -27,13 +27,13 @@
           rel="stylesheet">
 
 
-    <!-- GLOBAL WEBSITE STYLES -->
+    <!-- GLOBAL STYLES -->
 
     <link rel="stylesheet"
           href="style.css">
 
 
-    <!-- CHAT-SPECIFIC STYLES -->
+    <!-- CHAT STYLES -->
 
     <style>
 
@@ -59,6 +59,7 @@
             font-family: "Cormorant Garamond", serif;
             font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 600;
+            line-height: 1;
         }
 
         .chat-heading p {
@@ -70,8 +71,9 @@
 
         .chat-app {
             display: grid;
-            grid-template-columns: 320px 1fr;
+            grid-template-columns: 320px minmax(0, 1fr);
             min-height: 650px;
+            overflow: hidden;
             border: 1px solid rgba(255,255,255,0.22);
             background: rgba(255,255,255,0.025);
             box-shadow: 0 30px 100px rgba(0,0,0,0.45);
@@ -80,9 +82,10 @@
         }
 
         .chat-sidebar {
-            border-right: 1px solid rgba(255,255,255,0.12);
+            min-width: 0;
             display: flex;
             flex-direction: column;
+            border-right: 1px solid rgba(255,255,255,0.12);
         }
 
         .chat-sidebar-header {
@@ -125,26 +128,50 @@
         }
 
         .conversation-user {
-            display: block;
             width: 100%;
-            padding: 1rem 1.2rem;
+            min-height: 62px;
+            box-sizing: border-box;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             border: none;
             border-bottom: 1px solid rgba(255,255,255,0.08);
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
             background: transparent;
             color: #fff;
+            font-family: "Inter", sans-serif;
             text-align: left;
             cursor: pointer;
-            font-family: "Inter", sans-serif;
+            transition: background 0.2s ease;
         }
 
-        .conversation-user:hover {
+        .conversation-user:hover,
+        .conversation-user.selected {
             background: rgba(255,255,255,0.08);
         }
 
+        .conversation-user-image {
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .conversation-user-name {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .chat-main {
+            min-width: 0;
             display: flex;
             flex-direction: column;
-            min-width: 0;
         }
 
         .chat-main-header {
@@ -156,7 +183,7 @@
         }
 
         .chat-user-placeholder {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255,255,255,0.72);
             font-size: 0.9rem;
         }
 
@@ -171,23 +198,26 @@
 
         .messages-empty {
             margin: auto;
+            max-width: 400px;
             text-align: center;
         }
 
         .messages-empty h2 {
+            margin: 0;
             font-family: "Cormorant Garamond", serif;
             font-size: 2.2rem;
         }
 
         .messages-empty p {
             color: rgba(255,255,255,0.45);
+            line-height: 1.7;
         }
 
         .chat-message {
             max-width: 70%;
             padding: 0.75rem 1rem;
             line-height: 1.5;
-            word-wrap: break-word;
+            overflow-wrap: anywhere;
         }
 
         .chat-message-own {
@@ -202,15 +232,16 @@
 
         .message-composer {
             padding: 1rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
             display: flex;
             gap: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .message-input {
             flex: 1;
             min-width: 0;
             min-height: 48px;
+            box-sizing: border-box;
             resize: none;
             padding: 0.8rem 1rem;
             border: 1px solid rgba(255,255,255,0.18);
@@ -230,7 +261,7 @@
 
         .emoji-button {
             width: 48px;
-            flex-shrink: 0;
+            flex: 0 0 48px;
             font-size: 1.2rem;
         }
 
@@ -251,56 +282,82 @@
             text-decoration: underline;
         }
 
-        /* NAME POPUP */
+        /* =========================================
+           CHAT NAME MODAL
+        ========================================== */
 
-        .chat-name-overlay {
+        .chat-name-modal {
             position: fixed;
             inset: 0;
-            z-index: 9999;
+            z-index: 99999;
             display: none;
             align-items: center;
             justify-content: center;
-            background: rgba(0,0,0,0.75);
             padding: 20px;
+            background: rgba(0,0,0,0.78);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
-        .chat-name-box {
-            width: min(420px, 100%);
+        .chat-name-modal.active {
+            display: flex;
+        }
+
+        .chat-name-modal-box {
+            width: min(430px, 100%);
             padding: 2rem;
+            box-sizing: border-box;
             background: #111;
             border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 30px 100px rgba(0,0,0,0.6);
+            box-shadow: 0 30px 100px rgba(0,0,0,0.65);
         }
 
-        .chat-name-box h2 {
-            margin-top: 0;
+        .chat-name-modal-box h2 {
+            margin: 0;
             font-family: "Cormorant Garamond", serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
+            font-weight: 600;
         }
 
-        .chat-name-box p {
-            color: rgba(255,255,255,0.55);
-            line-height: 1.6;
+        .chat-name-modal-box p {
+            margin: 0.9rem 0 1.2rem;
+            color: rgba(255,255,255,0.58);
+            line-height: 1.7;
+            font-size: 0.85rem;
         }
 
         #chatNameInput {
             width: 100%;
             box-sizing: border-box;
-            padding: 0.9rem;
-            margin: 1rem 0;
-            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.9rem 1rem;
+            border: 1px solid rgba(255,255,255,0.22);
+            outline: none;
             background: rgba(255,255,255,0.06);
             color: #fff;
-            outline: none;
+            font-family: "Inter", sans-serif;
         }
 
-        #saveChatName {
+        #chatNameInput::placeholder {
+            color: rgba(255,255,255,0.35);
+        }
+
+        #chatNameInput:focus {
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        #saveChatNameButton {
             width: 100%;
+            margin-top: 1rem;
             padding: 0.9rem;
             border: 1px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.1);
             color: #fff;
+            font-family: "Inter", sans-serif;
             cursor: pointer;
+        }
+
+        #saveChatNameButton:hover {
+            background: rgba(255,255,255,0.18);
         }
 
         @media (max-width: 800px) {
@@ -328,6 +385,14 @@
                 min-height: 470px;
             }
 
+            .chat-message {
+                max-width: 85%;
+            }
+
+            .chat-name-modal-box {
+                padding: 1.6rem;
+            }
+
         }
 
     </style>
@@ -338,7 +403,9 @@
 <body>
 
 
-    <!-- MATHEMATICAL BACKGROUND -->
+    <!-- =========================================
+         MATHEMATICAL BACKGROUND
+    ========================================== -->
 
     <div class="math-background"
          aria-hidden="true">
@@ -355,7 +422,9 @@
     </div>
 
 
-    <!-- NAVIGATION -->
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
 
     <header class="navbar">
 
@@ -368,24 +437,46 @@
 
             </a>
 
+
             <nav class="desktop-nav">
 
                 <a href="index.html"
-                   class="nav-link">Home</a>
+                   class="nav-link">
+
+                    Home
+
+                </a>
 
                 <a href="about.html"
-                   class="nav-link">About</a>
+                   class="nav-link">
+
+                    About
+
+                </a>
 
                 <a href="books.html"
-                   class="nav-link">Books</a>
+                   class="nav-link">
+
+                    Books
+
+                </a>
 
                 <a href="topics.html"
-                   class="nav-link">Topics</a>
+                   class="nav-link">
+
+                    Topics
+
+                </a>
 
                 <a href="other-websites.html"
-                   class="nav-link">Other Websites</a>
+                   class="nav-link">
+
+                    Other Websites
+
+                </a>
 
             </nav>
+
 
             <button class="hamburger"
                     id="hamburger"
@@ -400,29 +491,97 @@
 
         </div>
 
+
         <div class="mobile-menu"
              id="mobileMenu">
 
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="books.html">Books</a>
-            <a href="topics.html">Topics</a>
-            <a href="other-websites.html">Other Websites</a>
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="about.html">
+                About
+            </a>
+
+            <a href="books.html">
+                Books
+            </a>
+
+            <div class="mobile-topics">
+
+                <div class="mobile-topics-header">
+
+                    <a href="topics.html"
+                       class="mobile-topics-title">
+
+                        Topics
+
+                    </a>
+
+                    <button
+                        class="topics-toggle"
+                        id="topicsToggle"
+                        aria-label="Expand Topics submenu"
+                        aria-expanded="false">
+
+                        <span></span>
+
+                    </button>
+
+                </div>
+
+
+                <div class="topics-submenu"
+                     id="topicsSubmenu">
+
+                    <a href="single-variable-calculus.html">
+                        Single Variable Basic Calculus
+                    </a>
+
+                    <a href="multivariable-calculus.html">
+                        Basic Multivariable Calculus
+                    </a>
+
+                    <a href="vector-calculus.html">
+                        Vector Calculus
+                    </a>
+
+                    <a href="differential-geometry.html">
+                        Differential Geometry and Advanced Topics
+                    </a>
+
+                    <a href="relations.html">
+                        Relations with Other Branches
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <a href="other-websites.html">
+                Other Websites
+            </a>
 
         </div>
 
     </header>
 
 
-    <!-- CHAT -->
+    <!-- =========================================
+         CHAT PAGE
+    ========================================== -->
 
     <main class="chat-page">
 
         <div class="chat-container">
 
+
             <section class="chat-heading">
 
-                <h1>CHAT</h1>
+                <h1>
+                    CHAT
+                </h1>
 
                 <p>
                     Connect with other members of
@@ -514,11 +673,12 @@
                             type="button"
                             class="emoji-button"
                             id="emojiButton"
-                            aria-label="Choose emoji">
+                            aria-label="Insert emoji">
 
                             😊
 
                         </button>
+
 
                         <textarea
                             class="message-input"
@@ -526,6 +686,7 @@
                             placeholder="Write a message..."
                             maxlength="2000"
                             rows="1"></textarea>
+
 
                         <button
                             type="submit"
@@ -547,7 +708,7 @@
             <p
                 class="chat-login-notice"
                 id="chatLoginNotice"
-                style="display:none;">
+                style="display: none;">
 
                 You must be signed in to use
                 CALCULUS Chat.
@@ -563,22 +724,30 @@
     </main>
 
 
-    <!-- NAME POPUP -->
+    <!-- =========================================
+         CHAT NAME MODAL
+    ========================================== -->
 
     <div
-        class="chat-name-overlay"
-        id="chatNameOverlay">
+        class="chat-name-modal"
+        id="chatNameModal"
+        aria-hidden="true">
 
-        <div class="chat-name-box">
+        <div
+            class="chat-name-modal-box"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="chatNameTitle">
 
-            <h2>
-                Choose your Chat name
+            <h2 id="chatNameTitle">
+                Choose Your Chat Name
             </h2>
 
             <p>
-                This name will be shown to other
-                CALCULUS Chat users. It does not
-                have to be your Google account name.
+                This is the name other CALCULUS
+                members will see when they search
+                for you. It does not have to match
+                your Google account name.
             </p>
 
             <input
@@ -590,7 +759,7 @@
 
             <button
                 type="button"
-                id="saveChatName">
+                id="saveChatNameButton">
 
                 Continue
 
@@ -601,12 +770,14 @@
     </div>
 
 
-    <!-- FOOTER -->
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
 
     <footer>
 
         <p>
-            Ankit Brahamachary 2026 copyright.
+            © Ankit Brahamachary 2026
         </p>
 
     </footer>
@@ -621,15 +792,18 @@
         src="script.js">
     </script>
 
+
     <script
         type="module"
         src="auth-ui.js">
     </script>
 
+
     <script
         type="module"
         src="chat.js">
     </script>
+
 
 </body>
 
