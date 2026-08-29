@@ -3,7 +3,7 @@
 // =========================================
 // One-to-one text chat
 // Firebase Authentication + Firestore
-// Custom Chat Name system
+// Custom CALCULUS Chat Name
 // =========================================
 
 
@@ -15,13 +15,13 @@ import {
 import {
     getFirestore,
     collection,
-    query,
     getDocs,
     doc,
-    setDoc,
     getDoc,
+    setDoc,
     addDoc,
     serverTimestamp,
+    query,
     orderBy,
     onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
@@ -47,79 +47,43 @@ const db =
 // =========================================
 
 const chatLoginNotice =
-    document.getElementById(
-        "chatLoginNotice"
-    );
-
+    document.getElementById("chatLoginNotice");
 
 const messageComposer =
-    document.getElementById(
-        "messageComposer"
-    );
-
+    document.getElementById("messageComposer");
 
 const messageInput =
-    document.getElementById(
-        "messageInput"
-    );
-
+    document.getElementById("messageInput");
 
 const emojiButton =
-    document.getElementById(
-        "emojiButton"
-    );
-
+    document.getElementById("emojiButton");
 
 const conversationList =
-    document.getElementById(
-        "conversationList"
-    );
-
+    document.getElementById("conversationList");
 
 const messagesArea =
-    document.getElementById(
-        "messagesArea"
-    );
-
+    document.getElementById("messagesArea");
 
 const chatUserPlaceholder =
-    document.getElementById(
-        "chatUserPlaceholder"
-    );
-
+    document.getElementById("chatUserPlaceholder");
 
 const chatSearch =
-    document.getElementById(
-        "chatSearch"
-    );
+    document.getElementById("chatSearch");
 
 
-// =========================================
-// CHAT NAME MODAL ELEMENTS
-// =========================================
+// Chat Name modal
 
 const chatNameModal =
-    document.getElementById(
-        "chatNameModal"
-    );
-
+    document.getElementById("chatNameModal");
 
 const chatNameInput =
-    document.getElementById(
-        "chatNameInput"
-    );
-
+    document.getElementById("chatNameInput");
 
 const chatNameError =
-    document.getElementById(
-        "chatNameError"
-    );
-
+    document.getElementById("chatNameError");
 
 const saveChatNameButton =
-    document.getElementById(
-        "saveChatNameButton"
-    );
+    document.getElementById("saveChatNameButton");
 
 
 
@@ -130,25 +94,20 @@ const saveChatNameButton =
 let currentUser =
     null;
 
+let currentChatName =
+    null;
 
 let selectedUser =
     null;
 
-
 let currentConversationId =
     null;
-
 
 let unsubscribeMessages =
     null;
 
-
-let chatNameReady =
-    false;
-
-
-let chatNameSaveResolver =
-    null;
+let allPublicUsers =
+    [];
 
 
 
@@ -161,7 +120,7 @@ function showChatNameModal() {
     if (!chatNameModal) {
 
         console.error(
-            "Chat Name modal was not found in chat.html."
+            "chatNameModal not found."
         );
 
         return;
@@ -236,250 +195,14 @@ function hideChatNameModal() {
 
 
 // =========================================
-// ASK FOR CHAT NAME
+// GET / CREATE CHAT PROFILE
 // =========================================
 
-function requestChatName() {
-
-    return new Promise(
-        (resolve) => {
-
-            chatNameSaveResolver =
-                resolve;
-
-
-            showChatNameModal();
-
-        }
-    );
-
-}
-
-
-
-// =========================================
-// SAVE CHAT NAME BUTTON
-// =========================================
-
-if (saveChatNameButton) {
-
-    saveChatNameButton.addEventListener(
-        "click",
-
-        async () => {
-
-            if (!currentUser) {
-
-                return;
-
-            }
-
-
-            let chatName =
-                chatNameInput
-                    ? chatNameInput.value.trim()
-                    : "";
-
-
-            // =================================
-            // EMPTY NAME
-            // =================================
-
-            if (!chatName) {
-
-                if (chatNameError) {
-
-                    chatNameError.textContent =
-                        "Please enter a Chat Name.";
-
-                }
-
-
-                if (chatNameInput) {
-
-                    chatNameInput.focus();
-
-                }
-
-
-                return;
-
-            }
-
-
-            // =================================
-            // LENGTH
-            // =================================
-
-            if (
-                chatName.length > 30
-            ) {
-
-                if (chatNameError) {
-
-                    chatNameError.textContent =
-                        "Chat Name must be 30 characters or fewer.";
-
-                }
-
-
-                return;
-
-            }
-
-
-            // =================================
-            // SAVE
-            // =================================
-
-            saveChatNameButton.disabled =
-                true;
-
-
-            saveChatNameButton.textContent =
-                "Saving...";
-
-
-            try {
-
-                const publicUserRef =
-                    doc(
-                        db,
-                        "publicUsers",
-                        currentUser.uid
-                    );
-
-
-                await setDoc(
-                    publicUserRef,
-                    {
-
-                        uid:
-                            currentUser.uid,
-
-                        chatName:
-                            chatName,
-
-                        photoURL:
-                            currentUser.photoURL || ""
-
-                    },
-
-                    {
-                        merge: true
-                    }
-                );
-
-
-                console.log(
-                    "Chat Name saved:",
-                    chatName
-                );
-
-
-                hideChatNameModal();
-
-
-                chatNameReady =
-                    true;
-
-
-                if (chatNameSaveResolver) {
-
-                    chatNameSaveResolver(
-                        chatName
-                    );
-
-                    chatNameSaveResolver =
-                        null;
-
-                }
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "Chat Name save failed:",
-                    error
-                );
-
-
-                if (chatNameError) {
-
-                    chatNameError.textContent =
-                        "Could not save your Chat Name. Please try again.";
-
-                }
-
-            }
-
-
-            finally {
-
-                saveChatNameButton.disabled =
-                    false;
-
-                saveChatNameButton.textContent =
-                    "Continue";
-
-            }
-
-        }
-    );
-
-}
-
-
-
-// =========================================
-// ENTER KEY IN CHAT NAME INPUT
-// =========================================
-
-if (chatNameInput) {
-
-    chatNameInput.addEventListener(
-        "keydown",
-
-        (event) => {
-
-            if (
-                event.key ===
-                "Enter"
-            ) {
-
-                event.preventDefault();
-
-
-                if (saveChatNameButton) {
-
-                    saveChatNameButton.click();
-
-                }
-
-            }
-
-        }
-    );
-
-}
-
-
-
-// =========================================
-// GET CURRENT CHAT NAME
-// =========================================
-
-async function ensureChatName(user) {
-
-    if (!user) {
-
-        return null;
-
-    }
-
-
-    const publicUserRef =
+async function prepareChatProfile(
+    user
+) {
+
+    const userRef =
         doc(
             db,
             "publicUsers",
@@ -487,83 +210,273 @@ async function ensureChatName(user) {
         );
 
 
+    let snapshot;
+
     try {
 
-        const snapshot =
+        snapshot =
             await getDoc(
-                publicUserRef
+                userRef
             );
-
-
-        if (
-            snapshot.exists()
-        ) {
-
-            const data =
-                snapshot.data();
-
-
-            /*
-               IMPORTANT:
-
-               We ONLY check chatName.
-
-               We NEVER use Google's
-               displayName here.
-            */
-
-            if (
-                typeof data.chatName ===
-                    "string"
-                &&
-                data.chatName.trim() !== ""
-            ) {
-
-                console.log(
-                    "Existing Chat Name:",
-                    data.chatName
-                );
-
-
-                chatNameReady =
-                    true;
-
-
-                return data.chatName.trim();
-
-            }
-
-        }
-
-
-        // =================================
-        // NO CHAT NAME
-        // =================================
-
-        chatNameReady =
-            false;
-
-
-        return await requestChatName();
 
     }
 
     catch (error) {
 
         console.error(
-            "Chat profile error:",
+            "Could not read public user profile:",
             error
-        );
-
-
-        alert(
-            "Could not load your Chat profile. Please refresh the page."
         );
 
 
         return null;
 
     }
+
+
+    // =====================================
+    // EXISTING CHAT NAME
+    // =====================================
+
+    if (
+        snapshot.exists()
+    ) {
+
+        const data =
+            snapshot.data();
+
+
+        if (
+            typeof data.chatName === "string" &&
+            data.chatName.trim() !== ""
+        ) {
+
+            currentChatName =
+                data.chatName.trim();
+
+
+            return currentChatName;
+
+        }
+
+    }
+
+
+    // =====================================
+    // NO CHAT NAME
+    // =====================================
+
+    showChatNameModal();
+
+    return new Promise(
+        (resolve) => {
+
+            window.calculusChatNameResolve =
+                resolve;
+
+        }
+    );
+
+}
+
+
+
+// =========================================
+// SAVE CHAT NAME
+// =========================================
+
+async function saveChatName() {
+
+    if (!currentUser) {
+
+        return;
+
+    }
+
+
+    let chatName =
+        chatNameInput
+            ? chatNameInput.value.trim()
+            : "";
+
+
+    // =====================================
+    // VALIDATION
+    // =====================================
+
+    if (!chatName) {
+
+        if (chatNameError) {
+
+            chatNameError.textContent =
+                "Please enter a Chat Name.";
+
+        }
+
+        return;
+
+    }
+
+
+    if (
+        chatName.length > 30
+    ) {
+
+        if (chatNameError) {
+
+            chatNameError.textContent =
+                "Chat Name must be 30 characters or fewer.";
+
+        }
+
+        return;
+
+    }
+
+
+    saveChatNameButton.disabled =
+        true;
+
+
+    saveChatNameButton.textContent =
+        "Saving...";
+
+
+    try {
+
+        const userRef =
+            doc(
+                db,
+                "publicUsers",
+                currentUser.uid
+            );
+
+
+        await setDoc(
+            userRef,
+            {
+
+                uid:
+                    currentUser.uid,
+
+                chatName:
+                    chatName,
+
+                photoURL:
+                    currentUser.photoURL || ""
+
+            },
+
+            {
+                merge: true
+            }
+        );
+
+
+        currentChatName =
+            chatName;
+
+
+        hideChatNameModal();
+
+
+        /*
+           Resolve the promise created by
+           prepareChatProfile().
+        */
+
+        if (
+            typeof window.calculusChatNameResolve ===
+            "function"
+        ) {
+
+            window.calculusChatNameResolve(
+                chatName
+            );
+
+            window.calculusChatNameResolve =
+                null;
+
+        }
+
+
+        console.log(
+            "Chat Name saved:",
+            chatName
+        );
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Chat Name could not be saved:",
+            error
+        );
+
+
+        if (chatNameError) {
+
+            chatNameError.textContent =
+                "Could not save your Chat Name. Please try again.";
+
+        }
+
+    }
+
+
+    finally {
+
+        saveChatNameButton.disabled =
+            false;
+
+        saveChatNameButton.textContent =
+            "Continue";
+
+    }
+
+}
+
+
+
+// =========================================
+// SAVE BUTTON
+// =========================================
+
+if (saveChatNameButton) {
+
+    saveChatNameButton.addEventListener(
+        "click",
+        saveChatName
+    );
+
+}
+
+
+
+// =========================================
+// ENTER KEY
+// =========================================
+
+if (chatNameInput) {
+
+    chatNameInput.addEventListener(
+        "keydown",
+        (event) => {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                saveChatName();
+
+            }
+
+        }
+    );
 
 }
 
@@ -581,112 +494,29 @@ watchAuthState(
 
 
         // =====================================
-        // LOGGED IN
-        // =====================================
-
-        if (user) {
-
-            if (chatLoginNotice) {
-
-                chatLoginNotice.style.display =
-                    "none";
-
-            }
-
-
-            if (messageInput) {
-
-                messageInput.disabled =
-                    true;
-
-            }
-
-
-            if (emojiButton) {
-
-                emojiButton.disabled =
-                    true;
-
-            }
-
-
-            /*
-               First determine the user's
-               Chat Name.
-
-               This happens only on chat.html.
-            */
-
-            const chatName =
-                await ensureChatName(
-                    user
-                );
-
-
-            if (!chatName) {
-
-                return;
-
-            }
-
-
-            // =================================
-            // CHAT NAME READY
-            // =================================
-
-            if (messageInput) {
-
-                messageInput.disabled =
-                    false;
-
-            }
-
-
-            if (emojiButton) {
-
-                emojiButton.disabled =
-                    false;
-
-            }
-
-
-            if (conversationList) {
-
-                conversationList.innerHTML =
-                    "";
-
-
-                const placeholder =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                placeholder.className =
-                    "conversation-placeholder";
-
-
-                placeholder.textContent =
-                    "Search for a member to start chatting.";
-
-
-                conversationList.appendChild(
-                    placeholder
-                );
-
-            }
-
-        }
-
-
-        // =====================================
         // LOGGED OUT
         // =====================================
 
-        else {
+        if (!user) {
 
-            chatNameReady =
-                false;
+            currentChatName =
+                null;
+
+            selectedUser =
+                null;
+
+            currentConversationId =
+                null;
+
+
+            if (unsubscribeMessages) {
+
+                unsubscribeMessages();
+
+                unsubscribeMessages =
+                    null;
+
+            }
 
 
             if (chatLoginNotice) {
@@ -713,51 +543,114 @@ watchAuthState(
             }
 
 
-            if (conversationList) {
+            if (chatSearch) {
 
-                conversationList.innerHTML =
-                    "";
-
-
-                const placeholder =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                placeholder.className =
-                    "conversation-placeholder";
-
-
-                placeholder.textContent =
-                    "Please sign in to use Chat.";
-
-
-                conversationList.appendChild(
-                    placeholder
-                );
+                chatSearch.disabled =
+                    true;
 
             }
 
 
-            selectedUser =
-                null;
-
-
-            currentConversationId =
-                null;
-
-
-            if (unsubscribeMessages) {
-
-                unsubscribeMessages();
-
-                unsubscribeMessages =
-                    null;
-
-            }
+            return;
 
         }
+
+
+
+        // =====================================
+        // LOGGED IN
+        // =====================================
+
+        /*
+           Hide the login notice FIRST.
+
+           The Chat Name check must never
+           make the login notice appear for
+           an authenticated user.
+        */
+
+        if (chatLoginNotice) {
+
+            chatLoginNotice.style.display =
+                "none";
+
+        }
+
+
+        if (messageInput) {
+
+            messageInput.disabled =
+                true;
+
+        }
+
+
+        if (emojiButton) {
+
+            emojiButton.disabled =
+                true;
+
+        }
+
+
+        if (chatSearch) {
+
+            chatSearch.disabled =
+                true;
+
+        }
+
+
+        // =====================================
+        // CHAT NAME
+        // =====================================
+
+        const chatName =
+            await prepareChatProfile(
+                user
+            );
+
+
+        if (!chatName) {
+
+            return;
+
+        }
+
+
+        currentChatName =
+            chatName;
+
+
+        // =====================================
+        // CHAT READY
+        // =====================================
+
+        if (messageInput) {
+
+            messageInput.disabled =
+                false;
+
+        }
+
+
+        if (emojiButton) {
+
+            emojiButton.disabled =
+                false;
+
+        }
+
+
+        if (chatSearch) {
+
+            chatSearch.disabled =
+                false;
+
+        }
+
+
+        showSearchPlaceholder();
 
     }
 );
@@ -765,7 +658,376 @@ watchAuthState(
 
 
 // =========================================
-// FIND / CREATE CONVERSATION
+// SEARCH PLACEHOLDER
+// =========================================
+
+function showSearchPlaceholder() {
+
+    if (!conversationList) {
+
+        return;
+
+    }
+
+
+    conversationList.innerHTML =
+        "";
+
+
+    const placeholder =
+        document.createElement("div");
+
+
+    placeholder.className =
+        "conversation-placeholder";
+
+
+    placeholder.textContent =
+        "Search for a member to start chatting.";
+
+
+    conversationList.appendChild(
+        placeholder
+    );
+
+}
+
+
+
+// =========================================
+// LOAD PUBLIC USERS
+// =========================================
+
+async function loadPublicUsers() {
+
+    if (!currentUser) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const usersRef =
+            collection(
+                db,
+                "publicUsers"
+            );
+
+
+        const snapshot =
+            await getDocs(
+                usersRef
+            );
+
+
+        allPublicUsers =
+            [];
+
+
+        snapshot.forEach(
+            (userDoc) => {
+
+                const data =
+                    userDoc.data();
+
+
+                /*
+                   Never include yourself.
+                */
+
+                if (
+                    userDoc.id ===
+                    currentUser.uid
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                   ONLY chatName is used.
+
+                   Google displayName is
+                   deliberately ignored.
+                */
+
+                if (
+                    typeof data.chatName !== "string" ||
+                    data.chatName.trim() === ""
+                ) {
+
+                    return;
+
+                }
+
+
+                allPublicUsers.push(
+                    {
+
+                        uid:
+                            userDoc.id,
+
+                        chatName:
+                            data.chatName.trim(),
+
+                        photoURL:
+                            data.photoURL || ""
+
+                    }
+                );
+
+            }
+        );
+
+
+        allPublicUsers.sort(
+            (a, b) =>
+                a.chatName.localeCompare(
+                    b.chatName
+                )
+        );
+
+
+        return allPublicUsers;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not load public users:",
+            error
+        );
+
+
+        return [];
+
+    }
+
+}
+
+
+
+// =========================================
+// DISPLAY SEARCH RESULTS
+// =========================================
+
+function displaySearchResults(
+    users
+) {
+
+    if (!conversationList) {
+
+        return;
+
+    }
+
+
+    conversationList.innerHTML =
+        "";
+
+
+    if (
+        users.length === 0
+    ) {
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+
+        empty.className =
+            "conversation-placeholder";
+
+
+        empty.textContent =
+            "No members found.";
+
+
+        conversationList.appendChild(
+            empty
+        );
+
+
+        return;
+
+    }
+
+
+    users.forEach(
+        (user) => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.type =
+                "button";
+
+
+            button.className =
+                "conversation-user";
+
+
+            button.dataset.uid =
+                user.uid;
+
+
+            /*
+               User name.
+            */
+
+            const name =
+                document.createElement(
+                    "span"
+                );
+
+
+            name.className =
+                "conversation-user-name";
+
+
+            name.textContent =
+                user.chatName;
+
+
+            /*
+               Profile image.
+            */
+
+            const image =
+                document.createElement(
+                    "img"
+                );
+
+
+            image.className =
+                "conversation-user-image";
+
+
+            image.src =
+                user.photoURL ||
+                "logo.png";
+
+
+            image.alt =
+                user.chatName;
+
+
+            image.onerror =
+                () => {
+
+                    image.src =
+                        "logo.png";
+
+                };
+
+
+            button.appendChild(
+                image
+            );
+
+
+            button.appendChild(
+                name
+            );
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    selectUser(
+                        user
+                    );
+
+                }
+            );
+
+
+            conversationList.appendChild(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+
+// =========================================
+// SEARCH USERS
+// =========================================
+
+if (chatSearch) {
+
+    chatSearch.addEventListener(
+        "input",
+
+        async () => {
+
+            if (!currentUser) {
+
+                return;
+
+            }
+
+
+            if (!currentChatName) {
+
+                return;
+
+            }
+
+
+            const search =
+                chatSearch.value
+                    .trim()
+                    .toLowerCase();
+
+
+            const users =
+                await loadPublicUsers();
+
+
+            if (!search) {
+
+                showSearchPlaceholder();
+
+                return;
+
+            }
+
+
+            const results =
+                users.filter(
+                    (user) =>
+                        user.chatName
+                            .toLowerCase()
+                            .includes(search)
+                );
+
+
+            displaySearchResults(
+                results
+            );
+
+        }
+    );
+
+}
+
+
+
+// =========================================
+// CREATE / GET CONVERSATION
 // =========================================
 
 async function getOrCreateConversation(
@@ -828,26 +1090,11 @@ async function getOrCreateConversation(
 // SELECT USER
 // =========================================
 
-async function selectUser(user) {
+async function selectUser(
+    user
+) {
 
     if (!currentUser) {
-
-        return;
-
-    }
-
-
-    if (!chatNameReady) {
-
-        return;
-
-    }
-
-
-    if (
-        user.uid ===
-        currentUser.uid
-    ) {
 
         return;
 
@@ -858,26 +1105,13 @@ async function selectUser(user) {
         user;
 
 
-    // =====================================
-    // UPDATE CHAT HEADER
-    // =====================================
-
     if (chatUserPlaceholder) {
 
-        /*
-           ONLY chatName is displayed.
-        */
-
         chatUserPlaceholder.textContent =
-            user.chatName ||
-            "CALCULUS User";
+            user.chatName;
 
     }
 
-
-    // =====================================
-    // CLEAR OLD LISTENER
-    // =====================================
 
     if (unsubscribeMessages) {
 
@@ -889,10 +1123,6 @@ async function selectUser(user) {
     }
 
 
-    // =====================================
-    // CREATE / GET CONVERSATION
-    // =====================================
-
     try {
 
         currentConversationId =
@@ -900,38 +1130,28 @@ async function selectUser(user) {
                 user
             );
 
+
+        listenForMessages(
+            currentConversationId
+        );
+
     }
 
     catch (error) {
 
         console.error(
-            "Conversation error:",
+            "Could not open conversation:",
             error
         );
 
-
-        return;
-
     }
-
-
-    if (!currentConversationId) {
-
-        return;
-
-    }
-
-
-    listenForMessages(
-        currentConversationId
-    );
 
 }
 
 
 
 // =========================================
-// LISTEN FOR MESSAGES
+// RECEIVE MESSAGES IN REAL TIME
 // =========================================
 
 function listenForMessages(
@@ -1063,156 +1283,4 @@ function listenForMessages(
                         }
 
 
-                        /*
-                           textContent prevents
-                           message text from being
-                           interpreted as HTML.
-                        */
-
-                        message.textContent =
-                            data.text || "";
-
-
-                        messagesArea.appendChild(
-                            message
-                        );
-
-                    }
-                );
-
-
-                messagesArea.scrollTop =
-                    messagesArea.scrollHeight;
-
-            },
-
-            (error) => {
-
-                console.error(
-                    "Message listener error:",
-                    error
-                );
-
-            }
-        );
-
-}
-
-
-
-// =========================================
-// SEND MESSAGE
-// =========================================
-
-if (messageComposer) {
-
-    messageComposer.addEventListener(
-        "submit",
-
-        async (event) => {
-
-            event.preventDefault();
-
-
-            if (!currentUser) {
-
-                return;
-
-            }
-
-
-            if (!chatNameReady) {
-
-                return;
-
-            }
-
-
-            if (!selectedUser) {
-
-                alert(
-                    "Select a user before sending a message."
-                );
-
-
-                return;
-
-            }
-
-
-            const text =
-                messageInput
-                    ? messageInput.value.trim()
-                    : "";
-
-
-            if (!text) {
-
-                return;
-
-            }
-
-
-            if (
-                text.length > 2000
-            ) {
-
-                alert(
-                    "Messages cannot exceed 2000 characters."
-                );
-
-
-                return;
-
-            }
-
-
-            if (!currentConversationId) {
-
-                return;
-
-            }
-
-
-            try {
-
-                const messagesRef =
-                    collection(
-                        db,
-                        "conversations",
-                        currentConversationId,
-                        "messages"
-                    );
-
-
-                await addDoc(
-                    messagesRef,
-                    {
-
-                        senderId:
-                            currentUser.uid,
-
-                        text:
-                            text,
-
-                        createdAt:
-                            serverTimestamp()
-
-                    }
-                );
-
-
-                if (messageInput) {
-
-                    messageInput.value =
-                        "";
-
-                }
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "Message sending failed:",
- 
+          
