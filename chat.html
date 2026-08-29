@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="CALCULUS — Chat with other members and discuss mathematics.">
+
+    <title>CALCULUS — Chat</title>
+
+
+    <!-- =========================================
+         GOOGLE FONTS
+    ========================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+
+    <!-- =========================================
+         MAIN STYLESHEET
+    ========================================== -->
+
+    <link rel="stylesheet"
+          href="style.css">
+
+
+    <!-- =========================================
+         CHAT STYLES
+    ========================================== -->
+
+    <style>
+
+        /* =========================================
+           CHAT PAGE
+        ========================================= */
+
+        .chat-page {
+
+            min-height: 100vh;
+
+            padding:
+                125px 5% 70px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .chat-container {
+
+            width:
+                min(1250px, 100%);
+
+            margin:
+                0 auto;
+
+        }
+
+
+        /* =========================================
+           PAGE HEADER
+        ========================================= */
+
+        .chat-heading {
+
+            text-align: center;
+
+            margin-bottom: 3rem;
+
+        }
+
+
+        .chat-heading h1 {
+
+            margin: 0;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(3rem, 8vw, 6rem);
+
+            font-weight: 600;
+
+            line-height: 1;
+
+        }
+
+
+        .chat-heading p {
+
+            margin:
+                1rem auto 0;
+
+            max-width: 600px;
+
+            color:
+                rgba(255,255,255,0.58);
+
+            font-size:
+                0.95rem;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =========================================
+           CHAT APPLICATION
+        ========================================= */
+
+        .chat-app {
+
+            display: grid;
+
+            grid-template-columns:
+                320px 1fr;
+
+            min-height:
+                650px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.22);
+
+            background:
+                rgba(255,255,255,0.025);
+
+            box-shadow:
+                0 30px 100px
+                rgba(0,0,0,0.45);
+
+            backdrop-filter:
+                blur(15px);
+
+            -webkit-backdrop-filter:
+                blur(15px);
+
+        }
+
+
+        /* =========================================
+           SIDEBAR
+        ========================================= */
+
+        .chat-sidebar {
+
+            border-right:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+
+        }
+
+
+        .chat-sidebar-header {
+
+            padding:
+                1.5rem;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.1);
+
+        }
+
+
+        .chat-sidebar-title {
+
+            margin: 0 0 1rem;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                1.8rem;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =========================================
+           SEARCH
+        ========================================= */
+
+        .chat-search {
+
+            width: 100%;
+
+            padding:
+                0.8rem 1rem;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+            outline: none;
+
+            background:
+                rgba(255,255,255,0.045);
+
+            color: #ffffff;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.85rem;
+
+            transition:
+                border-color 0.25s ease,
+                background 0.25s ease;
+
+        }
+
+
+        .chat-search::placeholder {
+
+            color:
+                rgba(255,255,255,0.35);
+
+        }
+
+
+        .chat-search:focus {
+
+            border-color:
+                rgba(255,255,255,0.45);
+
+            background:
+                rgba(255,255,255,0.07);
+
+        }
+
+
+        /* =========================================
+           CONVERSATION LIST
+        ========================================= */
+
+        .conversation-list {
+
+            flex: 1;
+
+            overflow-y: auto;
+
+        }
+
+
+        .conversation-placeholder {
+
+            padding:
+                3rem 1.5rem;
+
+            text-align: center;
+
+            color:
+                rgba(255,255,255,0.38);
+
+            font-size:
+                0.85rem;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =========================================
+           CHAT MAIN
+        ========================================= */
+
+        .chat-main {
+
+            display: flex;
+
+            flex-direction: column;
+
+            min-width: 0;
+
+        }
+
+
+        /* =========================================
+           CHAT HEADER
+        ========================================= */
+
+        .chat-main-header {
+
+            min-height:
+                78px;
+
+            padding:
+                1rem 1.5rem;
+
+            display: flex;
+
+            align-items: center;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,0.1);
+
+        }
+
+
+        .chat-user-placeholder {
+
+            color:
+                rgba(255,255,255,0.4);
+
+            font-size:
+                0.9rem;
+
+        }
+
+
+        /* =========================================
+           MESSAGES
+        ========================================= */
+
+        .messages-area {
+
+            flex: 1;
+
+            padding:
+                1.5rem;
+
+            overflow-y: auto;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            text-align: center;
+
+        }
+
+
+        .messages-empty h2 {
+
+            margin: 0;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                2.2rem;
+
+            font-weight: 600;
+
+        }
+
+
+        .messages-empty p {
+
+            margin:
+                0.8rem 0 0;
+
+            max-width:
+                400px;
+
+            color:
+                rgba(255,255,255,0.45);
+
+            font-size:
+                0.85rem;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =========================================
+           MESSAGE INPUT
+        ========================================= */
+
+        .message-composer {
+
+            padding:
+                1rem;
+
+            border-top:
+                1px solid
+                rgba(255,255,255,0.1);
+
+            display: flex;
+
+            gap: 10px;
+
+        }
+
+
+        .message-input {
+
+            flex: 1;
+
+            min-width: 0;
+
+            min-height: 48px;
+
+            resize: none;
+
+            padding:
+                0.8rem 1rem;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+            outline: none;
+
+            background:
+                rgba(255,255,255,0.045);
+
+            color: #ffffff;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.9rem;
+
+        }
+
+
+        .message-input::placeholder {
+
+            color:
+                rgba(255,255,255,0.35);
+
+        }
+
+
+        .message-input:focus {
+
+            border-color:
+                rgba(255,255,255,0.45);
+
+        }
+
+
+        /* =========================================
+           EMOJI BUTTON
+        ========================================= */
+
+        .emoji-button {
+
+            width:
+                48px;
+
+            height:
+                48px;
+
+            flex-shrink: 0;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+            background:
+                rgba(255,255,255,0.045);
+
+            color: #ffffff;
+
+            font-size:
+                1.25rem;
+
+            cursor: pointer;
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease;
+
+        }
+
+
+        .emoji-button:hover {
+
+            background:
+                rgba(255,255,255,0.1);
+
+            border-color:
+                rgba(255,255,255,0.4);
+
+        }
+
+
+        /* =========================================
+           SEND BUTTON
+        ========================================= */
+
+        .send-button {
+
+            min-width:
+                80px;
+
+            padding:
+                0 1rem;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.3);
+
+            background:
+                rgba(255,255,255,0.1);
+
+            color: #ffffff;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.85rem;
+
+            font-weight: 500;
+
+            cursor: pointer;
+
+            transition:
+                background 0.25s ease,
+                transform 0.25s ease;
+
+        }
+
+
+        .send-button:hover {
+
+            background:
+                rgba(255,255,255,0.18);
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        /* =========================================
+           LOGIN NOTICE
+        ========================================= */
+
+        .chat-login-notice {
+
+            margin-top:
+                1.5rem;
+
+            text-align: center;
+
+            color:
+                rgba(255,255,255,0.45);
+
+            font-size:
+                0.8rem;
+
+        }
+
+
+        .chat-login-notice a {
+
+            color:
+                #ffffff;
+
+            text-decoration:
+                underline;
+
+            text-underline-offset:
+                3px;
+
+        }
+
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 800px) {
+
+            .chat-page {
+
+                padding:
+                    110px 3% 50px;
+
+            }
+
+
+            .chat-heading {
+
+                margin-bottom:
+                    2rem;
+
+            }
+
+
+            .chat-app {
+
+                grid-template-columns:
+                    1fr;
+
+                min-height:
+                    700px;
+
+            }
+
+
+            .chat-sidebar {
+
+                border-right: none;
+
+                border-bottom:
+                    1px solid
+                    rgba(255,255,255,0.12);
+
+                max-height:
+                    230px;
+
+            }
+
+
+            .chat-sidebar-header {
+
+                padding:
+                    1.2rem;
+
+            }
+
+
+            .chat-sidebar-title {
+
+                font-size:
+                    1.5rem;
+
+            }
+
+
+            .conversation-list {
+
+                max-height:
+                    110px;
+
+            }
+
+
+            .chat-main {
+
+                min-height:
+                    470px;
+
+            }
+
+
+            .message-composer {
+
+                padding:
+                    0.8rem;
+
+            }
+
+
+            .send-button {
+
+                min-width:
+                    65px;
+
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .message-composer {
+
+                gap: 6px;
+
+            }
+
+
+            .emoji-button {
+
+                width:
+                    44px;
+
+                height:
+                    44px;
+
+            }
+
+
+            .message-input {
+
+                min-height:
+                    44px;
+
+            }
+
+
+            .send-button {
+
+                min-width:
+                    58px;
+
+                padding:
+                    0 0.7rem;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================
+         MATHEMATICAL BACKGROUND
+    ========================================== -->
+
+    <div class="math-background"
+         aria-hidden="true">
+
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+
+    </div>
+
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="index.html"
+               class="logo">
+
+                CALCULUS
+
+            </a>
+
+
+            <nav class="desktop-nav">
+
+                <a href="index.html"
+                   class="nav-link">
+
+                    Home
+
+                </a>
+
+                <a href="about.html"
+                   class="nav-link">
+
+                    About
+
+                </a>
+
+                <a href="books.html"
+                   class="nav-link">
+
+                    Books
+
+                </a>
+
+                <a href="topics.html"
+                   class="nav-link">
+
+                    Topics
+
+                </a>
+
+                <a href="other-websites.html"
+                   class="nav-link">
+
+                    Other Websites
+
+                </a>
+
+            </nav>
+
+
+            <button class="hamburger"
+                    id="hamburger"
+                    aria-label="Open navigation menu"
+                    aria-expanded="false">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+
+        <div class="mobile-menu"
+             id="mobileMenu">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="about.html">
+                About
+            </a>
+
+            <a href="books.html">
+                Books
+            </a>
+
+            <div class="mobile-topics">
+
+                <div class="mobile-topics-header">
+
+                    <a href="topics.html"
+                       class="mobile-topics-title">
+
+                        Topics
+
+                    </a>
+
+                    <button
+                        class="topics-toggle"
+                        id="topicsToggle"
+                        aria-label="Expand Topics submenu"
+                        aria-expanded="false">
+
+                        <span></span>
+
+                    </button>
+
+                </div>
+
+
+                <div class="topics-submenu"
+                     id="topicsSubmenu">
+
+                    <a href="single-variable-calculus.html">
+                        Single Variable Basic Calculus
+                    </a>
+
+                    <a href="multivariable-calculus.html">
+                        Basic Multivariable Calculus
+                    </a>
+
+                    <a href="vector-calculus.html">
+                        Vector Calculus
+                    </a>
+
+                    <a href="differential-geometry.html">
+                        Differential Geometry and Advanced Topics
+                    </a>
+
+                    <a href="relations.html">
+                        Relations with Other Branches
+                    </a>
+
+                </div>
+
+            </div>
+
+            <a href="other-websites.html">
+                Other Websites
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         CHAT
+    ========================================== -->
+
+    <main class="chat-page">
+
+        <div class="chat-container">
+
+
+            <section class="chat-heading">
+
+                <h1>
+                    CHAT
+                </h1>
+
+                <p>
+                    Connect with other members of
+                    CALCULUS and discuss mathematics.
+                </p>
+
+            </section>
+
+
+            <section class="chat-app">
+
+
+                <!-- =================================
+                     SIDEBAR
+                ================================== -->
+
+                <aside class="chat-sidebar">
+
+                    <div class="chat-sidebar-header">
+
+                        <h2 class="chat-sidebar-title">
+                            Conversations
+                        </h2>
+
+                        <input
+                            type="search"
+                            class="chat-search"
+                            id="chatSearch"
+                            placeholder="Search users..."
+                            autocomplete="off">
+
+                    </div>
+
+
+                    <div class="conversation-list"
+                         id="conversationList">
+
+                        <div class="conversation-placeholder">
+
+                            Your conversations
+                            will appear here.
+
+                        </div>
+
+                    </div>
+
+                </aside>
+
+
+                <!-- =================================
+                     MAIN CHAT
+                ================================== -->
+
+                <section class="chat-main">
+
+
+                    <header class="chat-main-header">
+
+                        <span
+                            class="chat-user-placeholder"
+                            id="chatUserPlaceholder">
+
+                            Select a conversation
+                            to start chatting.
+
+                        </span>
+
+                    </header>
+
+
+                    <div class="messages-area"
+                         id="messagesArea">
+
+                        <div class="messages-empty">
+
+                            <h2>
+                                Start a conversation
+                            </h2>
+
+                            <p>
+                                Select a user from your
+                                conversations to begin
+                                chatting.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         MESSAGE COMPOSER
+                    ================================== -->
+
+                    <form
+                        class="message-composer"
+                        id="messageComposer">
+
+                        <button
+                            type="button"
+                            class="emoji-button"
+                            id="emojiButton"
+                            aria-label="Choose emoji">
+
+                            😊
+
+                        </button>
+
+
+                        <textarea
+                            class="message-input"
+                            id="messageInput"
+                            placeholder="Write a message..."
+                            maxlength="2000"
+                            rows="1"></textarea>
+
+
+                        <button
+                            type="submit"
+                            class="send-button">
+
+                            Send
+
+                        </button>
+
+                    </form>
+
+                </section>
+
+            </section>
+
+
+            <p class="chat-login-notice"
+               id="chatLoginNotice">
+
+                You must be signed in to use CALCULUS Chat.
+
+                <a href="login.html">
+                    Log In
+                </a>
+
+            </p>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <p>
+    
