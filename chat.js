@@ -18,6 +18,7 @@ import {
     getDocs,
     doc,
     setDoc,
+    getDoc,
     addDoc,
     serverTimestamp,
     orderBy,
@@ -45,28 +46,51 @@ const db =
 // =========================================
 
 const chatLoginNotice =
-    document.getElementById("chatLoginNotice");
+    document.getElementById(
+        "chatLoginNotice"
+    );
+
 
 const messageComposer =
-    document.getElementById("messageComposer");
+    document.getElementById(
+        "messageComposer"
+    );
+
 
 const messageInput =
-    document.getElementById("messageInput");
+    document.getElementById(
+        "messageInput"
+    );
+
 
 const emojiButton =
-    document.getElementById("emojiButton");
+    document.getElementById(
+        "emojiButton"
+    );
+
 
 const conversationList =
-    document.getElementById("conversationList");
+    document.getElementById(
+        "conversationList"
+    );
+
 
 const messagesArea =
-    document.getElementById("messagesArea");
+    document.getElementById(
+        "messagesArea"
+    );
+
 
 const chatUserPlaceholder =
-    document.getElementById("chatUserPlaceholder");
+    document.getElementById(
+        "chatUserPlaceholder"
+    );
+
 
 const chatSearch =
-    document.getElementById("chatSearch");
+    document.getElementById(
+        "chatSearch"
+    );
 
 
 
@@ -74,13 +98,260 @@ const chatSearch =
 // STATE
 // =========================================
 
-let currentUser = null;
+let currentUser =
+    null;
 
-let selectedUser = null;
 
-let currentConversationId = null;
+let selectedUser =
+    null;
 
-let unsubscribeMessages = null;
+
+let currentConversationId =
+    null;
+
+
+let unsubscribeMessages =
+    null;
+
+
+
+// =========================================
+// CHAT NAME
+// =========================================
+// This function runs ONLY on chat.html.
+// It does not modify auth.js.
+// =========================================
+
+async function ensureChatName(user) {
+
+    if (!user) {
+
+        return null;
+
+    }
+
+
+    const publicUserRef =
+        doc(
+            db,
+            "publicUsers",
+            user.uid
+        );
+
+
+    // =====================================
+    // GET PUBLIC PROFILE
+    // =====================================
+
+    let snapshot;
+
+    try {
+
+        snapshot =
+            await getDoc(
+                publicUserRef
+            );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not read public profile:",
+            error
+        );
+
+
+        alert(
+            "Could not load your CALCULUS Chat profile. " +
+            "Please check your internet connection and try again."
+        );
+
+
+        return null;
+
+    }
+
+
+
+    // =====================================
+    // CHECK EXISTING CHAT NAME
+    // =====================================
+
+    if (
+        snapshot.exists()
+    ) {
+
+        const data =
+            snapshot.data();
+
+
+        if (
+            typeof data.chatName === "string" &&
+            data.chatName.trim() !== ""
+        ) {
+
+            console.log(
+                "Existing Chat Name:",
+                data.chatName
+            );
+
+
+            return data.chatName.trim();
+
+        }
+
+    }
+
+
+
+    // =====================================
+    // ASK FOR CHAT NAME
+    // =====================================
+
+    let chatName =
+        null;
+
+
+    while (!chatName) {
+
+        chatName =
+            window.prompt(
+                "Welcome to CALCULUS Chat!\n\n" +
+                "Choose the name that other members " +
+                "will see when they search for you.\n\n" +
+                "Example: gamer45"
+            );
+
+
+        // =================================
+        // CANCEL
+        // =================================
+
+        if (
+            chatName === null
+        ) {
+
+            alert(
+                "You need to choose a Chat Name " +
+                "before using CALCULUS Chat."
+            );
+
+
+            return null;
+
+        }
+
+
+        // =================================
+        // CLEAN NAME
+        // =================================
+
+        chatName =
+            chatName.trim();
+
+
+        // =================================
+        // EMPTY NAME
+        // =================================
+
+        if (!chatName) {
+
+            alert(
+                "Please enter a Chat Name."
+            );
+
+
+            chatName =
+                null;
+
+
+            continue;
+
+        }
+
+
+        // =================================
+        // LENGTH
+        // =================================
+
+        if (
+            chatName.length > 30
+        ) {
+
+            alert(
+                "Your Chat Name must be 30 characters or fewer."
+            );
+
+
+            chatName =
+                null;
+
+
+            continue;
+
+        }
+
+    }
+
+
+
+    // =====================================
+    // SAVE CHAT NAME
+    // =====================================
+
+    try {
+
+        await setDoc(
+            publicUserRef,
+            {
+
+                uid:
+                    user.uid,
+
+                chatName:
+                    chatName,
+
+                photoURL:
+                    user.photoURL || ""
+
+            },
+
+            {
+                merge: true
+            }
+        );
+
+
+        console.log(
+            "Chat Name saved:",
+            chatName
+        );
+
+
+        return chatName;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not save Chat Name:",
+            error
+        );
+
+
+        alert(
+            "Your Chat Name could not be saved. " +
+            "Please try again."
+        );
+
+
+        return null;
+
+    }
+
+}
 
 
 
@@ -91,7 +362,8 @@ let unsubscribeMessages = null;
 watchAuthState(
     async (user) => {
 
-        currentUser = user;
+        currentUser =
+            user;
 
 
         // =====================================
@@ -101,42 +373,96 @@ watchAuthState(
         if (user) {
 
             if (chatLoginNotice) {
+
                 chatLoginNotice.style.display =
                     "none";
+
             }
 
 
             if (messageInput) {
-                messageInput.disabled = false;
+
+                messageInput.disabled =
+                    false;
+
             }
 
 
             if (emojiButton) {
-                emojiButton.disabled = false;
+
+                emojiButton.disabled =
+                    false;
+
             }
 
 
-            if (chatSearch) {
-                chatSearch.disabled = false;
+            // =================================
+            // CHAT NAME CHECK
+            // =================================
+
+            const chatName =
+                await ensureChatName(
+                    user
+                );
+
+
+            /*
+               If the user cancelled the
+               Chat Name popup, don't continue
+               with Chat functionality.
+            */
+
+            if (!chatName) {
+
+                if (messageInput) {
+
+                    messageInput.disabled =
+                        true;
+
+                }
+
+
+                if (emojiButton) {
+
+                    emojiButton.disabled =
+                        true;
+
+                }
+
+
+                return;
+
             }
 
+
+            // =================================
+            // INITIAL CONVERSATION MESSAGE
+            // =================================
 
             if (conversationList) {
 
-                conversationList.innerHTML = "";
+                conversationList.innerHTML =
+                    "";
+
 
                 const placeholder =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
+
 
                 placeholder.className =
                     "conversation-placeholder";
 
+
                 placeholder.textContent =
                     "Search for a member to start chatting.";
+
 
                 conversationList.appendChild(
                     placeholder
                 );
+
             }
 
         }
@@ -149,55 +475,71 @@ watchAuthState(
         else {
 
             if (chatLoginNotice) {
+
                 chatLoginNotice.style.display =
                     "block";
+
             }
 
 
             if (messageInput) {
-                messageInput.disabled = true;
+
+                messageInput.disabled =
+                    true;
+
             }
 
 
             if (emojiButton) {
-                emojiButton.disabled = true;
-            }
 
+                emojiButton.disabled =
+                    true;
 
-            if (chatSearch) {
-                chatSearch.disabled = true;
             }
 
 
             if (conversationList) {
 
-                conversationList.innerHTML = "";
+                conversationList.innerHTML =
+                    "";
+
 
                 const placeholder =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
+
 
                 placeholder.className =
                     "conversation-placeholder";
 
+
                 placeholder.textContent =
                     "Please sign in to use Chat.";
+
 
                 conversationList.appendChild(
                     placeholder
                 );
+
             }
 
 
-            selectedUser = null;
+            selectedUser =
+                null;
 
-            currentConversationId = null;
+
+            currentConversationId =
+                null;
 
 
             if (unsubscribeMessages) {
 
                 unsubscribeMessages();
 
-                unsubscribeMessages = null;
+                unsubscribeMessages =
+                    null;
+
             }
 
         }
@@ -211,16 +553,23 @@ watchAuthState(
 // FIND / CREATE CONVERSATION
 // =========================================
 
-async function getOrCreateConversation(otherUser) {
+async function getOrCreateConversation(
+    otherUser
+) {
 
     if (!currentUser) {
+
         return null;
+
     }
 
 
     const participantIds = [
+
         currentUser.uid,
+
         otherUser.uid
+
     ].sort();
 
 
@@ -239,12 +588,15 @@ async function getOrCreateConversation(otherUser) {
     await setDoc(
         conversationRef,
         {
+
             participantIds:
                 participantIds,
 
             createdAt:
                 serverTimestamp()
+
         },
+
         {
             merge: true
         }
@@ -252,6 +604,7 @@ async function getOrCreateConversation(otherUser) {
 
 
     return conversationId;
+
 }
 
 
@@ -263,7 +616,9 @@ async function getOrCreateConversation(otherUser) {
 async function selectUser(user) {
 
     if (!currentUser) {
+
         return;
+
     }
 
 
@@ -271,11 +626,14 @@ async function selectUser(user) {
         user.uid ===
         currentUser.uid
     ) {
+
         return;
+
     }
 
 
-    selectedUser = user;
+    selectedUser =
+        user;
 
 
     // =====================================
@@ -285,51 +643,28 @@ async function selectUser(user) {
     if (chatUserPlaceholder) {
 
         chatUserPlaceholder.textContent =
-            user.displayName ||
+            user.chatName ||
             "CALCULUS User";
+
     }
 
 
     // =====================================
-    // STOP OLD LISTENER
+    // CLEAR OLD LISTENER
     // =====================================
 
     if (unsubscribeMessages) {
 
         unsubscribeMessages();
 
-        unsubscribeMessages = null;
+        unsubscribeMessages =
+            null;
+
     }
 
 
     // =====================================
-    // CLEAR OLD MESSAGES
-    // =====================================
-
-    if (messagesArea) {
-
-        messagesArea.innerHTML = "";
-
-        const loading =
-            document.createElement("div");
-
-        loading.className =
-            "messages-empty";
-
-        const heading =
-            document.createElement("h2");
-
-        heading.textContent =
-            "Loading messages...";
-
-        loading.appendChild(heading);
-
-        messagesArea.appendChild(loading);
-    }
-
-
-    // =====================================
-    // GET CONVERSATION
+    // CREATE / GET CONVERSATION
     // =====================================
 
     try {
@@ -344,56 +679,42 @@ async function selectUser(user) {
     catch (error) {
 
         console.error(
-            "Conversation creation failed:",
+            "Conversation error:",
             error
         );
 
-        if (messagesArea) {
-
-            messagesArea.innerHTML = "";
-
-            const errorMessage =
-                document.createElement("div");
-
-            errorMessage.className =
-                "messages-empty";
-
-            errorMessage.textContent =
-                "Unable to open this conversation.";
-
-            messagesArea.appendChild(
-                errorMessage
-            );
-        }
-
         return;
+
     }
 
 
     if (!currentConversationId) {
+
         return;
+
     }
 
-
-    // =====================================
-    // START REAL-TIME LISTENER
-    // =====================================
 
     listenForMessages(
         currentConversationId
     );
+
 }
 
 
 
 // =========================================
-// RECEIVE MESSAGES IN REAL TIME
+// LISTEN FOR MESSAGES
 // =========================================
 
-function listenForMessages(conversationId) {
+function listenForMessages(
+    conversationId
+) {
 
     if (!messagesArea) {
+
         return;
+
     }
 
 
@@ -416,54 +737,65 @@ function listenForMessages(conversationId) {
         );
 
 
-    /*
-       onSnapshot keeps this listener alive.
-
-       Whenever the other user sends a new
-       message, Firestore sends a new snapshot
-       to this computer automatically.
-    */
-
     unsubscribeMessages =
         onSnapshot(
-
             messagesQuery,
 
             (snapshot) => {
 
-                messagesArea.innerHTML = "";
+                messagesArea.innerHTML =
+                    "";
 
 
                 if (snapshot.empty) {
 
                     const empty =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
+
 
                     empty.className =
                         "messages-empty";
 
 
                     const heading =
-                        document.createElement("h2");
+                        document.createElement(
+                            "h2"
+                        );
+
 
                     heading.textContent =
                         "Start the conversation";
 
 
                     const paragraph =
-                        document.createElement("p");
+                        document.createElement(
+                            "p"
+                        );
+
 
                     paragraph.textContent =
                         "Send the first message.";
 
 
-                    empty.appendChild(heading);
+                    empty.appendChild(
+                        heading
+                    );
 
-                    empty.appendChild(paragraph);
 
-                    messagesArea.appendChild(empty);
+                    empty.appendChild(
+                        paragraph
+                    );
+
+
+                    messagesArea.appendChild(
+                        empty
+                    );
+
 
                     return;
+
                 }
 
 
@@ -475,7 +807,9 @@ function listenForMessages(conversationId) {
 
 
                         const message =
-                            document.createElement("div");
+                            document.createElement(
+                                "div"
+                            );
 
 
                         message.className =
@@ -498,13 +832,9 @@ function listenForMessages(conversationId) {
                             message.classList.add(
                                 "chat-message-other"
                             );
+
                         }
 
-
-                        /*
-                           Never use innerHTML for
-                           user-written messages.
-                        */
 
                         message.textContent =
                             data.text || "";
@@ -513,59 +843,26 @@ function listenForMessages(conversationId) {
                         messagesArea.appendChild(
                             message
                         );
+
                     }
                 );
 
 
                 messagesArea.scrollTop =
                     messagesArea.scrollHeight;
-            },
 
+            },
 
             (error) => {
 
                 console.error(
-                    "REAL-TIME MESSAGE LISTENER ERROR:",
+                    "Message listener error:",
                     error
                 );
 
-
-                if (messagesArea) {
-
-                    messagesArea.innerHTML = "";
-
-
-                    const errorBox =
-                        document.createElement("div");
-
-                    errorBox.className =
-                        "messages-empty";
-
-
-                    const heading =
-                        document.createElement("h2");
-
-                    heading.textContent =
-                        "Unable to receive messages";
-
-
-                    const paragraph =
-                        document.createElement("p");
-
-                    paragraph.textContent =
-                        "Firestore permission denied or the conversation is unavailable.";
-
-
-                    errorBox.appendChild(heading);
-
-                    errorBox.appendChild(paragraph);
-
-                    messagesArea.appendChild(
-                        errorBox
-                    );
-                }
             }
         );
+
 }
 
 
@@ -585,7 +882,9 @@ if (messageComposer) {
 
 
             if (!currentUser) {
+
                 return;
+
             }
 
 
@@ -595,7 +894,9 @@ if (messageComposer) {
                     "Select a user before sending a message."
                 );
 
+
                 return;
+
             }
 
 
@@ -606,22 +907,30 @@ if (messageComposer) {
 
 
             if (!text) {
+
                 return;
+
             }
 
 
-            if (text.length > 2000) {
+            if (
+                text.length > 2000
+            ) {
 
                 alert(
                     "Messages cannot exceed 2000 characters."
                 );
 
+
                 return;
+
             }
 
 
             if (!currentConversationId) {
+
                 return;
+
             }
 
 
@@ -657,6 +966,7 @@ if (messageComposer) {
 
                     messageInput.value =
                         "";
+
                 }
 
             }
@@ -672,10 +982,12 @@ if (messageComposer) {
                 alert(
                     "Message could not be sent. Please try again."
                 );
+
             }
 
         }
     );
+
 }
 
 
@@ -692,7 +1004,9 @@ if (emojiButton) {
         () => {
 
             if (!messageInput) {
+
                 return;
+
             }
 
 
@@ -700,15 +1014,15 @@ if (emojiButton) {
                 "😀 😂 😍 😎 🤔 😄 👍 ❤️ 🎉 🔥 😭 🙌";
 
 
-            const emojiList =
+            const emojiArray =
                 emojis.split(" ");
 
 
             const selectedEmoji =
-                emojiList[
+                emojiArray[
                     Math.floor(
                         Math.random() *
-                        emojiList.length
+                        emojiArray.length
                     )
                 ];
 
@@ -718,8 +1032,10 @@ if (emojiButton) {
 
 
             messageInput.focus();
+
         }
     );
+
 }
 
 
@@ -736,7 +1052,9 @@ if (chatSearch) {
         async () => {
 
             if (!currentUser) {
+
                 return;
+
             }
 
 
@@ -750,23 +1068,33 @@ if (chatSearch) {
 
                 if (conversationList) {
 
-                    conversationList.innerHTML = "";
+                    conversationList.innerHTML =
+                        "";
+
 
                     const placeholder =
-                        document.createElement("div");
+                        document.createElement(
+                            "div"
+                        );
+
 
                     placeholder.className =
                         "conversation-placeholder";
 
+
                     placeholder.textContent =
                         "Search for a member to start chatting.";
+
 
                     conversationList.appendChild(
                         placeholder
                     );
+
                 }
 
+
                 return;
+
             }
 
 
@@ -786,14 +1114,18 @@ if (chatSearch) {
 
 
                 if (!conversationList) {
+
                     return;
+
                 }
 
 
-                conversationList.innerHTML = "";
+                conversationList.innerHTML =
+                    "";
 
 
-                let found = false;
+                let found =
+                    false;
 
 
                 snapshot.forEach(
@@ -803,96 +1135,36 @@ if (chatSearch) {
                             userDoc.data();
 
 
+                        // =====================
+                        // NEVER SHOW YOURSELF
+                        // =====================
+
                         if (
                             user.uid ===
                             currentUser.uid
                         ) {
+
                             return;
+
                         }
 
 
-                        const displayName =
+                        // =====================
+                        // USE CHAT NAME
+                        // =====================
+
+                        const chatName =
                             (
-                                user.displayName ||
+                                user.chatName ||
                                 ""
-                            ).toLowerCase();
+                            ).trim();
 
 
-                        if (
-                            !displayName.includes(
-                                searchText
-                            )
-                        ) {
-                            return;
-                        }
+                        /*
+                           Ignore old public profiles
+                           that don't have a Chat Name yet.
+                        */
 
+                        if (!chatName) {
 
-                        found = true;
-
-
-                        const button =
-                            document.createElement("button");
-
-
-                        button.type =
-                            "button";
-
-
-                        button.className =
-                            "conversation-user";
-
-
-                        button.textContent =
-                            user.displayName ||
-                            "CALCULUS User";
-
-
-                        button.addEventListener(
-                            "click",
-                            () => {
-
-                                selectUser(
-                                    user
-                                );
-
-                            }
-                        );
-
-
-                        conversationList.appendChild(
-                            button
-                        );
-                    }
-                );
-
-
-                if (!found) {
-
-                    const empty =
-                        document.createElement("div");
-
-                    empty.className =
-                        "conversation-placeholder";
-
-                    empty.textContent =
-                        "No members found.";
-
-                    conversationList.appendChild(
-                        empty
-                    );
-                }
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    "User search failed:",
-                    error
-                );
-
-            }
-
-        }
-    );
-                    }
+          
