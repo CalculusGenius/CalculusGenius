@@ -14,9 +14,7 @@
     <title>CALCULUS — Chat</title>
 
 
-    <!-- =========================================
-         GOOGLE FONTS
-    ========================================== -->
+    <!-- GOOGLE FONTS -->
 
     <link rel="preconnect"
           href="https://fonts.googleapis.com">
@@ -29,874 +27,305 @@
           rel="stylesheet">
 
 
-    <!-- =========================================
-         MAIN STYLESHEET
-    ========================================== -->
+    <!-- GLOBAL WEBSITE STYLES -->
 
     <link rel="stylesheet"
           href="style.css">
 
 
-    <!-- =========================================
-         CHAT STYLES
-    ========================================== -->
+    <!-- CHAT-SPECIFIC STYLES -->
 
     <style>
 
-
-        /* =========================================
-   USER SEARCH RESULTS
-========================================= */
-
-.conversation-user {
-
-    width: 100%;
-
-    padding:
-        0.9rem 1.2rem;
-
-    border:
-        none;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,0.08);
-
-    outline: none;
-
-    background:
-        transparent;
-
-    color:
-        rgba(255,255,255,0.85);
-
-    font-family:
-        "Inter",
-        sans-serif;
-
-    font-size:
-        0.9rem;
-
-    text-align:
-        left;
-
-    cursor:
-        pointer;
-
-    appearance:
-        none;
-
-    -webkit-appearance:
-        none;
-
-    transition:
-        background 0.25s ease,
-        color 0.25s ease;
-
-}
-
-
-.conversation-user:hover {
-
-    background:
-        rgba(255,255,255,0.07);
-
-    color:
-        #ffffff;
-
-}
-
-
-.conversation-user:focus-visible {
-
-    background:
-        rgba(255,255,255,0.08);
-
-    color:
-        #ffffff;
-
-}
-
-        
-        /* =========================================
-   CHAT USER DIRECTORY
-========================================= */
-
-.chat-user {
-
-    width: 100%;
-
-    padding: 0.9rem 1.2rem;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 12px;
-
-    border: none;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,0.07);
-
-    background: transparent;
-
-    color: #ffffff;
-
-    font-family:
-        "Inter",
-        sans-serif;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease;
-
-}
-
-
-.chat-user:hover {
-
-    background:
-        rgba(255,255,255,0.07);
-
-}
-
-
-.chat-user.selected {
-
-    background:
-        rgba(255,255,255,0.11);
-
-}
-
-
-.chat-user-image {
-
-    width: 42px;
-
-    height: 42px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-
-    object-fit: cover;
-
-    border:
-        1px solid
-        rgba(255,255,255,0.2);
-
-}
-
-
-.chat-user-name {
-
-    min-width: 0;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    white-space: nowrap;
-
-    font-size: 0.9rem;
-
-    font-weight: 500;
-
-}
-
-        /* =========================================
-           CHAT PAGE
-        ========================================= */
-
         .chat-page {
-
             min-height: 100vh;
-
-            padding:
-                125px 5% 70px;
-
+            padding: 125px 5% 70px;
             position: relative;
-
             z-index: 2;
-
         }
-
 
         .chat-container {
-
-            width:
-                min(1250px, 100%);
-
-            margin:
-                0 auto;
-
+            width: min(1250px, 100%);
+            margin: 0 auto;
         }
-
-
-        /* =========================================
-           PAGE HEADER
-        ========================================= */
 
         .chat-heading {
-
             text-align: center;
-
             margin-bottom: 3rem;
-
         }
-
 
         .chat-heading h1 {
-
             margin: 0;
-
-            font-family:
-                "Cormorant Garamond",
-                serif;
-
-            font-size:
-                clamp(3rem, 8vw, 6rem);
-
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 600;
-
-            line-height: 1;
-
         }
-
 
         .chat-heading p {
-
-            margin:
-                1rem auto 0;
-
+            margin: 1rem auto 0;
             max-width: 600px;
-
-            color:
-                rgba(255,255,255,0.58);
-
-            font-size:
-                0.95rem;
-
+            color: rgba(255,255,255,0.58);
             line-height: 1.7;
-
         }
-
-
-        /* =========================================
-           CHAT APPLICATION
-        ========================================= */
 
         .chat-app {
-
             display: grid;
-
-            grid-template-columns:
-                320px 1fr;
-
-            min-height:
-                650px;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.22);
-
-            background:
-                rgba(255,255,255,0.025);
-
-            box-shadow:
-                0 30px 100px
-                rgba(0,0,0,0.45);
-
-            backdrop-filter:
-                blur(15px);
-
-            -webkit-backdrop-filter:
-                blur(15px);
-
+            grid-template-columns: 320px 1fr;
+            min-height: 650px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.025);
+            box-shadow: 0 30px 100px rgba(0,0,0,0.45);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
-
-
-        /* =========================================
-           SIDEBAR
-        ========================================= */
 
         .chat-sidebar {
-
-            border-right:
-                1px solid
-                rgba(255,255,255,0.12);
-
+            border-right: 1px solid rgba(255,255,255,0.12);
             display: flex;
-
             flex-direction: column;
-
-            min-width: 0;
-
         }
-
 
         .chat-sidebar-header {
-
-            padding:
-                1.5rem;
-
-            border-bottom:
-                1px solid
-                rgba(255,255,255,0.1);
-
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-
 
         .chat-sidebar-title {
-
             margin: 0 0 1rem;
-
-            font-family:
-                "Cormorant Garamond",
-                serif;
-
-            font-size:
-                1.8rem;
-
-            font-weight: 600;
-
+            font-family: "Cormorant Garamond", serif;
+            font-size: 1.8rem;
         }
-
-
-        /* =========================================
-           SEARCH
-        ========================================= */
 
         .chat-search {
-
             width: 100%;
-
-            padding:
-                0.8rem 1rem;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.18);
-
+            box-sizing: border-box;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(255,255,255,0.18);
             outline: none;
-
-            background:
-                rgba(255,255,255,0.045);
-
-            color: #ffffff;
-
-            font-family:
-                "Inter",
-                sans-serif;
-
-            font-size:
-                0.85rem;
-
-            transition:
-                border-color 0.25s ease,
-                background 0.25s ease;
-
+            background: rgba(255,255,255,0.045);
+            color: #fff;
+            font-family: "Inter", sans-serif;
         }
-
 
         .chat-search::placeholder {
-
-            color:
-                rgba(255,255,255,0.35);
-
+            color: rgba(255,255,255,0.35);
         }
-
-
-        .chat-search:focus {
-
-            border-color:
-                rgba(255,255,255,0.45);
-
-            background:
-                rgba(255,255,255,0.07);
-
-        }
-
-
-        /* =========================================
-           CONVERSATION LIST
-        ========================================= */
 
         .conversation-list {
-
             flex: 1;
-
             overflow-y: auto;
-
         }
-
 
         .conversation-placeholder {
-
-            padding:
-                3rem 1.5rem;
-
+            padding: 3rem 1.5rem;
             text-align: center;
-
-            color:
-                rgba(255,255,255,0.38);
-
-            font-size:
-                0.85rem;
-
+            color: rgba(255,255,255,0.38);
+            font-size: 0.85rem;
             line-height: 1.7;
-
         }
 
+        .conversation-user {
+            display: block;
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            background: transparent;
+            color: #fff;
+            text-align: left;
+            cursor: pointer;
+            font-family: "Inter", sans-serif;
+        }
 
-        /* =========================================
-           CHAT MAIN
-        ========================================= */
+        .conversation-user:hover {
+            background: rgba(255,255,255,0.08);
+        }
 
         .chat-main {
-
             display: flex;
-
             flex-direction: column;
-
             min-width: 0;
-
         }
-
-
-        /* =========================================
-           CHAT HEADER
-        ========================================= */
 
         .chat-main-header {
-
-            min-height:
-                78px;
-
-            padding:
-                1rem 1.5rem;
-
+            min-height: 78px;
+            padding: 1rem 1.5rem;
             display: flex;
-
             align-items: center;
-
-            border-bottom:
-                1px solid
-                rgba(255,255,255,0.1);
-
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-
 
         .chat-user-placeholder {
-
-            color:
-                rgba(255,255,255,0.4);
-
-            font-size:
-                0.9rem;
-
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
         }
-
-
-        /* =========================================
-           MESSAGES
-        ========================================= */
 
         .messages-area {
-
             flex: 1;
-
-            padding:
-                1.5rem;
-
+            padding: 1.5rem;
             overflow-y: auto;
-
             display: flex;
-
             flex-direction: column;
-
-            justify-content: center;
-
-            align-items: center;
-
-            text-align: center;
-
+            gap: 0.7rem;
         }
 
+        .messages-empty {
+            margin: auto;
+            text-align: center;
+        }
 
         .messages-empty h2 {
-
-            margin: 0;
-
-            font-family:
-                "Cormorant Garamond",
-                serif;
-
-            font-size:
-                2.2rem;
-
-            font-weight: 600;
-
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2.2rem;
         }
-
 
         .messages-empty p {
-
-            margin:
-                0.8rem 0 0;
-
-            max-width:
-                400px;
-
-            color:
-                rgba(255,255,255,0.45);
-
-            font-size:
-                0.85rem;
-
-            line-height: 1.7;
-
+            color: rgba(255,255,255,0.45);
         }
 
+        .chat-message {
+            max-width: 70%;
+            padding: 0.75rem 1rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
 
-        /* =========================================
-           MESSAGE INPUT
-        ========================================= */
+        .chat-message-own {
+            align-self: flex-end;
+            background: rgba(255,255,255,0.12);
+        }
+
+        .chat-message-other {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.06);
+        }
 
         .message-composer {
-
-            padding:
-                1rem;
-
-            border-top:
-                1px solid
-                rgba(255,255,255,0.1);
-
+            padding: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
             display: flex;
-
             gap: 10px;
-
         }
-
 
         .message-input {
-
             flex: 1;
-
             min-width: 0;
-
             min-height: 48px;
-
             resize: none;
-
-            padding:
-                0.8rem 1rem;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.18);
-
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(255,255,255,0.18);
             outline: none;
-
-            background:
-                rgba(255,255,255,0.045);
-
-            color: #ffffff;
-
-            font-family:
-                "Inter",
-                sans-serif;
-
-            font-size:
-                0.9rem;
-
+            background: rgba(255,255,255,0.045);
+            color: #fff;
+            font-family: "Inter", sans-serif;
         }
 
-
-        .message-input::placeholder {
-
-            color:
-                rgba(255,255,255,0.35);
-
+        .emoji-button,
+        .send-button {
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            cursor: pointer;
         }
-
-
-        .message-input:focus {
-
-            border-color:
-                rgba(255,255,255,0.45);
-
-        }
-
-
-        /* =========================================
-           EMOJI BUTTON
-        ========================================= */
 
         .emoji-button {
-
-            width:
-                48px;
-
-            height:
-                48px;
-
+            width: 48px;
             flex-shrink: 0;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.18);
-
-            background:
-                rgba(255,255,255,0.045);
-
-            color: #ffffff;
-
-            font-size:
-                1.25rem;
-
-            cursor: pointer;
-
-            transition:
-                background 0.25s ease,
-                border-color 0.25s ease;
-
+            font-size: 1.2rem;
         }
-
-
-        .emoji-button:hover {
-
-            background:
-                rgba(255,255,255,0.1);
-
-            border-color:
-                rgba(255,255,255,0.4);
-
-        }
-
-
-        /* =========================================
-           SEND BUTTON
-        ========================================= */
 
         .send-button {
-
-            min-width:
-                80px;
-
-            padding:
-                0 1rem;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.3);
-
-            background:
-                rgba(255,255,255,0.1);
-
-            color: #ffffff;
-
-            font-family:
-                "Inter",
-                sans-serif;
-
-            font-size:
-                0.85rem;
-
-            font-weight: 500;
-
-            cursor: pointer;
-
-            transition:
-                background 0.25s ease,
-                transform 0.25s ease;
-
+            min-width: 80px;
+            padding: 0 1rem;
         }
-
-
-        .send-button:hover {
-
-            background:
-                rgba(255,255,255,0.18);
-
-            transform:
-                translateY(-1px);
-
-        }
-
-
-        /* =========================================
-           LOGIN NOTICE
-        ========================================= */
 
         .chat-login-notice {
-
-            margin-top:
-                1.5rem;
-
+            margin-top: 1.5rem;
             text-align: center;
-
-            color:
-                rgba(255,255,255,0.45);
-
-            font-size:
-                0.8rem;
-
+            color: rgba(255,255,255,0.45);
+            font-size: 0.8rem;
         }
-
 
         .chat-login-notice a {
-
-            color:
-                #ffffff;
-
-            text-decoration:
-                underline;
-
-            text-underline-offset:
-                3px;
-
+            color: #fff;
+            text-decoration: underline;
         }
 
+        /* NAME POPUP */
 
-        /* =========================================
-           MOBILE
-        ========================================= */
+        .chat-name-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.75);
+            padding: 20px;
+        }
+
+        .chat-name-box {
+            width: min(420px, 100%);
+            padding: 2rem;
+            background: #111;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 30px 100px rgba(0,0,0,0.6);
+        }
+
+        .chat-name-box h2 {
+            margin-top: 0;
+            font-family: "Cormorant Garamond", serif;
+            font-size: 2rem;
+        }
+
+        .chat-name-box p {
+            color: rgba(255,255,255,0.55);
+            line-height: 1.6;
+        }
+
+        #chatNameInput {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0.9rem;
+            margin: 1rem 0;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            outline: none;
+        }
+
+        #saveChatName {
+            width: 100%;
+            padding: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+            cursor: pointer;
+        }
 
         @media (max-width: 800px) {
 
             .chat-page {
-
-                padding:
-                    110px 3% 50px;
-
+                padding: 110px 3% 50px;
             }
-
-
-            .chat-heading {
-
-                margin-bottom:
-                    2rem;
-
-            }
-
 
             .chat-app {
-
-                grid-template-columns:
-                    1fr;
-
-                min-height:
-                    700px;
-
+                grid-template-columns: 1fr;
+                min-height: 700px;
             }
-
 
             .chat-sidebar {
-
                 border-right: none;
-
-                border-bottom:
-                    1px solid
-                    rgba(255,255,255,0.12);
-
-                max-height:
-                    230px;
-
+                border-bottom: 1px solid rgba(255,255,255,0.12);
+                max-height: 230px;
             }
-
-
-            .chat-sidebar-header {
-
-                padding:
-                    1.2rem;
-
-            }
-
-
-            .chat-sidebar-title {
-
-                font-size:
-                    1.5rem;
-
-            }
-
 
             .conversation-list {
-
-                max-height:
-                    110px;
-
+                max-height: 110px;
             }
-
 
             .chat-main {
-
-                min-height:
-                    470px;
-
-            }
-
-
-            .message-composer {
-
-                padding:
-                    0.8rem;
-
-            }
-
-
-            .send-button {
-
-                min-width:
-                    65px;
-
-            }
-
-        }
-
-
-        @media (max-width: 500px) {
-
-            .message-composer {
-
-                gap: 6px;
-
-            }
-
-
-            .emoji-button {
-
-                width:
-                    44px;
-
-                height:
-                    44px;
-
-            }
-
-
-            .message-input {
-
-                min-height:
-                    44px;
-
-            }
-
-
-            .send-button {
-
-                min-width:
-                    58px;
-
-                padding:
-                    0 0.7rem;
-
+                min-height: 470px;
             }
 
         }
@@ -909,9 +338,7 @@
 <body>
 
 
-    <!-- =========================================
-         MATHEMATICAL BACKGROUND
-    ========================================== -->
+    <!-- MATHEMATICAL BACKGROUND -->
 
     <div class="math-background"
          aria-hidden="true">
@@ -928,9 +355,7 @@
     </div>
 
 
-    <!-- =========================================
-         NAVIGATION
-    ========================================== -->
+    <!-- NAVIGATION -->
 
     <header class="navbar">
 
@@ -943,46 +368,24 @@
 
             </a>
 
-
             <nav class="desktop-nav">
 
                 <a href="index.html"
-                   class="nav-link">
-
-                    Home
-
-                </a>
+                   class="nav-link">Home</a>
 
                 <a href="about.html"
-                   class="nav-link">
-
-                    About
-
-                </a>
+                   class="nav-link">About</a>
 
                 <a href="books.html"
-                   class="nav-link">
-
-                    Books
-
-                </a>
+                   class="nav-link">Books</a>
 
                 <a href="topics.html"
-                   class="nav-link">
-
-                    Topics
-
-                </a>
+                   class="nav-link">Topics</a>
 
                 <a href="other-websites.html"
-                   class="nav-link">
-
-                    Other Websites
-
-                </a>
+                   class="nav-link">Other Websites</a>
 
             </nav>
-
 
             <button class="hamburger"
                     id="hamburger"
@@ -997,96 +400,29 @@
 
         </div>
 
-
         <div class="mobile-menu"
              id="mobileMenu">
 
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="about.html">
-                About
-            </a>
-
-            <a href="books.html">
-                Books
-            </a>
-
-            <div class="mobile-topics">
-
-                <div class="mobile-topics-header">
-
-                    <a href="topics.html"
-                       class="mobile-topics-title">
-
-                        Topics
-
-                    </a>
-
-                    <button
-                        class="topics-toggle"
-                        id="topicsToggle"
-                        aria-label="Expand Topics submenu"
-                        aria-expanded="false">
-
-                        <span></span>
-
-                    </button>
-
-                </div>
-
-
-                <div class="topics-submenu"
-                     id="topicsSubmenu">
-
-                    <a href="single-variable-calculus.html">
-                        Single Variable Basic Calculus
-                    </a>
-
-                    <a href="multivariable-calculus.html">
-                        Basic Multivariable Calculus
-                    </a>
-
-                    <a href="vector-calculus.html">
-                        Vector Calculus
-                    </a>
-
-                    <a href="differential-geometry.html">
-                        Differential Geometry and Advanced Topics
-                    </a>
-
-                    <a href="relations.html">
-                        Relations with Other Branches
-                    </a>
-
-                </div>
-
-            </div>
-
-            <a href="other-websites.html">
-                Other Websites
-            </a>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="books.html">Books</a>
+            <a href="topics.html">Topics</a>
+            <a href="other-websites.html">Other Websites</a>
 
         </div>
 
     </header>
 
 
-    <!-- =========================================
-         CHAT
-    ========================================== -->
+    <!-- CHAT -->
 
     <main class="chat-page">
 
         <div class="chat-container">
 
-
             <section class="chat-heading">
 
-                <h1>
-                    CHAT
-                </h1>
+                <h1>CHAT</h1>
 
                 <p>
                     Connect with other members of
@@ -1099,9 +435,7 @@
             <section class="chat-app">
 
 
-                <!-- =================================
-                     SIDEBAR
-                ================================== -->
+                <!-- SIDEBAR -->
 
                 <aside class="chat-sidebar">
 
@@ -1121,14 +455,12 @@
                     </div>
 
 
-                    <div class="conversation-list"
-                         id="conversationList">
+                    <div
+                        class="conversation-list"
+                        id="conversationList">
 
                         <div class="conversation-placeholder">
-
-                            Your conversations
-                            will appear here.
-
+                            Checking sign-in status...
                         </div>
 
                     </div>
@@ -1136,12 +468,9 @@
                 </aside>
 
 
-                <!-- =================================
-                     MAIN CHAT
-                ================================== -->
+                <!-- MAIN CHAT -->
 
                 <section class="chat-main">
-
 
                     <header class="chat-main-header">
 
@@ -1157,8 +486,9 @@
                     </header>
 
 
-                    <div class="messages-area"
-                         id="messagesArea">
+                    <div
+                        class="messages-area"
+                        id="messagesArea">
 
                         <div class="messages-empty">
 
@@ -1167,20 +497,14 @@
                             </h2>
 
                             <p>
-                                Select a user from your
-                                conversations to begin
-                                chatting.
-
+                                Search for a member and
+                                select them to begin chatting.
                             </p>
 
                         </div>
 
                     </div>
 
-
-                    <!-- =================================
-                         MESSAGE COMPOSER
-                    ================================== -->
 
                     <form
                         class="message-composer"
@@ -1196,14 +520,12 @@
 
                         </button>
 
-
                         <textarea
                             class="message-input"
                             id="messageInput"
                             placeholder="Write a message..."
                             maxlength="2000"
                             rows="1"></textarea>
-
 
                         <button
                             type="submit"
@@ -1220,10 +542,15 @@
             </section>
 
 
-            <p class="chat-login-notice"
-               id="chatLoginNotice">
+            <!-- LOGIN NOTICE -->
 
-                You must be signed in to use CALCULUS Chat.
+            <p
+                class="chat-login-notice"
+                id="chatLoginNotice"
+                style="display:none;">
+
+                You must be signed in to use
+                CALCULUS Chat.
 
                 <a href="login.html">
                     Log In
@@ -1236,21 +563,57 @@
     </main>
 
 
-    <!-- =========================================
-         FOOTER
-    ========================================== -->
+    <!-- NAME POPUP -->
+
+    <div
+        class="chat-name-overlay"
+        id="chatNameOverlay">
+
+        <div class="chat-name-box">
+
+            <h2>
+                Choose your Chat name
+            </h2>
+
+            <p>
+                This name will be shown to other
+                CALCULUS Chat users. It does not
+                have to be your Google account name.
+            </p>
+
+            <input
+                type="text"
+                id="chatNameInput"
+                maxlength="30"
+                placeholder="e.g. gamer45"
+                autocomplete="off">
+
+            <button
+                type="button"
+                id="saveChatName">
+
+                Continue
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
 
     <footer>
 
         <p>
-            © Ankit Brahamachary 2026
+            Ankit Brahamachary 2026 copyright.
         </p>
 
     </footer>
 
 
     <!-- =========================================
-         GLOBAL WEBSITE INTERACTIONS
+         JAVASCRIPT
     ========================================== -->
 
     <script
@@ -1258,309 +621,16 @@
         src="script.js">
     </script>
 
-
-    <!-- =========================================
-         GLOBAL AUTHENTICATION UI
-    ========================================== -->
-
     <script
         type="module"
         src="auth-ui.js">
     </script>
-
-
-    <!-- =========================================
-         CHAT PAGE JAVASCRIPT
-    ========================================== -->
 
     <script
         type="module"
         src="chat.js">
     </script>
 
-
-
-<!-- =========================================
-     CALCULUS CHAT NAME MODAL
-========================================== -->
-
-<div
-    class="chat-name-modal"
-    id="chatNameModal"
-    aria-hidden="true">
-
-    <div class="chat-name-modal-box">
-
-        <h2>
-            Choose Your Chat Name
-        </h2>
-
-        <p>
-            This is the name other CALCULUS
-            members will see when they search
-            for you.
-        </p>
-
-        <input
-            type="text"
-            id="chatNameInput"
-            maxlength="30"
-            placeholder="e.g. gamer45"
-            autocomplete="off">
-
-        <p
-            class="chat-name-error"
-            id="chatNameError">
-        </p>
-
-        <button
-            type="button"
-            id="saveChatNameButton">
-
-            Continue
-
-        </button>
-
-    </div>
-
-</div>
-
-
-<style>
-
-    /* =========================================
-       CHAT NAME MODAL
-    ========================================== */
-
-    .chat-name-modal {
-
-        position: fixed;
-
-        inset: 0;
-
-        z-index: 99999;
-
-        display: none;
-
-        align-items: center;
-
-        justify-content: center;
-
-        padding: 20px;
-
-        background:
-            rgba(0,0,0,0.78);
-
-        backdrop-filter:
-            blur(12px);
-
-        -webkit-backdrop-filter:
-            blur(12px);
-
-    }
-
-
-    .chat-name-modal.active {
-
-        display: flex;
-
-    }
-
-
-    .chat-name-modal-box {
-
-        width:
-            min(450px, 100%);
-
-        padding:
-            2.5rem;
-
-        border:
-            1px solid
-            rgba(255,255,255,0.2);
-
-        background:
-            rgba(20,20,20,0.96);
-
-        box-shadow:
-            0 30px 100px
-            rgba(0,0,0,0.65);
-
-    }
-
-
-    .chat-name-modal-box h2 {
-
-        margin: 0;
-
-        font-family:
-            "Cormorant Garamond",
-            serif;
-
-        font-size:
-            2.4rem;
-
-        font-weight:
-            600;
-
-        color:
-            #ffffff;
-
-    }
-
-
-    .chat-name-modal-box p {
-
-        margin:
-            0.9rem 0 1.5rem;
-
-        color:
-            rgba(255,255,255,0.58);
-
-        font-family:
-            "Inter",
-            sans-serif;
-
-        font-size:
-            0.85rem;
-
-        line-height:
-            1.7;
-
-    }
-
-
-    #chatNameInput {
-
-        width:
-            100%;
-
-        box-sizing:
-            border-box;
-
-        padding:
-            0.9rem 1rem;
-
-        border:
-            1px solid
-            rgba(255,255,255,0.22);
-
-        outline:
-            none;
-
-        background:
-            rgba(255,255,255,0.06);
-
-        color:
-            #ffffff;
-
-        font-family:
-            "Inter",
-            sans-serif;
-
-        font-size:
-            0.9rem;
-
-    }
-
-
-    #chatNameInput:focus {
-
-        border-color:
-            rgba(255,255,255,0.55);
-
-    }
-
-
-    .chat-name-error {
-
-        min-height:
-            1.2em;
-
-        margin:
-            0.6rem 0 !important;
-
-        color:
-            #ff8f8f !important;
-
-        font-size:
-            0.78rem !important;
-
-    }
-
-
-    #saveChatNameButton {
-
-        width:
-            100%;
-
-        padding:
-            0.9rem;
-
-        border:
-            1px solid
-            rgba(255,255,255,0.3);
-
-        background:
-            rgba(255,255,255,0.1);
-
-        color:
-            #ffffff;
-
-        font-family:
-            "Inter",
-            sans-serif;
-
-        font-size:
-            0.85rem;
-
-        font-weight:
-            500;
-
-        cursor:
-            pointer;
-
-        transition:
-            background 0.2s ease,
-            transform 0.2s ease;
-
-    }
-
-
-    #saveChatNameButton:hover {
-
-        background:
-            rgba(255,255,255,0.18);
-
-        transform:
-            translateY(-1px);
-
-    }
-
-
-    @media (max-width: 500px) {
-
-        .chat-name-modal-box {
-
-            padding:
-                1.8rem;
-
-        }
-
-
-        .chat-name-modal-box h2 {
-
-            font-size:
-                2rem;
-
-        }
-
-    }
-
-</style>
-
-
-    
 </body>
 
 </html>
