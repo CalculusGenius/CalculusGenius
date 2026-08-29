@@ -15,7 +15,6 @@ import {
     getFirestore,
     collection,
     query,
-    where,
     getDocs,
     doc,
     setDoc,
@@ -46,51 +45,28 @@ const db =
 // =========================================
 
 const chatLoginNotice =
-    document.getElementById(
-        "chatLoginNotice"
-    );
-
+    document.getElementById("chatLoginNotice");
 
 const messageComposer =
-    document.getElementById(
-        "messageComposer"
-    );
-
+    document.getElementById("messageComposer");
 
 const messageInput =
-    document.getElementById(
-        "messageInput"
-    );
-
+    document.getElementById("messageInput");
 
 const emojiButton =
-    document.getElementById(
-        "emojiButton"
-    );
-
+    document.getElementById("emojiButton");
 
 const conversationList =
-    document.getElementById(
-        "conversationList"
-    );
-
+    document.getElementById("conversationList");
 
 const messagesArea =
-    document.getElementById(
-        "messagesArea"
-    );
-
+    document.getElementById("messagesArea");
 
 const chatUserPlaceholder =
-    document.getElementById(
-        "chatUserPlaceholder"
-    );
-
+    document.getElementById("chatUserPlaceholder");
 
 const chatSearch =
-    document.getElementById(
-        "chatSearch"
-    );
+    document.getElementById("chatSearch");
 
 
 
@@ -98,20 +74,13 @@ const chatSearch =
 // STATE
 // =========================================
 
-let currentUser =
-    null;
+let currentUser = null;
 
+let selectedUser = null;
 
-let selectedUser =
-    null;
+let currentConversationId = null;
 
-
-let currentConversationId =
-    null;
-
-
-let unsubscribeMessages =
-    null;
+let unsubscribeMessages = null;
 
 
 
@@ -122,8 +91,7 @@ let unsubscribeMessages =
 watchAuthState(
     async (user) => {
 
-        currentUser =
-            user;
+        currentUser = user;
 
 
         // =====================================
@@ -133,33 +101,29 @@ watchAuthState(
         if (user) {
 
             if (chatLoginNotice) {
-
                 chatLoginNotice.style.display =
                     "none";
-
             }
 
 
             if (messageInput) {
-
-                messageInput.disabled =
-                    false;
-
+                messageInput.disabled = false;
             }
 
 
             if (emojiButton) {
+                emojiButton.disabled = false;
+            }
 
-                emojiButton.disabled =
-                    false;
 
+            if (chatSearch) {
+                chatSearch.disabled = false;
             }
 
 
             if (conversationList) {
 
                 conversationList.innerHTML = "";
-
 
                 const placeholder =
                     document.createElement("div");
@@ -173,7 +137,6 @@ watchAuthState(
                 conversationList.appendChild(
                     placeholder
                 );
-
             }
 
         }
@@ -186,26 +149,23 @@ watchAuthState(
         else {
 
             if (chatLoginNotice) {
-
                 chatLoginNotice.style.display =
                     "block";
-
             }
 
 
             if (messageInput) {
-
-                messageInput.disabled =
-                    true;
-
+                messageInput.disabled = true;
             }
 
 
             if (emojiButton) {
+                emojiButton.disabled = true;
+            }
 
-                emojiButton.disabled =
-                    true;
 
+            if (chatSearch) {
+                chatSearch.disabled = true;
             }
 
 
@@ -225,25 +185,19 @@ watchAuthState(
                 conversationList.appendChild(
                     placeholder
                 );
-
             }
 
 
-            selectedUser =
-                null;
+            selectedUser = null;
 
-
-            currentConversationId =
-                null;
+            currentConversationId = null;
 
 
             if (unsubscribeMessages) {
 
                 unsubscribeMessages();
 
-                unsubscribeMessages =
-                    null;
-
+                unsubscribeMessages = null;
             }
 
         }
@@ -257,31 +211,12 @@ watchAuthState(
 // FIND / CREATE CONVERSATION
 // =========================================
 
-async function getOrCreateConversation(
-    otherUser
-) {
+async function getOrCreateConversation(otherUser) {
 
     if (!currentUser) {
-
         return null;
-
     }
 
-
-    /*
-       Sort the two UIDs.
-
-       This guarantees that:
-
-       User A + User B
-
-       and
-
-       User B + User A
-
-       always produce the same
-       conversation ID.
-    */
 
     const participantIds = [
         currentUser.uid,
@@ -301,23 +236,15 @@ async function getOrCreateConversation(
         );
 
 
-    /*
-       Create the conversation if it
-       does not already exist.
-    */
-
     await setDoc(
         conversationRef,
         {
-
             participantIds:
                 participantIds,
 
             createdAt:
                 serverTimestamp()
-
         },
-
         {
             merge: true
         }
@@ -325,7 +252,6 @@ async function getOrCreateConversation(
 
 
     return conversationId;
-
 }
 
 
@@ -337,29 +263,19 @@ async function getOrCreateConversation(
 async function selectUser(user) {
 
     if (!currentUser) {
-
         return;
-
     }
 
-
-    /*
-       Do not allow a user to chat
-       with themselves.
-    */
 
     if (
         user.uid ===
         currentUser.uid
     ) {
-
         return;
-
     }
 
 
-    selectedUser =
-        user;
+    selectedUser = user;
 
 
     // =====================================
@@ -371,26 +287,49 @@ async function selectUser(user) {
         chatUserPlaceholder.textContent =
             user.displayName ||
             "CALCULUS User";
-
     }
 
 
     // =====================================
-    // CLEAR OLD MESSAGE LISTENER
+    // STOP OLD LISTENER
     // =====================================
 
     if (unsubscribeMessages) {
 
         unsubscribeMessages();
 
-        unsubscribeMessages =
-            null;
-
+        unsubscribeMessages = null;
     }
 
 
     // =====================================
-    // CREATE / GET CONVERSATION
+    // CLEAR OLD MESSAGES
+    // =====================================
+
+    if (messagesArea) {
+
+        messagesArea.innerHTML = "";
+
+        const loading =
+            document.createElement("div");
+
+        loading.className =
+            "messages-empty";
+
+        const heading =
+            document.createElement("h2");
+
+        heading.textContent =
+            "Loading messages...";
+
+        loading.appendChild(heading);
+
+        messagesArea.appendChild(loading);
+    }
+
+
+    // =====================================
+    // GET CONVERSATION
     // =====================================
 
     try {
@@ -405,46 +344,56 @@ async function selectUser(user) {
     catch (error) {
 
         console.error(
-            "Conversation error:",
+            "Conversation creation failed:",
             error
         );
 
-        return;
+        if (messagesArea) {
 
+            messagesArea.innerHTML = "";
+
+            const errorMessage =
+                document.createElement("div");
+
+            errorMessage.className =
+                "messages-empty";
+
+            errorMessage.textContent =
+                "Unable to open this conversation.";
+
+            messagesArea.appendChild(
+                errorMessage
+            );
+        }
+
+        return;
     }
 
 
     if (!currentConversationId) {
-
         return;
-
     }
 
 
     // =====================================
-    // LOAD MESSAGES IN REAL TIME
+    // START REAL-TIME LISTENER
     // =====================================
 
     listenForMessages(
         currentConversationId
     );
-
 }
 
 
 
 // =========================================
-// LISTEN FOR MESSAGES
+// RECEIVE MESSAGES IN REAL TIME
 // =========================================
 
-function listenForMessages(
-    conversationId
-) {
+function listenForMessages(conversationId) {
 
     if (!messagesArea) {
-
         return;
-
     }
 
 
@@ -467,58 +416,54 @@ function listenForMessages(
         );
 
 
+    /*
+       onSnapshot keeps this listener alive.
+
+       Whenever the other user sends a new
+       message, Firestore sends a new snapshot
+       to this computer automatically.
+    */
+
     unsubscribeMessages =
         onSnapshot(
+
             messagesQuery,
 
             (snapshot) => {
 
-                messagesArea.innerHTML =
-                    "";
+                messagesArea.innerHTML = "";
 
 
                 if (snapshot.empty) {
 
                     const empty =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     empty.className =
                         "messages-empty";
 
 
                     const heading =
-                        document.createElement(
-                            "h2"
-                        );
+                        document.createElement("h2");
 
                     heading.textContent =
                         "Start the conversation";
 
 
                     const paragraph =
-                        document.createElement(
-                            "p"
-                        );
+                        document.createElement("p");
 
                     paragraph.textContent =
                         "Send the first message.";
 
-                    empty.appendChild(
-                        heading
-                    );
 
-                    empty.appendChild(
-                        paragraph
-                    );
+                    empty.appendChild(heading);
 
-                    messagesArea.appendChild(
-                        empty
-                    );
+                    empty.appendChild(paragraph);
+
+                    messagesArea.appendChild(empty);
 
                     return;
-
                 }
 
 
@@ -530,9 +475,7 @@ function listenForMessages(
 
 
                         const message =
-                            document.createElement(
-                                "div"
-                            );
+                            document.createElement("div");
 
 
                         message.className =
@@ -555,16 +498,12 @@ function listenForMessages(
                             message.classList.add(
                                 "chat-message-other"
                             );
-
                         }
 
 
                         /*
-                           textContent is deliberately
-                           used instead of innerHTML.
-
-                           This prevents message text
-                           from being interpreted as HTML.
+                           Never use innerHTML for
+                           user-written messages.
                         */
 
                         message.textContent =
@@ -574,30 +513,59 @@ function listenForMessages(
                         messagesArea.appendChild(
                             message
                         );
-
                     }
                 );
 
 
-                /*
-                   Scroll to the newest message.
-                */
-
                 messagesArea.scrollTop =
                     messagesArea.scrollHeight;
-
             },
+
 
             (error) => {
 
                 console.error(
-                    "Message listener error:",
+                    "REAL-TIME MESSAGE LISTENER ERROR:",
                     error
                 );
 
+
+                if (messagesArea) {
+
+                    messagesArea.innerHTML = "";
+
+
+                    const errorBox =
+                        document.createElement("div");
+
+                    errorBox.className =
+                        "messages-empty";
+
+
+                    const heading =
+                        document.createElement("h2");
+
+                    heading.textContent =
+                        "Unable to receive messages";
+
+
+                    const paragraph =
+                        document.createElement("p");
+
+                    paragraph.textContent =
+                        "Firestore permission denied or the conversation is unavailable.";
+
+
+                    errorBox.appendChild(heading);
+
+                    errorBox.appendChild(paragraph);
+
+                    messagesArea.appendChild(
+                        errorBox
+                    );
+                }
             }
         );
-
 }
 
 
@@ -617,9 +585,7 @@ if (messageComposer) {
 
 
             if (!currentUser) {
-
                 return;
-
             }
 
 
@@ -630,7 +596,6 @@ if (messageComposer) {
                 );
 
                 return;
-
             }
 
 
@@ -641,18 +606,9 @@ if (messageComposer) {
 
 
             if (!text) {
-
                 return;
-
             }
 
-
-            /*
-               Extra client-side protection.
-
-               Firestore rules also enforce
-               the maximum length.
-            */
 
             if (text.length > 2000) {
 
@@ -661,14 +617,11 @@ if (messageComposer) {
                 );
 
                 return;
-
             }
 
 
             if (!currentConversationId) {
-
                 return;
-
             }
 
 
@@ -704,7 +657,6 @@ if (messageComposer) {
 
                     messageInput.value =
                         "";
-
                 }
 
             }
@@ -720,12 +672,10 @@ if (messageComposer) {
                 alert(
                     "Message could not be sent. Please try again."
                 );
-
             }
 
         }
     );
-
 }
 
 
@@ -742,28 +692,23 @@ if (emojiButton) {
         () => {
 
             if (!messageInput) {
-
                 return;
-
             }
 
-
-            /*
-               For now, insert a few basic
-               emojis directly.
-
-               We can build a proper emoji
-               picker later.
-            */
 
             const emojis =
                 "😀 😂 😍 😎 🤔 😄 👍 ❤️ 🎉 🔥 😭 🙌";
 
+
+            const emojiList =
+                emojis.split(" ");
+
+
             const selectedEmoji =
-                emojis.split(" ")[
+                emojiList[
                     Math.floor(
                         Math.random() *
-                        emojis.split(" ").length
+                        emojiList.length
                     )
                 ];
 
@@ -773,10 +718,8 @@ if (emojiButton) {
 
 
             messageInput.focus();
-
         }
     );
-
 }
 
 
@@ -793,9 +736,7 @@ if (chatSearch) {
         async () => {
 
             if (!currentUser) {
-
                 return;
-
             }
 
 
@@ -809,13 +750,10 @@ if (chatSearch) {
 
                 if (conversationList) {
 
-                    conversationList.innerHTML =
-                        "";
+                    conversationList.innerHTML = "";
 
                     const placeholder =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     placeholder.className =
                         "conversation-placeholder";
@@ -826,11 +764,9 @@ if (chatSearch) {
                     conversationList.appendChild(
                         placeholder
                     );
-
                 }
 
                 return;
-
             }
 
 
@@ -843,16 +779,6 @@ if (chatSearch) {
                     );
 
 
-                /*
-                   Firestore cannot perform an
-                   arbitrary "contains" search.
-
-                   Therefore we retrieve the
-                   public directory and perform
-                   the small display-name filter
-                   in JavaScript for now.
-                */
-
                 const snapshot =
                     await getDocs(
                         publicUsersRef
@@ -860,18 +786,14 @@ if (chatSearch) {
 
 
                 if (!conversationList) {
-
                     return;
-
                 }
 
 
-                conversationList.innerHTML =
-                    "";
+                conversationList.innerHTML = "";
 
 
-                let found =
-                    false;
+                let found = false;
 
 
                 snapshot.forEach(
@@ -881,18 +803,11 @@ if (chatSearch) {
                             userDoc.data();
 
 
-                        /*
-                           Never show the current
-                           user in their own search.
-                        */
-
                         if (
                             user.uid ===
                             currentUser.uid
                         ) {
-
                             return;
-
                         }
 
 
@@ -908,20 +823,15 @@ if (chatSearch) {
                                 searchText
                             )
                         ) {
-
                             return;
-
                         }
 
 
-                        found =
-                            true;
+                        found = true;
 
 
                         const button =
-                            document.createElement(
-                                "button"
-                            );
+                            document.createElement("button");
 
 
                         button.type =
@@ -952,7 +862,6 @@ if (chatSearch) {
                         conversationList.appendChild(
                             button
                         );
-
                     }
                 );
 
@@ -960,9 +869,7 @@ if (chatSearch) {
                 if (!found) {
 
                     const empty =
-                        document.createElement(
-                            "div"
-                        );
+                        document.createElement("div");
 
                     empty.className =
                         "conversation-placeholder";
@@ -973,7 +880,6 @@ if (chatSearch) {
                     conversationList.appendChild(
                         empty
                     );
-
                 }
 
             }
@@ -989,5 +895,4 @@ if (chatSearch) {
 
         }
     );
-
-}
+                    }
