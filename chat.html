@@ -43,6 +43,98 @@
 
     <style>
 
+
+        /* =========================================
+   CHAT USER DIRECTORY
+========================================= */
+
+.chat-user {
+
+    width: 100%;
+
+    padding: 0.9rem 1.2rem;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    border: none;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.07);
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-family:
+        "Inter",
+        sans-serif;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease;
+
+}
+
+
+.chat-user:hover {
+
+    background:
+        rgba(255,255,255,0.07);
+
+}
+
+
+.chat-user.selected {
+
+    background:
+        rgba(255,255,255,0.11);
+
+}
+
+
+.chat-user-image {
+
+    width: 42px;
+
+    height: 42px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.2);
+
+}
+
+
+.chat-user-name {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 0.9rem;
+
+    font-weight: 500;
+
+}
+
         /* =========================================
            CHAT PAGE
         ========================================= */
