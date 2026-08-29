@@ -1,3 +1,4 @@
+```javascript
 // =========================================
 // CALCULUS — GOOGLE AUTHENTICATION
 // + FIRESTORE USER PROFILES
@@ -343,3 +344,4 @@ export function watchAuthState(callback) {
 export {
     auth
 };
+```
