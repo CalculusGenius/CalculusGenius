@@ -415,6 +415,107 @@ if (desktopNav) {
     );
 
 }
+
+    // =====================================
+// CHAT MENU ITEM
+// =====================================
+
+
+// =====================================
+// MOBILE CHAT
+// =====================================
+
+if (mobileMenu) {
+
+    let mobileChatLink =
+        mobileMenu.querySelector(
+            'a[href="chat.html"]'
+        );
+
+
+    if (!mobileChatLink) {
+
+        mobileChatLink =
+            document.createElement("a");
+
+        mobileChatLink.href =
+            "chat.html";
+
+        mobileChatLink.textContent =
+            "Chat";
+
+        mobileChatLink.id =
+            "globalMobileChatLink";
+
+
+        if (mobileAuthLink) {
+
+            mobileMenu.insertBefore(
+                mobileChatLink,
+                mobileAuthLink
+            );
+
+        } else {
+
+            mobileMenu.appendChild(
+                mobileChatLink
+            );
+
+        }
+
+    }
+
+}
+
+
+// =====================================
+// DESKTOP CHAT
+// =====================================
+
+if (desktopNav) {
+
+    let desktopChatLink =
+        desktopNav.querySelector(
+            'a[href="chat.html"]'
+        );
+
+
+    if (!desktopChatLink) {
+
+        desktopChatLink =
+            document.createElement("a");
+
+        desktopChatLink.href =
+            "chat.html";
+
+        desktopChatLink.textContent =
+            "Chat";
+
+        desktopChatLink.className =
+            "nav-link";
+
+        desktopChatLink.id =
+            "globalDesktopChatLink";
+
+
+        if (desktopAuthLink) {
+
+            desktopNav.insertBefore(
+                desktopChatLink,
+                desktopAuthLink
+            );
+
+        } else {
+
+            desktopNav.appendChild(
+                desktopChatLink
+            );
+
+        }
+
+    }
+
+}
     
     
     // =====================================
