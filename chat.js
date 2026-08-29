@@ -1350,6 +1350,12 @@ function listenForMessages(
                         message.className =
                             "chat-message";
 
+                        message.dataset.messageId =
+    messageDoc.id;
+
+message.dataset.senderId =
+    data.senderId;
+
 
                         if (
                             data.senderId ===
