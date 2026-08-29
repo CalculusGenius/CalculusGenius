@@ -1,8 +1,7 @@
 // =========================================
-// CALCULUS — GOOGLE AUTHENTICATION
+// CALCULUS — AUTHENTICATION
 // + FIRESTORE USER PROFILES
 // + PUBLIC CHAT DIRECTORY
-// + CALCULUS CHAT NAME
 // =========================================
 
 
@@ -42,7 +41,7 @@ const googleProvider =
 
 
 // =========================================
-// FIRESTORE DATABASE
+// FIRESTORE
 // =========================================
 
 const db =
@@ -51,7 +50,7 @@ const db =
 
 
 // =========================================
-// CREATE / UPDATE PRIVATE USER PROFILE
+// CREATE / UPDATE PRIVATE PROFILE
 // =========================================
 
 async function createOrUpdateUserProfile(user) {
@@ -64,17 +63,15 @@ async function createOrUpdateUserProfile(user) {
         );
 
 
-    const userSnapshot =
-        await getDoc(
-            userRef
-        );
+    const snapshot =
+        await getDoc(userRef);
 
 
     // =====================================
     // NEW USER
     // =====================================
 
-    if (!userSnapshot.exists()) {
+    if (!snapshot.exists()) {
 
         await setDoc(
             userRef,
@@ -104,11 +101,6 @@ async function createOrUpdateUserProfile(user) {
             }
         );
 
-
-        console.log(
-            "Private user profile created."
-        );
-
     }
 
 
@@ -122,28 +114,13 @@ async function createOrUpdateUserProfile(user) {
             userRef,
             {
 
-                displayName:
-                    user.displayName || "",
-
-                email:
-                    user.email || "",
-
-                photoURL:
-                    user.photoURL || "",
-
                 lastLogin:
                     serverTimestamp()
 
             },
-
             {
                 merge: true
             }
-        );
-
-
-        console.log(
-            "Private user profile updated."
         );
 
     }
@@ -153,7 +130,7 @@ async function createOrUpdateUserProfile(user) {
 
 
 // =========================================
-// CREATE / UPDATE PUBLIC CHAT PROFILE
+// CREATE / UPDATE PUBLIC PROFILE
 // =========================================
 
 async function createOrUpdatePublicProfile(user) {
@@ -166,33 +143,15 @@ async function createOrUpdatePublicProfile(user) {
         );
 
 
-    // =====================================
-    // CHECK EXISTING PUBLIC PROFILE
-    // =====================================
-
-    const publicUserSnapshot =
-        await getDoc(
-            publicUserRef
-        );
+    const snapshot =
+        await getDoc(publicUserRef);
 
 
     // =====================================
-    // EXISTING PUBLIC PROFILE
+    // NEW PUBLIC PROFILE
     // =====================================
 
-    if (
-        publicUserSnapshot.exists()
-    ) {
-
-        /*
-           The user has already selected
-           their CALCULUS Chat Name.
-
-           IMPORTANT:
-
-           Do NOT overwrite chatName with
-           Google's displayName.
-        */
+    if (!snapshot.exists()) {
 
         await setDoc(
             publicUserRef,
@@ -201,174 +160,67 @@ async function createOrUpdatePublicProfile(user) {
                 uid:
                     user.uid,
 
+                displayName:
+                    user.displayName ||
+                    "CALCULUS User",
+
+                photoURL:
+                    user.photoURL || "",
+
+                chatName:
+                    ""
+
+            }
+        );
+
+    }
+
+
+    // =====================================
+    // EXISTING PUBLIC PROFILE
+    // =====================================
+
+    else {
+
+        /*
+           IMPORTANT:
+
+           Do NOT overwrite chatName.
+
+           The user may have chosen something
+           completely different from their
+           Google account name.
+        */
+
+        await setDoc(
+            publicUserRef,
+            {
+
                 photoURL:
                     user.photoURL || ""
 
             },
-
             {
                 merge: true
             }
         );
 
-
-        console.log(
-            "Existing public Chat profile updated."
-        );
-
-
-        return;
-
     }
-
-
-
-    // =====================================
-    // NEW PUBLIC PROFILE
-    // =====================================
-
-    let chatName = null;
-
-
-    while (!chatName) {
-
-        chatName =
-            window.prompt(
-                "Choose your CALCULUS Chat Name:\n\n" +
-                "This is the name other CALCULUS " +
-                "users will see in Chat.\n\n" +
-                "Example: gamer45"
-            );
-
-
-        // =================================
-        // USER CANCELLED
-        // =================================
-
-        if (
-            chatName === null
-        ) {
-
-            alert(
-                "A CALCULUS Chat Name is required " +
-                "to use CALCULUS Chat."
-            );
-
-
-            throw new Error(
-                "CALCULUS Chat Name selection cancelled."
-            );
-
-        }
-
-
-        // =================================
-        // CLEAN INPUT
-        // =================================
-
-        chatName =
-            chatName.trim();
-
-
-        // =================================
-        // EMPTY NAME
-        // =================================
-
-        if (!chatName) {
-
-            alert(
-                "Please enter a Chat Name."
-            );
-
-
-            chatName =
-                null;
-
-
-            continue;
-
-        }
-
-
-        // =================================
-        // MAXIMUM LENGTH
-        // =================================
-
-        if (
-            chatName.length > 30
-        ) {
-
-            alert(
-                "Your Chat Name must be 30 " +
-                "characters or fewer."
-            );
-
-
-            chatName =
-                null;
-
-
-            continue;
-
-        }
-
-    }
-
-
-
-    // =====================================
-    // CREATE PUBLIC PROFILE
-    // =====================================
-
-    await setDoc(
-        publicUserRef,
-        {
-
-            uid:
-                user.uid,
-
-            chatName:
-                chatName,
-
-            photoURL:
-                user.photoURL || ""
-
-        }
-    );
-
-
-    console.log(
-        "New public Chat profile created."
-    );
-
-
-    console.log(
-        "CALCULUS Chat Name:",
-        chatName
-    );
 
 }
 
 
 
 // =========================================
-// CREATE / UPDATE ALL USER DATA
+// CREATE / UPDATE USER DATA
 // =========================================
 
 async function createOrUpdateAllUserData(user) {
-
-    /*
-       Maintain the private profile.
-    */
 
     await createOrUpdateUserProfile(
         user
     );
 
-
-    /*
-       Maintain the public Chat profile.
-    */
 
     await createOrUpdatePublicProfile(
         user
@@ -391,10 +243,6 @@ export async function signInWithGoogle() {
         );
 
 
-        // =================================
-        // GOOGLE SIGN-IN POPUP
-        // =================================
-
         const result =
             await signInWithPopup(
                 auth,
@@ -406,24 +254,8 @@ export async function signInWithGoogle() {
             result.user;
 
 
-        // =================================
-        // AUTHENTICATION SUCCESSFUL
-        // =================================
-
         console.log(
             "Google authentication successful."
-        );
-
-
-        console.log(
-            "Google Name:",
-            user.displayName
-        );
-
-
-        console.log(
-            "Email:",
-            user.email
         );
 
 
@@ -433,23 +265,10 @@ export async function signInWithGoogle() {
         );
 
 
-        // =================================
-        // FIRESTORE USER DATA
-        // =================================
-
         await createOrUpdateAllUserData(
             user
         );
 
-
-        console.log(
-            "All Firestore operations successful."
-        );
-
-
-        // =================================
-        // REDIRECT
-        // =================================
 
         window.location.href =
             "account.html";
@@ -464,11 +283,6 @@ export async function signInWithGoogle() {
             error
         );
 
-
-        /*
-           Pass the error back to
-           login.html.
-        */
 
         throw error;
 
@@ -488,11 +302,6 @@ export async function logOut() {
 
         await signOut(
             auth
-        );
-
-
-        console.log(
-            "User signed out."
         );
 
 
@@ -534,7 +343,7 @@ export function watchAuthState(callback) {
 
 
 // =========================================
-// EXPORT AUTH OBJECT
+// EXPORT AUTH
 // =========================================
 
 export {
