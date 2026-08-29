@@ -1278,6 +1278,289 @@
         src="chat.js">
     </script>
 
+
+
+<!-- =========================================
+     CALCULUS CHAT NAME MODAL
+========================================== -->
+
+<div
+    class="chat-name-modal"
+    id="chatNameModal"
+    aria-hidden="true">
+
+    <div class="chat-name-modal-box">
+
+        <h2>
+            Choose Your Chat Name
+        </h2>
+
+        <p>
+            This is the name other CALCULUS
+            members will see when they search
+            for you.
+        </p>
+
+        <input
+            type="text"
+            id="chatNameInput"
+            maxlength="30"
+            placeholder="e.g. gamer45"
+            autocomplete="off">
+
+        <p
+            class="chat-name-error"
+            id="chatNameError">
+        </p>
+
+        <button
+            type="button"
+            id="saveChatNameButton">
+
+            Continue
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<style>
+
+    /* =========================================
+       CHAT NAME MODAL
+    ========================================== */
+
+    .chat-name-modal {
+
+        position: fixed;
+
+        inset: 0;
+
+        z-index: 99999;
+
+        display: none;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 20px;
+
+        background:
+            rgba(0,0,0,0.78);
+
+        backdrop-filter:
+            blur(12px);
+
+        -webkit-backdrop-filter:
+            blur(12px);
+
+    }
+
+
+    .chat-name-modal.active {
+
+        display: flex;
+
+    }
+
+
+    .chat-name-modal-box {
+
+        width:
+            min(450px, 100%);
+
+        padding:
+            2.5rem;
+
+        border:
+            1px solid
+            rgba(255,255,255,0.2);
+
+        background:
+            rgba(20,20,20,0.96);
+
+        box-shadow:
+            0 30px 100px
+            rgba(0,0,0,0.65);
+
+    }
+
+
+    .chat-name-modal-box h2 {
+
+        margin: 0;
+
+        font-family:
+            "Cormorant Garamond",
+            serif;
+
+        font-size:
+            2.4rem;
+
+        font-weight:
+            600;
+
+        color:
+            #ffffff;
+
+    }
+
+
+    .chat-name-modal-box p {
+
+        margin:
+            0.9rem 0 1.5rem;
+
+        color:
+            rgba(255,255,255,0.58);
+
+        font-family:
+            "Inter",
+            sans-serif;
+
+        font-size:
+            0.85rem;
+
+        line-height:
+            1.7;
+
+    }
+
+
+    #chatNameInput {
+
+        width:
+            100%;
+
+        box-sizing:
+            border-box;
+
+        padding:
+            0.9rem 1rem;
+
+        border:
+            1px solid
+            rgba(255,255,255,0.22);
+
+        outline:
+            none;
+
+        background:
+            rgba(255,255,255,0.06);
+
+        color:
+            #ffffff;
+
+        font-family:
+            "Inter",
+            sans-serif;
+
+        font-size:
+            0.9rem;
+
+    }
+
+
+    #chatNameInput:focus {
+
+        border-color:
+            rgba(255,255,255,0.55);
+
+    }
+
+
+    .chat-name-error {
+
+        min-height:
+            1.2em;
+
+        margin:
+            0.6rem 0 !important;
+
+        color:
+            #ff8f8f !important;
+
+        font-size:
+            0.78rem !important;
+
+    }
+
+
+    #saveChatNameButton {
+
+        width:
+            100%;
+
+        padding:
+            0.9rem;
+
+        border:
+            1px solid
+            rgba(255,255,255,0.3);
+
+        background:
+            rgba(255,255,255,0.1);
+
+        color:
+            #ffffff;
+
+        font-family:
+            "Inter",
+            sans-serif;
+
+        font-size:
+            0.85rem;
+
+        font-weight:
+            500;
+
+        cursor:
+            pointer;
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease;
+
+    }
+
+
+    #saveChatNameButton:hover {
+
+        background:
+            rgba(255,255,255,0.18);
+
+        transform:
+            translateY(-1px);
+
+    }
+
+
+    @media (max-width: 500px) {
+
+        .chat-name-modal-box {
+
+            padding:
+                1.8rem;
+
+        }
+
+
+        .chat-name-modal-box h2 {
+
+            font-size:
+                2rem;
+
+        }
+
+    }
+
+</style>
+
+
+    
 </body>
 
 </html>
