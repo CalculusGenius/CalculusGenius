@@ -1084,7 +1084,9 @@ if (chatSearch) {
         async () => {
 
             if (!currentUser) {
+
                 return;
+
             }
 
 
@@ -1096,9 +1098,32 @@ if (chatSearch) {
 
             if (!searchText) {
 
-                showPlaceholder(
-                    "Search for a member to start chatting."
-                );
+                if (conversationList) {
+
+                    conversationList.innerHTML =
+                        "";
+
+
+                    const placeholder =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    placeholder.className =
+                        "conversation-placeholder";
+
+
+                    placeholder.textContent =
+                        "Search for a member to start chatting.";
+
+
+                    conversationList.appendChild(
+                        placeholder
+                    );
+
+                }
+
 
                 return;
 
@@ -1121,7 +1146,9 @@ if (chatSearch) {
 
 
                 if (!conversationList) {
+
                     return;
+
                 }
 
 
@@ -1140,10 +1167,8 @@ if (chatSearch) {
                             userDoc.data();
 
 
-                        // Never show yourself
-
                         if (
-                            userDoc.id ===
+                            user.uid ===
                             currentUser.uid
                         ) {
 
@@ -1152,17 +1177,35 @@ if (chatSearch) {
                         }
 
 
-                        const displayName =
+                        /*
+                           SEARCH THE CHOSEN
+                           CHAT NAME.
+
+                           Google account name
+                           is NOT used here.
+                        */
+
+                        const chatName =
                             (
-                                user.displayName ||
+                                user.chatName ||
                                 ""
-                            ).toLowerCase();
+                            )
+                            .trim();
+
+
+                        if (!chatName) {
+
+                            return;
+
+                        }
 
 
                         if (
-                            !displayName.includes(
-                                searchText
-                            )
+                            !chatName
+                                .toLowerCase()
+                                .includes(
+                                    searchText
+                                )
                         ) {
 
                             return;
@@ -1189,16 +1232,27 @@ if (chatSearch) {
 
 
                         button.textContent =
-                            user.displayName ||
-                            "CALCULUS User";
+                            chatName;
 
 
                         button.addEventListener(
                             "click",
+
                             () => {
 
                                 selectUser(
-                                    user
+                                    {
+                                        uid:
+                                            user.uid,
+
+                                        chatName:
+                                            chatName,
+
+                                        photoURL:
+                                            user.photoURL ||
+                                            ""
+
+                                    }
                                 );
 
                             }
@@ -1215,13 +1269,28 @@ if (chatSearch) {
 
                 if (!found) {
 
-                    showPlaceholder(
-                        "No members found."
+                    const empty =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    empty.className =
+                        "conversation-placeholder";
+
+
+                    empty.textContent =
+                        "No members found.";
+
+
+                    conversationList.appendChild(
+                        empty
                     );
 
                 }
 
             }
+
 
             catch (error) {
 
@@ -1231,14 +1300,35 @@ if (chatSearch) {
                 );
 
 
-                showPlaceholder(
-                    "Could not search members."
-                );
+                if (conversationList) {
+
+                    conversationList.innerHTML =
+                        "";
+
+
+                    const errorMessage =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    errorMessage.className =
+                        "conversation-placeholder";
+
+
+                    errorMessage.textContent =
+                        "Unable to search members right now.";
+
+
+                    conversationList.appendChild(
+                        errorMessage
+                    );
+
+                }
 
             }
 
         }
-
     );
 
-}      
+}
