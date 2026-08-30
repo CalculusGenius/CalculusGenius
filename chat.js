@@ -64,7 +64,7 @@ const messageInput =
 
 
 const emojiButton =
-    document.getElementById(
+    document.getEentById(
         "emojiButton"
     );
 
@@ -130,6 +130,24 @@ let selectedUser =
 
 let currentConversationId =
     null;
+
+
+// =========================================
+// MEDIA FEATURE — READ-ONLY CHAT HOOK
+// =========================================
+
+window.calculusChat =
+    window.calculusChat || {};
+
+window.calculusChat.getConversationId =
+    () => currentConversationId;
+
+window.calculusChat.getCurrentUser =
+    () => currentUser;
+
+window.calculusChat.getSelectedUser =
+    () => selectedUser;
+
 
 
 let unsubscribeMessages =
