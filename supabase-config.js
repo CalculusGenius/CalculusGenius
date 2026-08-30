@@ -11,7 +11,7 @@ import { createClient } from
 // =========================================
 
 const supabaseUrl =
-    "https://auutipwsbqmpvifzzrwq.supabase.co/rest/v1/";
+    "https://auutipwsbqmpvifzzrwq.supabase.co";
 
 const supabasePublishableKey =
     "sb_publishable_9TCU5KyPVqGrjpNBFXbR2g_Oy0Pna2Y";
