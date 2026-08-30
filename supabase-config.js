@@ -1,11 +1,13 @@
 // =========================================
 // CALCULUS — SUPABASE CONFIGURATION
 // =========================================
+// Supabase Storage + Firebase Authentication
+// =========================================
 
-import {
-    createClient
-} from
+import { createClient } from
     "https://esm.sh/@supabase/supabase-js@2";
+
+import { auth } from "./auth.js";
 
 
 // =========================================
@@ -22,13 +24,8 @@ const supabasePublishableKey =
 // =========================================
 // SUPABASE CLIENT
 // =========================================
-
-export const supabase =
-    createClient(
-        supabaseUrl,
-        supabasePublishableKey
-    );// =========================================
-// SUPABASE CLIENT
+// Firebase Auth supplies the user JWT.
+// Supabase Third-Party Auth validates it.
 // =========================================
 
 export const supabase =
@@ -38,18 +35,14 @@ export const supabase =
         {
             accessToken: async () => {
 
-                const user =
-                    firebaseAuth.currentUser;
-
-                if (!user) {
+                if (!auth.currentUser) {
 
                     return null;
 
                 }
 
-                return await user.getIdToken(
-                    false
-                );
+                return await auth.currentUser
+                    .getIdToken(false);
 
             }
         }
