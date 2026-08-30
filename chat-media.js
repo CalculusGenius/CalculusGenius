@@ -1,176 +1,159 @@
 // =========================================
 // CALCULUS — CHAT MEDIA
 // =========================================
-// Step 1:
-// Images + Videos + Files
+// Separate media feature module
 // =========================================
 
 import {
-    getStorage,
-    ref,
-    uploadBytesResumable,
-    getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
-
-import {
-    app
-} from "./firebase-config.js";
-
-import {
-    watchAuthState
-} from "./auth.js";
-
-
-// =========================================
-// FIREBASE STORAGE
-// =========================================
-
-const storage =
-    getStorage(app);
+    requestGoogleDriveAccess
+} from "./google-drive.js";
 
 
 // =========================================
 // STATE
 // =========================================
 
-let currentUser = null;
+let selectedFile = null;
 
 
 // =========================================
-// ELEMENTS
+// GET CURRENT CONVERSATION
 // =========================================
 
-const messageComposer =
-    document.getElementById(
-        "messageComposer"
-    );
+function getConversationId() {
 
-const messagesArea =
-    document.getElementById(
-        "messagesArea"
-    );
+    if (
+        !window.calculusChat ||
+        !window.calculusChat.getConversationId
+    ) {
+
+        return null;
+
+    }
+
+    return window.calculusChat
+        .getConversationId();
+
+}
 
 
 // =========================================
-// CREATE ATTACHMENT BUTTON
+// GET CURRENT USER
 // =========================================
 
-if (messageComposer) {
+function getCurrentUser() {
 
-    const attachmentButton =
-        document.createElement("button");
+    if (
+        !window.calculusChat ||
+        !window.calculusChat.getCurrentUser
+    ) {
 
-    attachmentButton.type =
+        return null;
+
+    }
+
+    return window.calculusChat
+        .getCurrentUser();
+
+}
+
+
+// =========================================
+// CREATE MEDIA BUTTON
+// =========================================
+
+function createMediaButton() {
+
+    const composer =
+        document.getElementById(
+            "messageComposer"
+        );
+
+    if (!composer) {
+
+        console.error(
+            "Message composer not found."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        document.getElementById(
+            "chatMediaButton"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const button =
+        document.createElement(
+            "button"
+        );
+
+
+    button.type =
         "button";
 
-    attachmentButton.className =
-        "media-button";
+    button.id =
+        "chatMediaButton";
 
-    attachmentButton.id =
-        "mediaButton";
+    button.className =
+        "emoji-button";
 
-    attachmentButton.setAttribute(
-        "aria-label",
-        "Attach image, video or file"
-    );
-
-    attachmentButton.title =
-        "Attach image, video or file";
-
-    attachmentButton.textContent =
+    button.textContent =
         "📎";
 
+    button.title =
+        "Attach file";
 
-    /*
-       Put the attachment button before
-       the existing emoji button.
-    */
+    button.setAttribute(
+        "aria-label",
+        "Attach file"
+    );
 
-    const emojiButton =
-        document.getElementById(
-            "emojiButton"
+
+    const input =
+        document.createElement(
+            "input"
         );
 
-    if (emojiButton) {
 
-        messageComposer.insertBefore(
-            attachmentButton,
-            emojiButton
-        );
-
-    }
-
-    else {
-
-        messageComposer.prepend(
-            attachmentButton
-        );
-
-    }
-
-
-    // =====================================
-    // HIDDEN FILE INPUT
-    // =====================================
-
-    const fileInput =
-        document.createElement("input");
-
-    fileInput.type =
+    input.type =
         "file";
 
-    fileInput.id =
+    input.id =
         "chatMediaInput";
 
-    fileInput.accept =
-        "image/*,video/*,.pdf,.txt,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip";
+    input.accept =
+        "image/*,video/*,.pdf,.doc,.docx,.txt";
 
-    fileInput.multiple =
-        false;
-
-    fileInput.style.display =
+    input.style.display =
         "none";
 
 
-    document.body.appendChild(
-        fileInput
-    );
-
-
-    // =====================================
-    // OPEN FILE PICKER
-    // =====================================
-
-    attachmentButton.addEventListener(
+    button.addEventListener(
         "click",
         () => {
 
-            if (!currentUser) {
-
-                alert(
-                    "Please sign in first."
-                );
-
-                return;
-
-            }
-
-            fileInput.click();
+            input.click();
 
         }
     );
 
 
-    // =====================================
-    // FILE SELECTED
-    // =====================================
-
-    fileInput.addEventListener(
+    input.addEventListener(
         "change",
-        async () => {
+        () => {
 
             const file =
-                fileInput.files?.[0];
+                input.files &&
+                input.files[0];
 
 
             if (!file) {
@@ -180,34 +163,68 @@ if (messageComposer) {
             }
 
 
-            await uploadChatMedia(
-                file
+            selectedFile =
+                file;
+
+
+            console.log(
+                "Selected media:",
+                file.name,
+                file.type,
+                file.size
             );
 
 
-            /*
-               Allow selecting the same file
-               again later.
-            */
-
-            fileInput.value =
-                "";
+            uploadSelectedFile();
 
         }
+    );
+
+
+    composer.insertBefore(
+        button,
+        composer.firstChild
+    );
+
+
+    composer.appendChild(
+        input
+    );
+
+
+    console.log(
+        "CALCULUS media button ready."
     );
 
 }
 
 
 // =========================================
-// UPLOAD MEDIA
+// UPLOAD SELECTED FILE
 // =========================================
 
-async function uploadChatMedia(
-    file
-) {
+async function uploadSelectedFile() {
 
-    if (!currentUser) {
+    const file =
+        selectedFile;
+
+
+    if (!file) {
+
+        return;
+
+    }
+
+
+    const conversationId =
+        getConversationId();
+
+
+    const user =
+        getCurrentUser();
+
+
+    if (!user) {
 
         alert(
             "Please sign in first."
@@ -218,241 +235,46 @@ async function uploadChatMedia(
     }
 
 
-    // =====================================
-    // FILE SIZE LIMIT
-    // =====================================
-
-    /*
-       Step 1 limit:
-       25 MB per file.
-    */
-
-    const MAX_FILE_SIZE =
-        25 * 1024 * 1024;
-
-
-    if (
-        file.size >
-        MAX_FILE_SIZE
-    ) {
+    if (!conversationId) {
 
         alert(
-            "This file is too large. The maximum size is 25 MB."
+            "Please select a conversation first."
         );
 
         return;
-
-    }
-
-
-    // =====================================
-    // ALLOWED TYPES
-    // =====================================
-
-    const allowedTypes = [
-
-        "image/jpeg",
-        "image/png",
-        "image/gif",
-        "image/webp",
-
-        "video/mp4",
-        "video/webm",
-        "video/quicktime",
-
-        "application/pdf",
-
-        "text/plain",
-
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-
-        "application/vnd.ms-excel",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-
-        "application/vnd.ms-powerpoint",
-        "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-
-        "application/zip"
-
-    ];
-
-
-    if (
-        file.type &&
-        !allowedTypes.includes(
-            file.type
-        )
-    ) {
-
-        alert(
-            "This file type is not supported."
-        );
-
-        return;
-
-    }
-
-
-    // =====================================
-    // SHOW UPLOAD MESSAGE
-    // =====================================
-
-    const uploadMessage =
-        document.createElement(
-            "div"
-        );
-
-    uploadMessage.className =
-        "chat-media-upload";
-
-
-    const uploadText =
-        document.createElement(
-            "span"
-        );
-
-    uploadText.textContent =
-        `Uploading ${file.name}...`;
-
-
-    const progress =
-        document.createElement(
-            "progress"
-        );
-
-    progress.max =
-        100;
-
-    progress.value =
-        0;
-
-
-    uploadMessage.appendChild(
-        uploadText
-    );
-
-    uploadMessage.appendChild(
-        progress
-    );
-
-
-    if (messagesArea) {
-
-        messagesArea.appendChild(
-            uploadMessage
-        );
-
-        messagesArea.scrollTop =
-            messagesArea.scrollHeight;
 
     }
 
 
     try {
 
-        // =================================
-        // UNIQUE STORAGE PATH
-        // =================================
-
-        const safeFileName =
-            file.name.replace(
-                /[^a-zA-Z0-9._-]/g,
-                "_"
-            );
+        console.log(
+            "Requesting Google Drive access..."
+        );
 
 
-        const storagePath =
-            `chatMedia/${currentUser.uid}/${Date.now()}_${safeFileName}`;
+        const accessToken =
+            await requestGoogleDriveAccess();
 
 
-        const storageRef =
-            ref(
-                storage,
-                storagePath
-            );
+        console.log(
+            "Drive access granted."
+        );
 
 
-        // =================================
-        // UPLOAD
-        // =================================
+        /*
+           Upload implementation comes next.
+        */
 
-        const uploadTask =
-            uploadBytesResumable(
-                storageRef,
-                file,
-                {
-                    contentType:
-                        file.type ||
-                        "application/octet-stream"
-                }
-            );
+        console.log(
+            "Ready to upload:",
+            file.name
+        );
 
 
-        uploadTask.on(
-
-            "state_changed",
-
-            (snapshot) => {
-
-                const percent =
-                    (
-                        snapshot.bytesTransferred /
-                        snapshot.totalBytes
-                    ) * 100;
-
-
-                progress.value =
-                    percent;
-
-
-                uploadText.textContent =
-                    `Uploading ${file.name} — ${Math.round(percent)}%`;
-
-            },
-
-
-            (error) => {
-
-                console.error(
-                    "Media upload failed:",
-                    error
-                );
-
-
-                uploadMessage.remove();
-
-
-                alert(
-                    "The file could not be uploaded. Please try again."
-                );
-
-            },
-
-
-            async () => {
-
-                const downloadURL =
-                    await getDownloadURL(
-                        uploadTask.snapshot.ref
-                    );
-
-
-                console.log(
-                    "Media uploaded:",
-                    downloadURL
-                );
-
-
-                uploadText.textContent =
-                    `${file.name} uploaded successfully.`;
-
-
-                progress.value =
-                    100;
-
-            }
-
+        alert(
+            "Google Drive access is ready for " +
+            file.name
         );
 
     }
@@ -460,17 +282,21 @@ async function uploadChatMedia(
     catch (error) {
 
         console.error(
-            "Media upload error:",
+            "Media upload preparation failed:",
             error
         );
 
 
-        uploadMessage.remove();
-
-
         alert(
-            "The file could not be uploaded."
+            "Could not prepare the file upload."
         );
+
+    }
+
+    finally {
+
+        selectedFile =
+            null;
 
     }
 
@@ -478,19 +304,28 @@ async function uploadChatMedia(
 
 
 // =========================================
-// AUTHENTICATION
+// INITIALIZE
 // =========================================
 
-watchAuthState(
-    (user) => {
+if (
+    document.readyState ===
+    "loading"
+) {
 
-        currentUser =
-            user;
+    document.addEventListener(
+        "DOMContentLoaded",
+        createMediaButton
+    );
 
-    }
-);
+}
+
+else {
+
+    createMediaButton();
+
+}
 
 
 console.log(
-    "CALCULUS Chat Media feature loaded."
+    "CALCULUS Chat Media module loaded."
 );
