@@ -5,6 +5,15 @@
 import { createClient } from
     "https://esm.sh/@supabase/supabase-js@2";
 
+import {
+    getAuth
+} from
+    "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+import {
+    app
+} from "./firebase-config.js";
+
 
 // =========================================
 // SUPABASE PROJECT
@@ -18,11 +27,37 @@ const supabasePublishableKey =
 
 
 // =========================================
+// FIREBASE AUTH
+// =========================================
+
+const firebaseAuth =
+    getAuth(app);
+
+
+// =========================================
 // SUPABASE CLIENT
 // =========================================
 
 export const supabase =
     createClient(
         supabaseUrl,
-        supabasePublishableKey
+        supabasePublishableKey,
+        {
+            accessToken: async () => {
+
+                const user =
+                    firebaseAuth.currentUser;
+
+                if (!user) {
+
+                    return null;
+
+                }
+
+                return await user.getIdToken(
+                    false
+                );
+
+            }
+        }
     );
