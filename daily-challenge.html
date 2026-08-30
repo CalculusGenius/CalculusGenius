@@ -10,7 +10,7 @@
           content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-          content="CALCULUS — Daily Challenge. A challenging mathematical problem posted every day.">
+          content="CALCULUS — Daily Challenge. Choose between School-Level and University-Level mathematical challenges.">
 
     <title>CALCULUS — Daily Challenge</title>
 
@@ -39,38 +39,6 @@
 
 
     <!-- =========================================
-         MATHJAX CONFIGURATION
-    ========================================== -->
-
-    <script>
-        window.MathJax = {
-            tex: {
-                inlineMath: [
-                    ['\\(', '\\)']
-                ],
-                displayMath: [
-                    ['\\[', '\\]']
-                ]
-            },
-
-            svg: {
-                fontCache: 'global'
-            }
-        };
-    </script>
-
-
-    <!-- =========================================
-         MATHJAX
-    ========================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"
-        id="MathJax-script">
-    </script>
-
-
-    <!-- =========================================
          DAILY CHALLENGE STYLES
     ========================================== -->
 
@@ -78,246 +46,307 @@
 
         .challenge-page {
 
-            min-height:
-                100vh;
+            min-height: 100vh;
 
-            padding:
-                130px 5% 80px;
+            padding: 130px 5% 80px;
 
-            position:
-                relative;
+            position: relative;
 
-            z-index:
-                2;
+            z-index: 2;
 
         }
 
 
         .challenge-container {
 
-            width:
-                min(1000px, 100%);
+            width: min(1050px, 100%);
 
-            margin:
-                0 auto;
+            margin: 0 auto;
 
         }
 
 
-        /* =====================================
+        /* =========================================
            HEADER
-        ====================================== */
+        ========================================== */
 
         .challenge-header {
 
-            text-align:
-                center;
+            text-align: center;
 
-            margin-bottom:
-                3.5rem;
+            margin-bottom: 4rem;
 
         }
 
 
         .challenge-kicker {
 
-            display:
-                inline-block;
+            display: inline-block;
 
-            margin-bottom:
-                0.7rem;
+            margin-bottom: 0.8rem;
 
-            color:
-                rgba(255,255,255,0.42);
+            color: rgba(255,255,255,0.42);
 
-            font-family:
-                "Inter",
-                sans-serif;
+            font-family: "Inter", sans-serif;
 
-            font-size:
-                0.72rem;
+            font-size: 0.72rem;
 
-            font-weight:
-                500;
+            font-weight: 500;
 
-            letter-spacing:
-                0.16em;
+            letter-spacing: 0.16em;
 
-            text-transform:
-                uppercase;
+            text-transform: uppercase;
 
         }
 
 
         .challenge-header h1 {
 
-            margin:
-                0;
+            margin: 0;
 
-            font-family:
-                "Cormorant Garamond",
-                serif;
+            font-family: "Cormorant Garamond", serif;
 
-            font-size:
-                clamp(3rem, 8vw, 6rem);
+            font-size: clamp(3.2rem, 8vw, 6rem);
 
-            font-weight:
-                600;
+            font-weight: 600;
 
-            line-height:
-                0.95;
+            line-height: 0.95;
 
         }
 
 
         .challenge-header p {
 
-            max-width:
-                650px;
+            max-width: 650px;
 
-            margin:
-                1.2rem auto 0;
+            margin: 1.2rem auto 0;
 
-            color:
-                rgba(255,255,255,0.55);
+            color: rgba(255,255,255,0.55);
 
-            font-size:
-                0.9rem;
+            font-size: 0.92rem;
 
-            line-height:
-                1.7;
+            line-height: 1.75;
 
         }
 
 
-        /* =====================================
-           DATE
-        ====================================== */
+        /* =========================================
+           CHALLENGE CHOICE
+        ========================================== */
 
-        .challenge-date {
+        .challenge-choice {
 
-            text-align:
-                center;
+            display: grid;
 
-            margin-bottom:
-                1.5rem;
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
 
-            color:
-                rgba(255,255,255,0.38);
-
-            font-family:
-                "Inter",
-                sans-serif;
-
-            font-size:
-                0.75rem;
-
-            letter-spacing:
-                0.08em;
-
-            text-transform:
-                uppercase;
+            gap: 1.5rem;
 
         }
 
 
-        /* =====================================
-           PROBLEM CARD
-        ====================================== */
+        /* =========================================
+           BUTTON
+        ========================================== */
 
-        .challenge-card {
+        .challenge-button {
 
-            position:
-                relative;
+            position: relative;
 
-            padding:
-                clamp(1.8rem, 5vw, 3.5rem);
+            min-height: 145px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 1.5rem;
+
+            padding: 1.8rem 1.8rem 1.8rem 2rem;
+
+            box-sizing: border-box;
+
+            overflow: hidden;
 
             border:
                 1px solid
-                rgba(255,255,255,0.18);
+                rgba(255,255,255,0.17);
 
             background:
                 linear-gradient(
                     135deg,
-                    rgba(255,255,255,0.065),
-                    rgba(255,255,255,0.018)
+                    rgba(255,255,255,0.075),
+                    rgba(255,255,255,0.022)
+                );
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            box-shadow:
+                0 22px 60px
+                rgba(0,0,0,0.28);
+
+            transition:
+                transform 0.35s ease,
+                border-color 0.35s ease,
+                background 0.35s ease,
+                box-shadow 0.35s ease;
+
+        }
+
+
+        .challenge-button::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    110deg,
+                    transparent 20%,
+                    rgba(255,255,255,0.06) 50%,
+                    transparent 80%
+                );
+
+            transform:
+                translateX(-120%);
+
+            transition:
+                transform 0.7s ease;
+
+        }
+
+
+        .challenge-button:hover {
+
+            transform:
+                translateY(-5px);
+
+            border-color:
+                rgba(255,255,255,0.36);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.105),
+                    rgba(255,255,255,0.035)
                 );
 
             box-shadow:
-                0 30px 90px
+                0 28px 70px
                 rgba(0,0,0,0.38);
 
-            backdrop-filter:
-                blur(14px);
+        }
 
-            -webkit-backdrop-filter:
-                blur(14px);
+
+        .challenge-button:hover::before {
+
+            transform:
+                translateX(120%);
 
         }
 
 
-        .challenge-card::before {
+        .challenge-button:focus-visible {
 
-            content:
-                "";
+            outline:
+                2px solid
+                rgba(255,255,255,0.75);
 
-            position:
-                absolute;
-
-            top:
-                0;
-
-            left:
-                0;
-
-            width:
-                80px;
-
-            height:
-                1px;
-
-            background:
-                rgba(255,255,255,0.7);
+            outline-offset:
+                4px;
 
         }
 
 
-        .challenge-label {
+        /* =========================================
+           BUTTON CONTENT
+        ========================================== */
 
-            margin-bottom:
-                1.8rem;
+        .challenge-button-content {
+
+            position: relative;
+
+            z-index: 1;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                0.35rem;
+
+        }
+
+
+        .challenge-button-title {
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(1.65rem, 4vw, 2.4rem);
+
+            font-weight:
+                600;
+
+            line-height:
+                1.05;
+
+        }
+
+
+        .challenge-button-description {
 
             color:
-                rgba(255,255,255,0.42);
+                rgba(255,255,255,0.45);
 
             font-family:
                 "Inter",
                 sans-serif;
 
             font-size:
-                0.7rem;
+                0.74rem;
 
-            font-weight:
-                500;
-
-            letter-spacing:
-                0.15em;
-
-            text-transform:
-                uppercase;
+            line-height:
+                1.5;
 
         }
 
 
-        /* =====================================
-           LATEX PROBLEM
-        ====================================== */
+        /* =========================================
+           ARROW
+        ========================================== */
 
-        #dailyProblem {
+        .challenge-arrow {
 
-            min-height:
-                180px;
+            position:
+                relative;
+
+            z-index:
+                1;
+
+            width:
+                50px;
+
+            height:
+                50px;
+
+            flex:
+                0 0 50px;
 
             display:
                 flex;
@@ -328,78 +357,76 @@
             justify-content:
                 center;
 
-            padding:
-                1rem 0;
+            border:
+                1px solid
+                rgba(255,255,255,0.20);
+
+            border-radius:
+                50%;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            color:
+                rgba(255,255,255,0.84);
+
+            font-size:
+                1.3rem;
+
+            transition:
+                transform 0.35s ease,
+                background 0.35s ease,
+                border-color 0.35s ease;
+
+        }
+
+
+        .challenge-button:hover
+        .challenge-arrow {
+
+            transform:
+                translateX(6px);
+
+            background:
+                rgba(255,255,255,0.09);
+
+            border-color:
+                rgba(255,255,255,0.38);
+
+        }
+
+
+        /* =========================================
+           INFO
+        ========================================== */
+
+        .challenge-info {
+
+            margin-top:
+                2.8rem;
 
             text-align:
                 center;
 
-            font-size:
-                clamp(1.1rem, 2.5vw, 1.55rem);
-
-            line-height:
-                1.8;
-
-        }
-
-
-        #dailyProblem mjx-container {
-
-            max-width:
-                100%;
-
-        }
-
-
-        /* =====================================
-           DIVIDER
-        ====================================== */
-
-        .challenge-divider {
-
-            width:
-                100%;
-
-            height:
-                1px;
-
-            margin:
-                2rem 0;
-
-            background:
-                rgba(255,255,255,0.10);
-
-        }
-
-
-        /* =====================================
-           NOTE
-        ====================================== */
-
-        .challenge-note {
-
             color:
-                rgba(255,255,255,0.40);
+                rgba(255,255,255,0.38);
 
             font-family:
                 "Inter",
                 sans-serif;
 
             font-size:
-                0.8rem;
+                0.78rem;
 
             line-height:
                 1.7;
 
-            text-align:
-                center;
-
         }
 
 
-        /* =====================================
+        /* =========================================
            BACK BUTTON
-        ====================================== */
+        ========================================== */
 
         .challenge-back {
 
@@ -410,7 +437,7 @@
                 center;
 
             margin-top:
-                2.5rem;
+                2.8rem;
 
         }
 
@@ -427,17 +454,17 @@
                 0.7rem;
 
             padding:
-                0.8rem 1.2rem;
+                0.8rem 1.25rem;
 
             border:
                 1px solid
                 rgba(255,255,255,0.16);
 
-            color:
-                rgba(255,255,255,0.70);
-
             background:
                 rgba(255,255,255,0.03);
+
+            color:
+                rgba(255,255,255,0.70);
 
             font-family:
                 "Inter",
@@ -450,9 +477,9 @@
                 none;
 
             transition:
+                transform 0.25s ease,
                 background 0.25s ease,
-                border-color 0.25s ease,
-                transform 0.25s ease;
+                border-color 0.25s ease;
 
         }
 
@@ -473,9 +500,6 @@
 
         .challenge-back-arrow {
 
-            font-size:
-                1rem;
-
             transition:
                 transform 0.25s ease;
 
@@ -491,9 +515,9 @@
         }
 
 
-        /* =====================================
+        /* =========================================
            MOBILE
-        ====================================== */
+        ========================================== */
 
         @media (max-width: 700px) {
 
@@ -505,21 +529,35 @@
             }
 
 
-            .challenge-card {
+            .challenge-choice {
 
-                padding:
-                    1.5rem;
+                grid-template-columns:
+                    1fr;
 
             }
 
 
-            #dailyProblem {
+            .challenge-button {
 
                 min-height:
-                    150px;
+                    120px;
 
-                overflow-x:
-                    auto;
+                padding:
+                    1.4rem;
+
+            }
+
+
+            .challenge-arrow {
+
+                width:
+                    44px;
+
+                height:
+                    44px;
+
+                flex-basis:
+                    44px;
 
             }
 
@@ -564,10 +602,11 @@
             <a href="index.html"
                class="logo">
 
-                <img src="logo.png"
-                     alt="CALCULUS logo"
-                     width="40"
-                     height="40">
+                <img
+                    src="logo.png"
+                    alt="CALCULUS logo"
+                    width="40"
+                    height="40">
 
                 CALCULUS
 
@@ -630,10 +669,11 @@
 
             <!-- HAMBURGER -->
 
-            <button class="hamburger"
-                    id="hamburger"
-                    aria-label="Open navigation menu"
-                    aria-expanded="false">
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Open navigation menu"
+                aria-expanded="false">
 
                 <span></span>
                 <span></span>
@@ -649,25 +689,31 @@
         <div class="mobile-menu"
              id="mobileMenu">
 
+
             <a href="index.html">
                 Home
             </a>
+
 
             <a href="about.html">
                 About
             </a>
 
+
             <a href="books.html">
                 Books
             </a>
+
 
             <a href="topics.html">
                 Topics
             </a>
 
+
             <a href="other-websites.html">
                 Other Websites
             </a>
+
 
             <a href="login.html"
                id="accountMobileNav">
@@ -694,120 +740,127 @@
 
             <header class="challenge-header">
 
-    <span class="challenge-kicker">
-        Mathematical Challenge
-    </span>
+                <span class="challenge-kicker">
 
-    <h1>
-        Daily Challenge
-    </h1>
+                    Mathematical Challenge
 
-    <p>
-        One problem. One day.
-        Think deeply before looking for a solution.
-    </p>
-
-</header>
+                </span>
 
 
-<!-- =========================================
-     CHALLENGE LEVELS
-========================================== -->
+                <h1>
 
-<div class="challenge-level-buttons">
+                    Daily Challenge
 
-    <a href="#dailyProblem"
-       class="challenge-level-button">
-
-        <span class="challenge-level-label">
-            School-Level
-        </span>
-
-        <span class="challenge-level-arrow"
-              aria-hidden="true">
-            →
-        </span>
-
-    </a>
+                </h1>
 
 
-    <a href="#dailyProblem"
-       class="challenge-level-button">
+                <p>
 
-        <span class="challenge-level-label">
-            University-Level
-        </span>
-
-        <span class="challenge-level-arrow"
-              aria-hidden="true">
-            →
-        </span>
-
-    </a>
-
-</div>
-
-            <!-- DATE -->
-
-            <div class="challenge-date">
-
-                <!-- CHANGE THIS DATE WHEN POSTING A NEW PROBLEM -->
-
-                August 30, 2026
-
-            </div>
-
-
-            <!-- PROBLEM -->
-
-            <section class="challenge-card">
-
-
-                <div class="challenge-label">
-
-                    Today's Problem
-
-                </div>
-
-
-                <!-- =================================================
-                     PASTE YOUR LATEX PROBLEM INSIDE THIS DIV.
-
-                     EXAMPLE:
-
-                     \[
-                     \int_0^1 x^2\,dx
-                     \]
-
-                     You only need to replace the content below.
-                     MathJax will automatically render it.
-                ================================================== -->
-
-                <div id="dailyProblem">
-
-                    \[
-                    \boxed{
-                        \text{Paste your LaTeX problem here}
-                    }
-                    \]
-
-                </div>
-
-
-                <div class="challenge-divider"></div>
-
-
-                <p class="challenge-note">
-
-                    Take your time. The challenge is meant
-                    to test reasoning, not speed.
+                    A new problem every day.
+                    Choose the level that challenges you.
 
                 </p>
+
+            </header>
+
+
+            <!-- =====================================
+                 LEVEL SELECTION
+            ====================================== -->
+
+            <section class="challenge-choice">
+
+
+                <!-- SCHOOL LEVEL -->
+
+                <a
+                    href="s-daily.html"
+                    class="challenge-button">
+
+
+                    <div class="challenge-button-content">
+
+                        <span class="challenge-button-title">
+
+                            School-Level
+
+                        </span>
+
+
+                        <span class="challenge-button-description">
+
+                            Challenging problems designed
+                            around school-level mathematics.
+
+                        </span>
+
+                    </div>
+
+
+                    <span
+                        class="challenge-arrow"
+                        aria-hidden="true">
+
+                        →
+
+                    </span>
+
+                </a>
+
+
+                <!-- UNIVERSITY LEVEL -->
+
+                <a
+                    href="u-daily.html"
+                    class="challenge-button">
+
+
+                    <div class="challenge-button-content">
+
+                        <span class="challenge-button-title">
+
+                            University-Level
+
+                        </span>
+
+
+                        <span class="challenge-button-description">
+
+                            Deeper problems requiring
+                            advanced mathematical reasoning.
+
+                        </span>
+
+                    </div>
+
+
+                    <span
+                        class="challenge-arrow"
+                        aria-hidden="true">
+
+                        →
+
+                    </span>
+
+                </a>
 
             </section>
 
 
-            <!-- BACK -->
+            <!-- =====================================
+                 INFO
+            ====================================== -->
+
+            <p class="challenge-info">
+
+                Select a level to view today's problem.
+
+            </p>
+
+
+            <!-- =====================================
+                 BACK
+            ====================================== -->
 
             <div class="challenge-back">
 
@@ -839,7 +892,9 @@
     <footer>
 
         <p>
+
             © Ankit Brahamachary 2026
+
         </p>
 
     </footer>
