@@ -64,7 +64,7 @@ const messageInput =
 
 
 const emojiButton =
-    document.getEentById(
+    document.getElementById(
         "emojiButton"
     );
 
