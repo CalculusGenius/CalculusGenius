@@ -777,7 +777,38 @@
 
                     \[
                     \boxed{
-                        \text{Paste your LaTeX problem here}
+                        \documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage[margin=2.5cm]{geometry}
+
+\newtheorem*{exercise}{Exercise 9}
+
+\begin{document}
+
+\begin{exercise}
+Let $H$ be a Hilbert space and let $f$ be a function given by a power series
+\[ f(z) = \sum_{n=0}^{\infty} c_n z^n \text{, } \quad |z| < \rho, \]
+where $\rho > 0$ is the series' radius of convergence.
+
+Show that for an operator $A \in B(H)$ with $\|A\| < \rho$ the series
+\[ \sum_{n=0}^{\infty} |c_n| \, \|A^n\| \]
+is convergent (in $\mathbb{R}$) and that the series
+\[ \sum_{n=0}^{\infty} c_n A^n x \]
+is convergent in $H$ for all $x \in H$. The sum is then denoted by $f(A)x$, that is
+\[ f(A)x = \sum_{n=0}^{\infty} c_n A^n x. \]
+
+Verify that $f(A)$ is a bounded linear operator on $H$.
+
+Assume now that $H$ is finite dimensional and that $\alpha = (e_1, \ldots, e_n)$ is an orthonormal basis for $H$, and let $A$ be the matrix representing $A$ w.r.t. $\alpha$. Show that the series
+\[ \sum_{n=0}^{\infty} c_n (A^n)_{ij} \]
+is convergent in $\mathbb{C}$ for all $1 \le i, j \le n$, and that the so defined matrix $(f(A))$, where
+\[ (f(A))_{ij} = \sum_{n=0}^{\infty} c_n (A^n)_{ij}, \]
+represents the operator $f(A)$ w.r.t. $\alpha$.
+\end{exercise}
+
+\end{document}
                     }
                     \]
 
