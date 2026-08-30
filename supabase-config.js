@@ -2,17 +2,10 @@
 // CALCULUS — SUPABASE CONFIGURATION
 // =========================================
 
-import { createClient } from
-    "https://esm.sh/@supabase/supabase-js@2";
-
 import {
-    getAuth
+    createClient
 } from
-    "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
-import {
-    app
-} from "./firebase-config.js";
+    "https://esm.sh/@supabase/supabase-js@2";
 
 
 // =========================================
@@ -27,14 +20,14 @@ const supabasePublishableKey =
 
 
 // =========================================
-// FIREBASE AUTH
+// SUPABASE CLIENT
 // =========================================
 
-const firebaseAuth =
-    getAuth(app);
-
-
-// =========================================
+export const supabase =
+    createClient(
+        supabaseUrl,
+        supabasePublishableKey
+    );// =========================================
 // SUPABASE CLIENT
 // =========================================
 
