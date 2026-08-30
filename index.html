@@ -1,60 +1,467 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="uMvkvZkdEAw45DsNy3Q6jUHcY59DusUNAoeL9YHBTdY" />
+
+    <meta name="google-site-verification"
+          content="uMvkvZkdEAw45DsNy3Q6jUHcY59DusUNAoeL9YHBTdY" />
 
     <meta name="description"
           content="CALCULUS — a project exploring calculus, mathematics, differential geometry and advanced mathematical ideas.">
-    <!-- =========================================
-     SOCIAL / WHATSAPP LINK PREVIEW
-========================================= -->
 
-<meta property="og:title"
-      content="CALCULUS — Explore the World of Mathematics">
-
-<meta property="og:description"
-      content="Explore calculus, mathematical sciences, and their connections with physics, chemistry, economics, and beyond.">
-
-<meta property="og:type"
-      content="website">
-
-<meta property="og:url"
-      content="https://calculusgenius.github.io/CalculusGenius/">
-
-<meta property="og:image"
-      content="https://calculusgenius.github.io/CalculusGenius/logo.png">
-
-<meta property="og:site_name"
-      content="CALCULUS">
 
     <!-- =========================================
-     CALCULUS FAVICON
-========================================= -->
+         SOCIAL / WHATSAPP LINK PREVIEW
+    ========================================== -->
 
-<link rel="icon"
-      type="image/png"
-      href="https://calculusgenius.github.io/CalculusGenius/logo.png">
+    <meta property="og:title"
+          content="CALCULUS — Explore the World of Mathematics">
+
+    <meta property="og:description"
+          content="Explore calculus, mathematical sciences, and their connections with physics, chemistry, economics, and beyond.">
+
+    <meta property="og:type"
+          content="website">
+
+    <meta property="og:url"
+          content="https://calculusgenius.github.io/CalculusGenius/">
+
+    <meta property="og:image"
+          content="https://calculusgenius.github.io/CalculusGenius/logo.png">
+
+    <meta property="og:site_name"
+          content="CALCULUS">
+
+
+    <!-- =========================================
+         CALCULUS FAVICON
+    ========================================== -->
+
+    <link rel="icon"
+          type="image/png"
+          href="https://calculusgenius.github.io/CalculusGenius/logo.png">
+
 
     <title>CALCULUS</title>
 
-    <!-- Elegant mathematical typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- =========================================
+         GOOGLE FONTS
+    ========================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
           rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
+
+    <!-- GLOBAL STYLES -->
+
+    <link rel="stylesheet"
+          href="style.css">
+
+
+    <!-- =========================================
+         CHALLENGE BUTTON STYLES
+    ========================================== -->
+
+    <style>
+
+        .challenge-section {
+
+            padding:
+                2rem 5% 7rem;
+
+            position:
+                relative;
+
+            z-index:
+                2;
+
+        }
+
+
+        .challenge-container {
+
+            width:
+                min(1100px, 100%);
+
+            margin:
+                0 auto;
+
+        }
+
+
+        .challenge-heading {
+
+            text-align:
+                center;
+
+            margin-bottom:
+                2.8rem;
+
+        }
+
+
+        .challenge-heading h2 {
+
+            margin:
+                0;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(2.4rem, 5vw, 4rem);
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                0.02em;
+
+        }
+
+
+        .challenge-heading p {
+
+            max-width:
+                650px;
+
+            margin:
+                0.8rem auto 0;
+
+            color:
+                rgba(255,255,255,0.52);
+
+            font-size:
+                0.9rem;
+
+            line-height:
+                1.7;
+
+        }
+
+
+        .challenge-buttons {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap:
+                1.4rem;
+
+        }
+
+
+        .challenge-button {
+
+            position:
+                relative;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            min-height:
+                92px;
+
+            padding:
+                0 1.7rem;
+
+            box-sizing:
+                border-box;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.16);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.075),
+                    rgba(255,255,255,0.025)
+                );
+
+            color:
+                #ffffff;
+
+            text-decoration:
+                none;
+
+            overflow:
+                hidden;
+
+            box-shadow:
+                0 18px 45px rgba(0,0,0,0.24);
+
+            transition:
+                border-color 0.35s ease,
+                background 0.35s ease,
+                transform 0.35s ease,
+                box-shadow 0.35s ease;
+
+        }
+
+
+        .challenge-button::before {
+
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    transparent 0%,
+                    rgba(255,255,255,0.06) 50%,
+                    transparent 100%
+                );
+
+            transform:
+                translateX(-110%);
+
+            transition:
+                transform 0.65s ease;
+
+        }
+
+
+        .challenge-button:hover {
+
+            transform:
+                translateY(-4px);
+
+            border-color:
+                rgba(255,255,255,0.38);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.11),
+                    rgba(255,255,255,0.035)
+                );
+
+            box-shadow:
+                0 24px 55px rgba(0,0,0,0.34);
+
+        }
+
+
+        .challenge-button:hover::before {
+
+            transform:
+                translateX(110%);
+
+        }
+
+
+        .challenge-button:focus-visible {
+
+            outline:
+                2px solid
+                rgba(255,255,255,0.75);
+
+            outline-offset:
+                4px;
+
+        }
+
+
+        .challenge-button-content {
+
+            position:
+                relative;
+
+            z-index:
+                1;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                0.25rem;
+
+        }
+
+
+        .challenge-button-label {
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                clamp(1.45rem, 3vw, 2rem);
+
+            font-weight:
+                600;
+
+            letter-spacing:
+                0.01em;
+
+        }
+
+
+        .challenge-button-subtitle {
+
+            color:
+                rgba(255,255,255,0.42);
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            font-size:
+                0.72rem;
+
+            letter-spacing:
+                0.08em;
+
+            text-transform:
+                uppercase;
+
+        }
+
+
+        .challenge-arrow {
+
+            position:
+                relative;
+
+            z-index:
+                1;
+
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            width:
+                46px;
+
+            height:
+                46px;
+
+            flex:
+                0 0 46px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+            border-radius:
+                50%;
+
+            color:
+                rgba(255,255,255,0.82);
+
+            font-size:
+                1.25rem;
+
+            line-height:
+                1;
+
+            transition:
+                transform 0.35s ease,
+                background 0.35s ease,
+                border-color 0.35s ease;
+
+        }
+
+
+        .challenge-button:hover
+        .challenge-arrow {
+
+            transform:
+                translateX(5px);
+
+            background:
+                rgba(255,255,255,0.08);
+
+            border-color:
+                rgba(255,255,255,0.35);
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .challenge-section {
+
+                padding:
+                    1rem 5% 5rem;
+
+            }
+
+
+            .challenge-buttons {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .challenge-button {
+
+                min-height:
+                    84px;
+
+                padding:
+                    0 1.3rem;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-    <!-- Decorative mathematical background -->
-    <div class="math-background" aria-hidden="true">
+
+    <!-- =========================================
+         DECORATIVE MATHEMATICAL BACKGROUND
+    ========================================== -->
+
+    <div class="math-background"
+         aria-hidden="true">
+
         <span>∫</span>
         <span>∫</span>
         <span>∫</span>
@@ -63,50 +470,88 @@
         <span>∫</span>
         <span>∫</span>
         <span>∫</span>
+
     </div>
 
 
-    <!-- Navigation -->
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
     <header class="navbar">
 
         <div class="nav-container">
 
-            <a href="index.html" class="logo">
-    <img src="logo.png" alt="CALCULUS logo" width="40" height="40">
+
+            <a href="index.html"
+               class="logo">
+
+                <img src="logo.png"
+                     alt="CALCULUS logo"
+                     width="40"
+                     height="40">
+
                 CALCULUS
+
             </a>
+
 
             <nav class="desktop-nav">
 
-                <a href="index.html" class="nav-link active">
+
+                <a href="index.html"
+                   class="nav-link active">
+
                     Home
+
                 </a>
 
-                <a href="about.html" class="nav-link">
+
+                <a href="about.html"
+                   class="nav-link">
+
                     About
+
                 </a>
 
-                <a href="books.html" class="nav-link">
+
+                <a href="books.html"
+                   class="nav-link">
+
                     Books
+
                 </a>
 
-                <a href="topics.html" class="nav-link">
+
+                <a href="topics.html"
+                   class="nav-link">
+
                     Topics
+
                 </a>
 
-                <a href="other-websites.html" class="nav-link">
+
+                <a href="other-websites.html"
+                   class="nav-link">
+
                     Other Websites
+
                 </a>
+
+
                 <a href="login.html"
-   class="nav-link"
-   id="accountNav">
-    Log In
+                   class="nav-link"
+                   id="accountNav">
+
+                    Log In
+
                 </a>
 
             </nav>
 
 
-            <!-- Hamburger -->
+            <!-- HAMBURGER -->
+
             <button class="hamburger"
                     id="hamburger"
                     aria-label="Open navigation menu"
@@ -121,45 +566,77 @@
         </div>
 
 
-        <!-- Mobile menu -->
-        <div class="mobile-menu" id="mobileMenu">
+        <!-- =========================================
+             MOBILE MENU
+        ========================================== -->
 
-    <a href="index.html">Home</a>
+        <div class="mobile-menu"
+             id="mobileMenu">
 
-    <a href="about.html">About</a>
 
-    <a href="books.html">Books</a>
+            <a href="index.html">
+                Home
+            </a>
 
-    <a href="topics.html"
-               class="mobile-topics-title">Topics</a>
 
-    <a href="other-websites.html">
+            <a href="about.html">
+                About
+            </a>
 
-        Other Websites
 
-    </a>
-            <a href="login.html"
-   id="accountMobileNav">
+            <a href="books.html">
+                Books
+            </a>
 
-    Log In
+
+            <a href="topics.html"
+               class="mobile-topics-title">
+
+                Topics
 
             </a>
 
-</div>
+
+            <a href="other-websites.html">
+
+                Other Websites
+
+            </a>
+
+
+            <a href="login.html"
+               id="accountMobileNav">
+
+                Log In
+
+            </a>
+
+        </div>
 
     </header>
 
 
+    <!-- =========================================
+         MAIN CONTENT
+    ========================================== -->
+
     <main>
 
-        <!-- HERO -->
+
+        <!-- =====================================
+             HERO
+        ====================================== -->
+
         <section class="hero">
 
             <div class="hero-content">
 
                 <h1 class="main-title">
+
                     CALCULUS
+
                 </h1>
+
 
                 <div class="title-line"></div>
 
@@ -168,17 +645,23 @@
         </section>
 
 
-        <!-- INTRODUCTION -->
+        <!-- =====================================
+             INTRODUCTION
+        ====================================== -->
+
         <section class="content-section reveal">
 
             <div class="content-container">
 
-                <p class="intro-text" style="text-align: justify;">
+                <p class="intro-text"
+                   style="text-align: justify;">
+
                     Calculus is the most glorified and intriguing branch of
                     mathematics. It is special because it can solve problems
                     from enormous ranges, even by using approximation. It
                     connects accuracy and approximation and shows their
                     transition
+
                 </p>
 
             </div>
@@ -186,50 +669,183 @@
         </section>
 
 
-        <!-- PURPOSE -->
-<section class="purpose-section reveal">
+        <!-- =====================================
+             PURPOSE
+        ====================================== -->
 
-    <div class="purpose-container">
+        <section class="purpose-section reveal">
 
-        <!-- Animated heading -->
-        <div class="purpose-heading-box">
-
-            <span class="heading-line top-line"></span>
-            <span class="heading-line bottom-line"></span>
-
-            <h2>
-                Purpose of the Project
-            </h2>
-
-        </div>
-
-        <!-- Purpose text -->
-        <p class="purpose-text">
-            The Main purpose of this project is to showcase that
-            mathematics does not care on age. I am specifically
-            emphasizing on the fact that even eighth graders can
-            study and learn Differential Geometry, and if they wish
-            to, they can even begin manifolds. Mathematics does not
-            see your age. Its ourselves, who have set age
-            restrictions, even for studies
-        </p>
-
-    </div>
-
-</section>
+            <div class="purpose-container">
 
 
-    <!-- FOOTER -->
+                <!-- Animated heading -->
+
+                <div class="purpose-heading-box">
+
+                    <span class="heading-line top-line"></span>
+
+                    <span class="heading-line bottom-line"></span>
+
+
+                    <h2>
+
+                        Purpose of the Project
+
+                    </h2>
+
+                </div>
+
+
+                <!-- Purpose text -->
+
+                <p class="purpose-text">
+
+                    The Main purpose of this project is to showcase that
+                    mathematics does not care on age. I am specifically
+                    emphasizing on the fact that even eighth graders can
+                    study and learn Differential Geometry, and if they wish
+                    to, they can even begin manifolds. Mathematics does not
+                    see your age. Its ourselves, who have set age
+                    restrictions, even for studies
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================
+             CHALLENGES
+        ====================================== -->
+
+        <section class="challenge-section reveal">
+
+            <div class="challenge-container">
+
+
+                <div class="challenge-heading">
+
+                    <h2>
+                        Challenges
+                    </h2>
+
+
+                    <p>
+                        Test your mathematical thinking with
+                        carefully selected problems and puzzles.
+                    </p>
+
+                </div>
+
+
+                <div class="challenge-buttons">
+
+
+                    <!-- DAILY CHALLENGE -->
+
+                    <a href="daily-challenge.html"
+                       class="challenge-button">
+
+
+                        <div class="challenge-button-content">
+
+                            <span class="challenge-button-label">
+
+                                Daily Challenge
+
+                            </span>
+
+
+                            <span class="challenge-button-subtitle">
+
+                                A problem to conquer today
+
+                            </span>
+
+                        </div>
+
+
+                        <span class="challenge-arrow"
+                              aria-hidden="true">
+
+                            →
+                            
+                        </span>
+
+                    </a>
+
+
+                    <!-- WEEKLY CHALLENGE -->
+
+                    <a href="weekly-challenge.html"
+                       class="challenge-button">
+
+
+                        <div class="challenge-button-content">
+
+                            <span class="challenge-button-label">
+
+                                This week's challenge
+
+                            </span>
+
+
+                            <span class="challenge-button-subtitle">
+
+                                A deeper problem for the week
+
+                            </span>
+
+                        </div>
+
+
+                        <span class="challenge-arrow"
+                              aria-hidden="true">
+
+                            →
+
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
     <footer>
 
         <p>
+
             © Ankit Brahamachary 2026
+
         </p>
 
     </footer>
 
 
-    <script type="module" src="script.js"></script>
+    <!-- =========================================
+         WEBSITE JAVASCRIPT
+    ========================================== -->
+
+    <script
+        type="module"
+        src="script.js">
+    </script>
+
 
 </body>
+
 </html>
+```
