@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="CALCULUS — School-Level Weekly Challenge.">
+
+    <title>CALCULUS — School-Level Weekly Challenge</title>
+
+
+    <!-- GOOGLE FONTS -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+
+    <link rel="stylesheet"
+          href="style.css">
+
+
+    <!-- =========================================
+         MATHJAX
+    ========================================== -->
+
+    <script>
+
+        window.MathJax = {
+
+            tex: {
+
+                inlineMath: [
+                    ['\\(', '\\)']
+                ],
+
+                displayMath: [
+                    ['\\[', '\\]']
+                ]
+
+            },
+
+            svg: {
+
+                fontCache:
+                    'global'
+
+            }
+
+        };
+
+    </script>
+
+
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js">
+    </script>
+
+
+    <style>
+
+        .challenge-page {
+
+            min-height: 100vh;
+
+            padding: 130px 5% 80px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .challenge-container {
+
+            width: min(1000px, 100%);
+
+            margin: 0 auto;
+
+        }
+
+
+        .challenge-header {
+
+            text-align: center;
+
+            margin-bottom: 3.5rem;
+
+        }
+
+
+        .challenge-kicker {
+
+            display: inline-block;
+
+            margin-bottom: 0.7rem;
+
+            color: rgba(255,255,255,0.42);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.72rem;
+
+            font-weight: 500;
+
+            letter-spacing: 0.16em;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .challenge-header h1 {
+
+            margin: 0;
+
+            font-family: "Cormorant Garamond", serif;
+
+            font-size: clamp(3rem, 8vw, 6rem);
+
+            font-weight: 600;
+
+            line-height: 0.95;
+
+        }
+
+
+        .challenge-header p {
+
+            max-width: 650px;
+
+            margin: 1.2rem auto 0;
+
+            color: rgba(255,255,255,0.55);
+
+            font-size: 0.9rem;
+
+            line-height: 1.7;
+
+        }
+
+
+        .challenge-date {
+
+            text-align: center;
+
+            margin-bottom: 1.5rem;
+
+            color: rgba(255,255,255,0.38);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.75rem;
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .challenge-card {
+
+            position: relative;
+
+            padding: clamp(1.8rem, 5vw, 3.5rem);
+
+            border: 1px solid rgba(255,255,255,0.18);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.065),
+                    rgba(255,255,255,0.018)
+                );
+
+            box-shadow:
+                0 30px 90px rgba(0,0,0,0.38);
+
+            backdrop-filter: blur(14px);
+
+            -webkit-backdrop-filter: blur(14px);
+
+        }
+
+
+        .challenge-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 80px;
+
+            height: 1px;
+
+            background: rgba(255,255,255,0.7);
+
+        }
+
+
+        .challenge-label {
+
+            margin-bottom: 1.8rem;
+
+            color: rgba(255,255,255,0.42);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.7rem;
+
+            font-weight: 500;
+
+            letter-spacing: 0.15em;
+
+            text-transform: uppercase;
+
+        }
+
+
+        #schoolWeeklyProblem {
+
+            min-height: 180px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 1rem 0;
+
+            text-align: center;
+
+            font-size: clamp(1.1rem, 2.5vw, 1.55rem);
+
+            line-height: 1.8;
+
+        }
+
+
+        #schoolWeeklyProblem mjx-container {
+
+            max-width: 100%;
+
+        }
+
+
+        .challenge-divider {
+
+            width: 100%;
+
+            height: 1px;
+
+            margin: 2rem 0;
+
+            background: rgba(255,255,255,0.10);
+
+        }
+
+
+        .challenge-note {
+
+            color: rgba(255,255,255,0.40);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.8rem;
+
+            line-height: 1.7;
+
+            text-align: center;
+
+        }
+
+
+        .challenge-back {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 2.5rem;
+
+        }
+
+
+        .challenge-back a {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 0.7rem;
+
+            padding: 0.8rem 1.2rem;
+
+            border: 1px solid rgba(255,255,255,0.16);
+
+            color: rgba(255,255,255,0.70);
+
+            background: rgba(255,255,255,0.03);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.8rem;
+
+            text-decoration: none;
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.25s ease;
+
+        }
+
+
+        .challenge-back a:hover {
+
+            transform: translateY(-2px);
+
+            background: rgba(255,255,255,0.08);
+
+            border-color: rgba(255,255,255,0.32);
+
+        }
+
+
+        .challenge-back-arrow {
+
+            transition: transform 0.25s ease;
+
+        }
+
+
+        .challenge-back a:hover
+        .challenge-back-arrow {
+
+            transform: translateX(-4px);
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .challenge-page {
+
+                padding: 110px 4% 60px;
+
+            }
+
+
+            .challenge-card {
+
+                padding: 1.5rem;
+
+            }
+
+
+            #schoolWeeklyProblem {
+
+                min-height: 150px;
+
+                overflow-x: auto;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- MATHEMATICAL BACKGROUND -->
+
+    <div class="math-background"
+         aria-hidden="true">
+
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+
+    </div>
+
+
+    <!-- NAVIGATION -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="index.html"
+               class="logo">
+
+                <img
+                    src="logo.png"
+                    alt="CALCULUS logo"
+                    width="40"
+                    height="40">
+
+                CALCULUS
+
+            </a>
+
+
+            <nav class="desktop-nav">
+
+                <a href="index.html"
+                   class="nav-link">
+                    Home
+                </a>
+
+                <a href="about.html"
+                   class="nav-link">
+                    About
+                </a>
+
+                <a href="books.html"
+                   class="nav-link">
+                    Books
+                </a>
+
+                <a href="topics.html"
+                   class="nav-link">
+                    Topics
+                </a>
+
+                <a href="other-websites.html"
+                   class="nav-link">
+                    Other Websites
+                </a>
+
+                <a href="login.html"
+                   class="nav-link"
+                   id="accountNav">
+                    Log In
+                </a>
+
+            </nav>
+
+
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Open navigation menu"
+                aria-expanded="false">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+
+        <div class="mobile-menu"
+             id="mobileMenu">
+
+            <a href="index.html">Home</a>
+
+            <a href="about.html">About</a>
+
+            <a href="books.html">Books</a>
+
+            <a href="topics.html">Topics</a>
+
+            <a href="other-websites.html">
+                Other Websites
+            </a>
+
+            <a href="login.html"
+               id="accountMobileNav">
+                Log In
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- WEEKLY SCHOOL CHALLENGE -->
+
+    <main class="challenge-page">
+
+        <div class="challenge-container">
+
+
+            <header class="challenge-header">
+
+                <span class="challenge-kicker">
+                    School-Level Mathematical Challenge
+                </span>
+
+
+                <h1>
+                    School-Level
+                </h1>
+
+
+                <p>
+                    A challenging school-level problem
+                    designed for deeper weekly reasoning.
+                </p>
+
+            </header>
+
+
+            <div class="challenge-date">
+
+                <!-- CHANGE THIS DATE WHEN POSTING -->
+
+                Week of August 30, 2026
+
+            </div>
+
+
+            <section class="challenge-card">
+
+
+                <div class="challenge-label">
+                    This Week's Problem
+                </div>
+
+
+                <!-- =========================================
+                     PASTE YOUR LATEX HERE
+                ========================================== -->
+
+                <div id="schoolWeeklyProblem">
+
+                    \[
+                    \boxed{
+                        \text{Paste your LaTeX problem here}
+                    }
+                    \]
+
+                </div>
+
+
+                <div class="challenge-divider"></div>
+
+
+                <p class="challenge-note">
+
+                    Take your time.
+                    This challenge is designed for deeper reasoning.
+
+                </p>
+
+            </section>
+
+
+            <div class="challenge-back">
+
+                <a href="weekly-challenge.html">
+
+                    <span
+                        class="challenge-back-arrow"
+                        aria-hidden="true">
+
+                        ←
+
+                    </span>
+
+                    Back to This Week's Challenge
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            © Ankit Brahamachary 2026
+        </p>
+
+    </footer>
+
+
+    <script
+        type="module"
+        src="script.js">
+    </script>
+
+</body>
+
+</html>
