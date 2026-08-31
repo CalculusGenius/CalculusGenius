@@ -3140,13 +3140,13 @@ section mjx-container {
 ========================================= */
 
 mjx-container[display="true"] {
-    font-size: 125% !important;
+    font-size: 200% !important;
 }
 
 @media (max-width: 700px) {
 
     mjx-container[display="true"] {
-        font-size: 115% !important;
+        font-size: 175% !important;
     }
 
 }
