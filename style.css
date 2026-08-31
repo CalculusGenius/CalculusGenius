@@ -3135,3 +3135,18 @@ section mjx-container {
     }
 
 }
+/* =========================================
+   RESPONSIVE LATEX TEXT SIZE
+========================================= */
+
+mjx-container[display="true"] {
+    font-size: 125% !important;
+}
+
+@media (max-width: 700px) {
+
+    mjx-container[display="true"] {
+        font-size: 115% !important;
+    }
+
+}
