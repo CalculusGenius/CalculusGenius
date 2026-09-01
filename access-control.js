@@ -2,10 +2,12 @@
 // =========================================
 // CALCULUS — CHAT ACCESS CONTROL
 // =========================================
-// • Hides Chat until administrator approves
-// • Creates an access request
-// • Sends administrator an email
-// • Protects chat.html by redirecting unapproved users
+// Rules:
+// • Logged out      → Chat hidden
+// • Logged in       → Chat hidden by default
+// • Approved user   → Chat visible
+// • Admin           → Chat visible
+// • Unapproved user → cannot use chat.html
 // =========================================
 
 import {
@@ -26,33 +28,14 @@ import {
 
 
 // =========================================
-// CONFIGURATION
+// CONFIG
 // =========================================
-
-// Put YOUR administrator email here.
 
 const ADMIN_EMAIL =
     "YOUR_ADMIN_EMAIL_HERE";
 
-
-// Your website
-
 const SITE_URL =
     "https://calculusgenius.github.io/CalculusGenius";
-
-
-// EmailJS values
-// Replace these three placeholders after
-// creating your EmailJS service/template.
-
-const EMAILJS_PUBLIC_KEY =
-    "YOUR_EMAILJS_PUBLIC_KEY";
-
-const EMAILJS_SERVICE_ID =
-    "YOUR_EMAILJS_SERVICE_ID";
-
-const EMAILJS_TEMPLATE_ID =
-    "YOUR_EMAILJS_TEMPLATE_ID";
 
 
 // =========================================
@@ -64,105 +47,54 @@ const db =
 
 
 // =========================================
-// STATE
+// HIDE CHAT EVERYWHERE
 // =========================================
 
-let currentUser =
-    null;
+function hideChatLinks() {
 
+    document
+        .querySelectorAll(
+            'a[href$="chat.html"]'
+        )
+        .forEach(
+            (link) => {
 
-// =========================================
-// LOAD EMAILJS
-// =========================================
-
-function loadEmailJS() {
-
-    return new Promise(
-        (resolve, reject) => {
-
-            if (
-                window.emailjs
-            ) {
-
-                resolve(
-                    window.emailjs
-                );
-
-                return;
+                link.style.display =
+                    "none";
 
             }
-
-
-            const script =
-                document.createElement(
-                    "script"
-                );
-
-
-            script.src =
-                "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
-
-
-            script.onload =
-                () => {
-
-                    if (
-                        !window.emailjs
-                    ) {
-
-                        reject(
-                            new Error(
-                                "EmailJS failed to load."
-                            )
-                        );
-
-                        return;
-
-                    }
-
-
-                    window.emailjs.init({
-
-                        publicKey:
-                            EMAILJS_PUBLIC_KEY
-
-                    });
-
-
-                    resolve(
-                        window.emailjs
-                    );
-
-                };
-
-
-            script.onerror =
-                () => {
-
-                    reject(
-                        new Error(
-                            "Could not load EmailJS."
-                        )
-                    );
-
-                };
-
-
-            document.head.appendChild(
-                script
-            );
-
-        }
-    );
+        );
 
 }
 
 
 // =========================================
-// IS ADMIN?
+// SHOW CHAT EVERYWHERE
 // =========================================
 
-function isAdmin(
+function showChatLinks() {
+
+    document
+        .querySelectorAll(
+            'a[href$="chat.html"]'
+        )
+        .forEach(
+            (link) => {
+
+                link.style.display =
+                    "";
+
+            }
+        );
+
+}
+
+
+// =========================================
+// CHECK APPROVAL
+// =========================================
+
+async function isApproved(
     user
 ) {
 
@@ -173,182 +105,18 @@ function isAdmin(
     }
 
 
-    return (
+    // Administrator always has access.
+
+    if (
         user.email &&
         user.email.toLowerCase() ===
         ADMIN_EMAIL.toLowerCase()
-    );
-
-}
-
-
-// =========================================
-// INSERT CHAT LINK
-// =========================================
-
-function ensureChatLinks() {
-
-    const desktopNav =
-        document.querySelector(
-            ".desktop-nav"
-        );
-
-
-    const mobileMenu =
-        document.getElementById(
-            "mobileMenu"
-        );
-
-
-    // =====================================
-    // DESKTOP
-    // =====================================
-
-    if (
-        desktopNav &&
-        !desktopNav.querySelector(
-            'a[href="chat.html"]'
-        )
     ) {
 
-        const link =
-            document.createElement(
-                "a"
-            );
-
-
-        link.href =
-            "chat.html";
-
-
-        link.className =
-            "nav-link";
-
-
-        link.dataset.chatLink =
-            "true";
-
-
-        link.textContent =
-            "Chat";
-
-
-        const loginLink =
-            document.getElementById(
-                "accountNav"
-            );
-
-
-        if (loginLink) {
-
-            desktopNav.insertBefore(
-                link,
-                loginLink
-            );
-
-        }
-
-        else {
-
-            desktopNav.appendChild(
-                link
-            );
-
-        }
+        return true;
 
     }
 
-
-    // =====================================
-    // MOBILE
-    // =====================================
-
-    if (
-        mobileMenu &&
-        !mobileMenu.querySelector(
-            'a[href="chat.html"]'
-        )
-    ) {
-
-        const link =
-            document.createElement(
-                "a"
-            );
-
-
-        link.href =
-            "chat.html";
-
-
-        link.dataset.chatLink =
-            "true";
-
-
-        link.textContent =
-            "Chat";
-
-
-        const loginLink =
-            document.getElementById(
-                "accountMobileNav"
-            );
-
-
-        if (loginLink) {
-
-            mobileMenu.insertBefore(
-                link,
-                loginLink
-            );
-
-        }
-
-        else {
-
-            mobileMenu.appendChild(
-                link
-            );
-
-        }
-
-    }
-
-}
-
-
-// =========================================
-// SHOW / HIDE CHAT LINK
-// =========================================
-
-function setChatNavigationVisible(
-    visible
-) {
-
-    document
-        .querySelectorAll(
-            '[data-chat-link]'
-        )
-        .forEach(
-            (link) => {
-
-                link.style.display =
-                    visible
-                        ? ""
-                        : "none";
-
-            }
-        );
-
-}
-
-
-// =========================================
-// GET ACCESS DOCUMENT
-// =========================================
-
-async function getAccessStatus(
-    user
-) {
 
     const accessRef =
         doc(
@@ -364,16 +132,10 @@ async function getAccessStatus(
         );
 
 
-    if (
-        !snapshot.exists()
-    ) {
-
-        return null;
-
-    }
-
-
-    return snapshot.data();
+    return (
+        snapshot.exists() &&
+        snapshot.data().approved === true
+    );
 
 }
 
@@ -386,6 +148,13 @@ async function createAccessRequest(
     user
 ) {
 
+    if (!user) {
+
+        return;
+
+    }
+
+
     const requestRef =
         doc(
             db,
@@ -394,16 +163,14 @@ async function createAccessRequest(
         );
 
 
-    const snapshot =
+    const existing =
         await getDoc(
             requestRef
         );
 
 
-    // Request already exists.
-
     if (
-        snapshot.exists()
+        existing.exists()
     ) {
 
         return;
@@ -430,11 +197,11 @@ async function createAccessRequest(
                 user.photoURL ||
                 "",
 
-            createdAt:
-                serverTimestamp(),
-
             status:
-                "pending"
+                "pending",
+
+            createdAt:
+                serverTimestamp()
 
         }
     );
@@ -448,285 +215,16 @@ async function createAccessRequest(
 
 
 // =========================================
-// SEND EMAIL
+// CHECK CURRENT PAGE
 // =========================================
 
-async function sendAccessEmail(
-    user
-) {
+function isChatPage() {
 
-    if (
-        !user ||
-        isAdmin(user)
-    ) {
-
-        return;
-
-    }
-
-
-    const sessionKey =
-        `calculus-chat-request-${user.uid}`;
-
-
-    /*
-       Prevent repeated emails during the
-       same browser session.
-    */
-
-    if (
-        sessionStorage.getItem(
-            sessionKey
-        ) === "sent"
-    ) {
-
-        return;
-
-    }
-
-
-    if (
-        EMAILJS_PUBLIC_KEY.startsWith(
-            "YOUR_"
-        ) ||
-        EMAILJS_SERVICE_ID.startsWith(
-            "YOUR_"
-        ) ||
-        EMAILJS_TEMPLATE_ID.startsWith(
-            "YOUR_"
-        )
-    ) {
-
-        console.warn(
-            "EmailJS is not configured yet."
+    return window.location.pathname
+        .toLowerCase()
+        .endsWith(
+            "/chat.html"
         );
-
-        return;
-
-    }
-
-
-    try {
-
-        const emailjs =
-            await loadEmailJS();
-
-
-        const approvalURL =
-            `${SITE_URL}/admin-access.html?uid=${encodeURIComponent(user.uid)}`;
-
-
-        await emailjs.send(
-
-            EMAILJS_SERVICE_ID,
-
-            EMAILJS_TEMPLATE_ID,
-
-            {
-
-                user_name:
-                    user.displayName ||
-                    "Google User",
-
-                user_email:
-                    user.email ||
-                    "",
-
-                user_uid:
-                    user.uid,
-
-                approval_url:
-                    approvalURL
-
-            }
-
-        );
-
-
-        sessionStorage.setItem(
-            sessionKey,
-            "sent"
-        );
-
-
-        console.log(
-            "Chat access notification sent."
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Access notification failed:",
-            error
-        );
-
-    }
-
-}
-
-
-// =========================================
-// APPLY ACCESS
-// =========================================
-
-async function applyAccess(
-    user
-) {
-
-    ensureChatLinks();
-
-
-    // Not signed in
-
-    if (!user) {
-
-        setChatNavigationVisible(
-            false
-        );
-
-        return;
-
-    }
-
-
-    // Administrator
-
-    if (
-        isAdmin(user)
-    ) {
-
-        setChatNavigationVisible(
-            true
-        );
-
-
-        /*
-           Give administrator Chat access.
-
-           Firestore Rules will also recognize
-           the administrator.
-        */
-
-        const accessRef =
-            doc(
-                db,
-                "chatAccess",
-                user.uid
-            );
-
-
-        await setDoc(
-            accessRef,
-            {
-
-                uid:
-                    user.uid,
-
-                approved:
-                    true,
-
-                approvedAt:
-                    serverTimestamp(),
-
-                approvedBy:
-                    ADMIN_EMAIL
-
-            },
-
-            {
-                merge:
-                    true
-            }
-        );
-
-
-        return;
-
-    }
-
-
-    // =====================================
-    // NORMAL USER
-    // =====================================
-
-    try {
-
-        const access =
-            await getAccessStatus(
-                user
-            );
-
-
-        if (
-            access &&
-            access.approved ===
-            true
-        ) {
-
-            setChatNavigationVisible(
-                true
-            );
-
-            return;
-
-        }
-
-
-        // Not approved
-
-        setChatNavigationVisible(
-            false
-        );
-
-
-        await createAccessRequest(
-            user
-        );
-
-
-        await sendAccessEmail(
-            user
-        );
-
-
-        /*
-           If this script is running on chat.html,
-           don't allow an unapproved user to use it.
-        */
-
-        const page =
-            window.location.pathname;
-
-
-        if (
-            page.endsWith(
-                "/chat.html"
-            )
-        ) {
-
-            window.location.replace(
-                `${SITE_URL}/account.html?chatAccess=pending`
-            );
-
-        }
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Chat access check failed:",
-            error
-        );
-
-
-        setChatNavigationVisible(
-            false
-        );
-
-    }
 
 }
 
@@ -738,20 +236,118 @@ async function applyAccess(
 watchAuthState(
     async (user) => {
 
-        currentUser =
-            user;
+        // ALWAYS HIDE FIRST.
+        //
+        // This prevents Chat from briefly
+        // appearing before the access check.
+
+        hideChatLinks();
 
 
-        await applyAccess(
-            user
-        );
+        // =====================================
+        // LOGGED OUT
+        // =====================================
+
+        if (!user) {
+
+            console.log(
+                "Chat hidden: user is signed out."
+            );
+
+            return;
+
+        }
+
+
+        // =====================================
+        // CHECK APPROVAL
+        // =====================================
+
+        try {
+
+            const approved =
+                await isApproved(
+                    user
+                );
+
+
+            // =================================
+            // APPROVED
+            // =================================
+
+            if (approved) {
+
+                console.log(
+                    "Chat access approved for:",
+                    user.email
+                );
+
+
+                showChatLinks();
+
+                return;
+
+            }
+
+
+            // =================================
+            // NOT APPROVED
+            // =================================
+
+            console.log(
+                "Chat hidden: user is not approved."
+            );
+
+
+            await createAccessRequest(
+                user
+            );
+
+
+            // If they manually open chat.html,
+            // send them away.
+
+            if (
+                isChatPage()
+            ) {
+
+                window.location.replace(
+                    `${SITE_URL}/account.html?chatAccess=pending`
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Chat access check failed:",
+                error
+            );
+
+
+            hideChatLinks();
+
+
+            if (
+                isChatPage()
+            ) {
+
+                window.location.replace(
+                    `${SITE_URL}/account.html?chatAccess=error`
+                );
+
+            }
+
+        }
 
     }
 );
 
 
 // =========================================
-// INITIAL NAVIGATION
+// INITIAL DEFAULT STATE
 // =========================================
 
 if (
@@ -761,31 +357,19 @@ if (
 
     document.addEventListener(
         "DOMContentLoaded",
-        () => {
-
-            ensureChatLinks();
-
-            setChatNavigationVisible(
-                false
-            );
-
-        }
+        hideChatLinks
     );
 
 }
 
 else {
 
-    ensureChatLinks();
-
-    setChatNavigationVisible(
-        false
-    );
+    hideChatLinks();
 
 }
 
 
 console.log(
-    "CALCULUS Chat access control loaded."
+    "CALCULUS Chat Access Control loaded."
 );
 ```
