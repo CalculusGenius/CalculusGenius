@@ -336,8 +336,9 @@ watchAuthState(
             ) {
 
                 window.location.replace(
-                    `${SITE_URL}/account.html?chatAccess=error`
-                );
+    SITE_URL +
+    "/account.html?chatAccess=pending"
+);
 
             }
 
