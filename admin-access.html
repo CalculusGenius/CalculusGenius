@@ -1,0 +1,648 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CALCULUS — Chat Access</title>
+
+    <link rel="stylesheet"
+          href="style.css">
+
+    <style>
+
+        .admin-access-page {
+
+            min-height: 100vh;
+
+            padding: 140px 5% 80px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .admin-access-container {
+
+            width:
+                min(620px, 100%);
+
+            margin:
+                0 auto;
+
+        }
+
+
+        .admin-access-card {
+
+            padding:
+                2.5rem;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.18);
+
+            background:
+                rgba(255,255,255,0.035);
+
+            box-shadow:
+                0 30px 90px
+                rgba(0,0,0,0.4);
+
+        }
+
+
+        .admin-access-card h1 {
+
+            margin:
+                0;
+
+            font-family:
+                "Cormorant Garamond",
+                serif;
+
+            font-size:
+                3rem;
+
+        }
+
+
+        .admin-access-card p {
+
+            color:
+                rgba(255,255,255,0.55);
+
+            line-height:
+                1.7;
+
+        }
+
+
+        .request-details {
+
+            margin:
+                1.5rem 0;
+
+            padding:
+                1.2rem;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.12);
+
+            background:
+                rgba(255,255,255,0.025);
+
+        }
+
+
+        .request-details div {
+
+            margin:
+                0.5rem 0;
+
+            word-break:
+                break-word;
+
+        }
+
+
+        .admin-button {
+
+            width:
+                100%;
+
+            padding:
+                1rem;
+
+            margin-top:
+                1rem;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.28);
+
+            background:
+                rgba(255,255,255,0.10);
+
+            color:
+                #fff;
+
+            font-family:
+                "Inter",
+                sans-serif;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .admin-button:hover {
+
+            background:
+                rgba(255,255,255,0.18);
+
+        }
+
+
+        .admin-status {
+
+            margin-top:
+                1rem;
+
+            color:
+                rgba(255,255,255,0.55);
+
+            text-align:
+                center;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="math-background"
+         aria-hidden="true">
+
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+
+    </div>
+
+
+    <main class="admin-access-page">
+
+        <div class="admin-access-container">
+
+            <section class="admin-access-card">
+
+                <h1>
+                    Chat Access
+                </h1>
+
+                <p id="statusText">
+                    Checking administrator access...
+                </p>
+
+
+                <div
+                    class="request-details"
+                    id="requestDetails"
+                    style="display:none;">
+
+                    <div>
+                        <strong>Name:</strong>
+                        <span id="requestName"></span>
+                    </div>
+
+                    <div>
+                        <strong>Email:</strong>
+                        <span id="requestEmail"></span>
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="admin-button"
+                    id="loginButton"
+                    style="display:none;">
+
+                    Sign in as Administrator
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="admin-button"
+                    id="allowButton"
+                    style="display:none;">
+
+                    ALLOW ACCESS
+
+                </button>
+
+
+                <p
+                    class="admin-status"
+                    id="resultText">
+                </p>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <script type="module">
+
+        import {
+            getAuth,
+            GoogleAuthProvider,
+            signInWithPopup,
+            onAuthStateChanged
+        } from
+            "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            setDoc,
+            serverTimestamp
+        } from
+            "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+        import {
+            app
+        } from "./firebase-config.js";
+
+
+        const ADMIN_EMAIL =
+            "YOUR_ADMIN_EMAIL_HERE";
+
+
+        const db =
+            getFirestore(app);
+
+
+        const auth =
+            getAuth(app);
+
+
+        const provider =
+            new GoogleAuthProvider();
+
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const uid =
+            params.get(
+                "uid"
+            );
+
+
+        const statusText =
+            document.getElementById(
+                "statusText"
+            );
+
+
+        const resultText =
+            document.getElementById(
+                "resultText"
+            );
+
+
+        const loginButton =
+            document.getElementById(
+                "loginButton"
+            );
+
+
+        const allowButton =
+            document.getElementById(
+                "allowButton"
+            );
+
+
+        const requestDetails =
+            document.getElementById(
+                "requestDetails"
+            );
+
+
+        const requestName =
+            document.getElementById(
+                "requestName"
+            );
+
+
+        const requestEmail =
+            document.getElementById(
+                "requestEmail"
+            );
+
+
+        if (!uid) {
+
+            statusText.textContent =
+                "Invalid access request.";
+
+        }
+
+
+        async function loadRequest() {
+
+            if (!uid) {
+
+                return null;
+
+            }
+
+
+            const requestRef =
+                doc(
+                    db,
+                    "accessRequests",
+                    uid
+                );
+
+
+            const snapshot =
+                await getDoc(
+                    requestRef
+                );
+
+
+            if (
+                !snapshot.exists()
+            ) {
+
+                return null;
+
+            }
+
+
+            return snapshot.data();
+
+        }
+
+
+        async function approveUser() {
+
+            if (
+                !auth.currentUser
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                auth.currentUser.email
+                    ?.toLowerCase() !==
+                ADMIN_EMAIL.toLowerCase()
+            ) {
+
+                resultText.textContent =
+                    "Administrator account required.";
+
+                return;
+
+            }
+
+
+            allowButton.disabled =
+                true;
+
+            allowButton.textContent =
+                "ALLOWING...";
+
+
+            try {
+
+                const accessRef =
+                    doc(
+                        db,
+                        "chatAccess",
+                        uid
+                    );
+
+
+                await setDoc(
+                    accessRef,
+                    {
+
+                        uid:
+                            uid,
+
+                        approved:
+                            true,
+
+                        approvedAt:
+                            serverTimestamp(),
+
+                        approvedBy:
+                            auth.currentUser.email
+
+                    },
+
+                    {
+                        merge:
+                            true
+                    }
+                );
+
+
+                resultText.textContent =
+                    "Access granted successfully.";
+
+
+                statusText.textContent =
+                    "This user can now access CALCULUS Chat.";
+
+
+                allowButton.style.display =
+                    "none";
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Approval failed:",
+                    error
+                );
+
+
+                resultText.textContent =
+                    "Could not grant access.";
+
+            }
+
+            finally {
+
+                allowButton.disabled =
+                    false;
+
+                allowButton.textContent =
+                    "ALLOW ACCESS";
+
+            }
+
+        }
+
+
+        loginButton.addEventListener(
+            "click",
+
+            async () => {
+
+                try {
+
+                    await signInWithPopup(
+                        auth,
+                        provider
+                    );
+
+                }
+
+                catch (error) {
+
+                    console.error(
+                        "Administrator sign-in failed:",
+                        error
+                    );
+
+                    resultText.textContent =
+                        "Administrator sign-in failed.";
+
+                }
+
+            }
+        );
+
+
+        allowButton.addEventListener(
+            "click",
+            approveUser
+        );
+
+
+        onAuthStateChanged(
+            auth,
+
+            async (user) => {
+
+                if (!user) {
+
+                    statusText.textContent =
+                        "Administrator sign-in required.";
+
+                    loginButton.style.display =
+                        "block";
+
+                    return;
+
+                }
+
+
+                if (
+                    user.email
+                        ?.toLowerCase() !==
+                    ADMIN_EMAIL.toLowerCase()
+                ) {
+
+                    statusText.textContent =
+                        "This Google account is not the administrator account.";
+
+                    loginButton.style.display =
+                        "none";
+
+                    allowButton.style.display =
+                        "none";
+
+                    return;
+
+                }
+
+
+                loginButton.style.display =
+                    "none";
+
+
+                const request =
+                    await loadRequest();
+
+
+                if (!request) {
+
+                    statusText.textContent =
+                        "Access request not found.";
+
+                    return;
+
+                }
+
+
+                requestName.textContent =
+                    request.name ||
+                    "Google User";
+
+
+                requestEmail.textContent =
+                    request.email ||
+                    "Unknown";
+
+
+                requestDetails.style.display =
+                    "block";
+
+
+                if (
+                    request.status ===
+                    "approved"
+                ) {
+
+                    statusText.textContent =
+                        "This request has already been approved.";
+
+                    return;
+
+                }
+
+
+                statusText.textContent =
+                    "Review the request and allow access.";
+
+                allowButton.style.display =
+                    "block";
+
+            }
+
+        );
+
+    </script>
+
+
+    <footer>
+
+        <p>
+            © Ankit Brahamachary 2026
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
+```
