@@ -1,4 +1,4 @@
-```javascript
+
 // =========================================
 // CALCULUS — CHAT ACCESS CONTROL
 // =========================================
@@ -343,4 +343,3 @@ hideChatLinks();
 console.log(
     "CALCULUS Chat Access Control loaded."
 );
-```
