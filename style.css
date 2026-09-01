@@ -3060,3 +3060,58 @@ footer {
 }
 
 
+/* =========================================================
+   LATEX — KEEP EQUATIONS INSIDE THE BOX
+   AND ALLOW HORIZONTAL SCROLLING WHEN NECESSARY
+   ========================================================= */
+
+mjx-container[display="true"] {
+    display: block !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    box-sizing: border-box !important;
+
+    /* The equation scrolls INSIDE its own area */
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    /* Prevent the equation from enlarging the page */
+    min-width: 0 !important;
+
+    -webkit-overflow-scrolling: touch;
+}
+
+
+/* Keep the MathJax-generated SVG from enlarging
+   the actual page/container */
+
+mjx-container[display="true"] svg {
+    max-width: none !important;
+}
+
+
+/* Make sure the surrounding problem/card itself
+   can never become wider than the viewport */
+
+.challenge-card,
+.challenge-container,
+#schoolWeeklyProblem,
+#universityWeeklyProblem {
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+
+/* Extra protection for every screen size */
+
+@media (max-width: 1000px) {
+
+    mjx-container[display="true"] {
+        max-width: 100% !important;
+        overflow-x: auto !important;
+    }
+
+}
