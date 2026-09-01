@@ -32,7 +32,7 @@ import {
 // =========================================
 
 const ADMIN_EMAIL =
-    "YOUR_ADMIN_EMAIL_HERE";
+    "calculusgenius67@gmail.com";
 
 const SITE_URL =
     "https://calculusgenius.github.io/CalculusGenius";
