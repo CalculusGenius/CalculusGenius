@@ -311,9 +311,10 @@ watchAuthState(
                 isChatPage()
             ) {
 
-                window.location.replace(
-                    `${SITE_URL}/account.html?chatAccess=pending`
-                );
+               window.location.replace(
+    SITE_URL +
+    "/account.html?chatAccess=pending"
+);
 
             }
 
