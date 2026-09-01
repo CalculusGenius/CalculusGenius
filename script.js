@@ -1,3 +1,4 @@
+import "./access-control.js";
 import "./auth-ui.js";
 /* =========================================
    CALCULUS — INTERACTIONS
