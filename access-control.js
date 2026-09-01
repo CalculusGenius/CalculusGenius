@@ -2,13 +2,6 @@
 // =========================================
 // CALCULUS — CHAT ACCESS CONTROL
 // =========================================
-// Rules:
-// • Logged out      → Chat hidden
-// • Logged in       → Chat hidden by default
-// • Approved user   → Chat visible
-// • Admin           → Chat visible
-// • Unapproved user → cannot use chat.html
-// =========================================
 
 import {
     watchAuthState
@@ -28,11 +21,11 @@ import {
 
 
 // =========================================
-// CONFIG
+// CONFIGURATION
 // =========================================
 
 const ADMIN_EMAIL =
-    "calculusgenius67@gmail.com";
+    "YOUR_ADMIN_EMAIL_HERE";
 
 const SITE_URL =
     "https://calculusgenius.github.io/CalculusGenius";
@@ -47,20 +40,17 @@ const db =
 
 
 // =========================================
-// HIDE CHAT EVERYWHERE
+// HIDE ALL CHAT LINKS
 // =========================================
 
 function hideChatLinks() {
 
     document
-        .querySelectorAll(
-            'a[href$="chat.html"]'
-        )
+        .querySelectorAll('a[href$="chat.html"]')
         .forEach(
             (link) => {
 
-                link.style.display =
-                    "none";
+                link.style.display = "none";
 
             }
         );
@@ -69,23 +59,36 @@ function hideChatLinks() {
 
 
 // =========================================
-// SHOW CHAT EVERYWHERE
+// SHOW ALL CHAT LINKS
 // =========================================
 
 function showChatLinks() {
 
     document
-        .querySelectorAll(
-            'a[href$="chat.html"]'
-        )
+        .querySelectorAll('a[href$="chat.html"]')
         .forEach(
             (link) => {
 
-                link.style.display =
-                    "";
+                link.style.display = "";
 
             }
         );
+
+}
+
+
+// =========================================
+// CHECK ADMIN
+// =========================================
+
+function isAdmin(user) {
+
+    return Boolean(
+        user &&
+        user.email &&
+        user.email.toLowerCase() ===
+            ADMIN_EMAIL.toLowerCase()
+    );
 
 }
 
@@ -94,9 +97,7 @@ function showChatLinks() {
 // CHECK APPROVAL
 // =========================================
 
-async function isApproved(
-    user
-) {
+async function checkApproval(user) {
 
     if (!user) {
 
@@ -105,13 +106,7 @@ async function isApproved(
     }
 
 
-    // Administrator always has access.
-
-    if (
-        user.email &&
-        user.email.toLowerCase() ===
-        ADMIN_EMAIL.toLowerCase()
-    ) {
+    if (isAdmin(user)) {
 
         return true;
 
@@ -144,9 +139,7 @@ async function isApproved(
 // CREATE ACCESS REQUEST
 // =========================================
 
-async function createAccessRequest(
-    user
-) {
+async function createAccessRequest(user) {
 
     if (!user) {
 
@@ -163,15 +156,13 @@ async function createAccessRequest(
         );
 
 
-    const existing =
+    const snapshot =
         await getDoc(
             requestRef
         );
 
 
-    if (
-        existing.exists()
-    ) {
+    if (snapshot.exists()) {
 
         return;
 
@@ -215,16 +206,28 @@ async function createAccessRequest(
 
 
 // =========================================
-// CHECK CURRENT PAGE
+// PROTECT CHAT PAGE
 // =========================================
 
-function isChatPage() {
+function redirectFromChatPage() {
 
-    return window.location.pathname
-        .toLowerCase()
-        .endsWith(
+    const path =
+        window.location.pathname
+            .toLowerCase();
+
+
+    if (
+        path.endsWith(
             "/chat.html"
+        )
+    ) {
+
+        window.location.replace(
+            SITE_URL +
+            "/account.html?chatAccess=pending"
         );
+
+    }
 
 }
 
@@ -236,22 +239,24 @@ function isChatPage() {
 watchAuthState(
     async (user) => {
 
-        // ALWAYS HIDE FIRST.
-        //
-        // This prevents Chat from briefly
-        // appearing before the access check.
+        /*
+           Always hide Chat first.
+
+           This prevents a flash of the Chat
+           link before the database check finishes.
+        */
 
         hideChatLinks();
 
 
         // =====================================
-        // LOGGED OUT
+        // SIGNED OUT
         // =====================================
 
         if (!user) {
 
             console.log(
-                "Chat hidden: user is signed out."
+                "Chat hidden: signed out."
             );
 
             return;
@@ -266,7 +271,7 @@ watchAuthState(
         try {
 
             const approved =
-                await isApproved(
+                await checkApproval(
                     user
                 );
 
@@ -277,13 +282,14 @@ watchAuthState(
 
             if (approved) {
 
+                showChatLinks();
+
+
                 console.log(
-                    "Chat access approved for:",
+                    "Chat access approved:",
                     user.email
                 );
 
-
-                showChatLinks();
 
                 return;
 
@@ -295,7 +301,8 @@ watchAuthState(
             // =================================
 
             console.log(
-                "Chat hidden: user is not approved."
+                "Chat access pending:",
+                user.email
             );
 
 
@@ -304,19 +311,7 @@ watchAuthState(
             );
 
 
-            // If they manually open chat.html,
-            // send them away.
-
-            if (
-                isChatPage()
-            ) {
-
-               window.location.replace(
-    SITE_URL +
-    "/account.html?chatAccess=pending"
-);
-
-            }
+            redirectFromChatPage();
 
         }
 
@@ -330,17 +325,7 @@ watchAuthState(
 
             hideChatLinks();
 
-
-            if (
-                isChatPage()
-            ) {
-
-                window.location.replace(
-    SITE_URL +
-    "/account.html?chatAccess=pending"
-);
-
-            }
+            redirectFromChatPage();
 
         }
 
@@ -349,26 +334,10 @@ watchAuthState(
 
 
 // =========================================
-// INITIAL DEFAULT STATE
+// INITIAL STATE
 // =========================================
 
-if (
-    document.readyState ===
-    "loading"
-) {
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        hideChatLinks
-    );
-
-}
-
-else {
-
-    hideChatLinks();
-
-}
+hideChatLinks();
 
 
 console.log(
