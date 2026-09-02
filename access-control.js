@@ -204,7 +204,7 @@ async function createAccessRequest(user) {
 
         }
     );
-
+await sendAccessRequestEmail(user);
 
     console.log(
         "Chat access request created."
