@@ -359,59 +359,74 @@ async function sendAccessRequestEmail(user) {
         return;
     }
 
-    if (!window.emailjs) {
+    try {
 
-        const script =
-            document.createElement("script");
+        // Load EmailJS SDK if it is not already loaded
+        if (!window.emailjs) {
 
-        script.src =
-            "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+            const script =
+                document.createElement("script");
 
-        await new Promise((resolve, reject) => {
+            script.src =
+                "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
 
-            script.onload = resolve;
+            await new Promise((resolve, reject) => {
 
-            script.onerror = reject;
+                script.onload = resolve;
 
-            document.head.appendChild(script);
+                script.onerror = reject;
 
-        });
+                document.head.appendChild(script);
 
-        window.emailjs.init({
-            publicKey:
-                EMAILJS_PUBLIC_KEY
-        });
+            });
 
-    }
-
-    const approvalURL =
-        SITE_URL +
-        "/admin-access.html?uid=" +
-        encodeURIComponent(user.uid);
-
-    await window.emailjs.send(
-
-        EMAILJS_SERVICE_ID,
-
-        EMAILJS_TEMPLATE_ID,
-
-        {
-            user_name:
-                user.displayName ||
-                "Google User",
-
-            user_email:
-                user.email ||
-                "",
-
-            approval_url:
-                approvalURL
+            window.emailjs.init({
+                publicKey:
+                    EMAILJS_PUBLIC_KEY
+            });
         }
 
-    );
 
-    console.log(
-        "Chat access request email sent."
-    );
+        // Build admin approval page URL
+        const approvalURL =
+            SITE_URL +
+            "/admin-access.html?uid=" +
+            encodeURIComponent(user.uid);
+
+
+        // Send email
+        const response =
+            await window.emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                {
+                    user_name:
+                        user.displayName ||
+                        "Google User",
+
+                    user_email:
+                        user.email ||
+                        "",
+
+                    approval_url:
+                        approvalURL
+                }
+            );
+
+
+        console.log(
+            "Chat access request email sent:",
+            response.status,
+            response.text
+        );
+
+    } catch (error) {
+
+        console.error(
+            "EmailJS failed:",
+            error
+        );
+
+    }
 
 }
