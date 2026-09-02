@@ -25,11 +25,19 @@ import {
 // =========================================
 
 const ADMIN_EMAIL =
-    "YOUR_ADMIN_EMAIL_HERE";
+    "calculusgenius67@gmail.com";
 
 const SITE_URL =
     "https://calculusgenius.github.io/CalculusGenius";
 
+const EMAILJS_PUBLIC_KEY =
+    "dUKoxPJp7LWznGi8y";
+
+const EMAILJS_SERVICE_ID =
+    "service_9m0ln9d";
+
+const EMAILJS_TEMPLATE_ID =
+    "template_1g9pfcg";
 
 // =========================================
 // FIRESTORE
