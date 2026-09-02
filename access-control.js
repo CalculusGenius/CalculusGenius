@@ -351,3 +351,67 @@ hideChatLinks();
 console.log(
     "CALCULUS Chat Access Control loaded."
 );
+
+
+async function sendAccessRequestEmail(user) {
+
+    if (!user) {
+        return;
+    }
+
+    if (!window.emailjs) {
+
+        const script =
+            document.createElement("script");
+
+        script.src =
+            "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+
+        await new Promise((resolve, reject) => {
+
+            script.onload = resolve;
+
+            script.onerror = reject;
+
+            document.head.appendChild(script);
+
+        });
+
+        window.emailjs.init({
+            publicKey:
+                EMAILJS_PUBLIC_KEY
+        });
+
+    }
+
+    const approvalURL =
+        SITE_URL +
+        "/admin-access.html?uid=" +
+        encodeURIComponent(user.uid);
+
+    await window.emailjs.send(
+
+        EMAILJS_SERVICE_ID,
+
+        EMAILJS_TEMPLATE_ID,
+
+        {
+            user_name:
+                user.displayName ||
+                "Google User",
+
+            user_email:
+                user.email ||
+                "",
+
+            approval_url:
+                approvalURL
+        }
+
+    );
+
+    console.log(
+        "Chat access request email sent."
+    );
+
+}
