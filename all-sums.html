@@ -17,77 +17,348 @@
         href="style.css"
     >
 
+    <!-- MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global',
+                displayOverflow: 'linebreak',
+                linebreaks: {
+                    width: '100%',
+                    lineleading: 0.2,
+                    inline: true
+                }
+            }
+        };
+    </script>
+
+    <script
+        async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+    ></script>
+
+    <style>
+
+        /* =========================================
+           ALL SUMS PAGE
+           ========================================= */
+
+        .all-sums-page {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 24px 100px;
+            box-sizing: border-box;
+        }
+
+        .all-sums-header {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .all-sums-header h1 {
+            margin: 0 0 12px;
+            font-size: clamp(2.4rem, 6vw, 4.5rem);
+            letter-spacing: 2px;
+        }
+
+        .all-sums-header p {
+            margin: 0 auto;
+            max-width: 700px;
+            opacity: 0.7;
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           FILTERS
+           ========================================= */
+
+        .sum-filters {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 45px;
+        }
+
+        .sum-filter {
+            appearance: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: inherit;
+            padding: 10px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .sum-filter:hover {
+            transform: translateY(-1px);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .sum-filter.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+        }
+
+        /* =========================================
+           ARCHIVE CONTAINER
+           ========================================= */
+
+        #allSumsContainer {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+
+        /* =========================================
+           SUM CARD
+           ========================================= */
+
+        .archive-sum-card {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+
+            margin-bottom: 28px;
+            padding: 28px;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+
+            background: rgba(255, 255, 255, 0.025);
+
+            overflow: hidden;
+
+            transition:
+                border-color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .archive-sum-card:hover {
+            border-color: rgba(255, 255, 255, 0.28);
+            transform: translateY(-2px);
+        }
+
+        /* =========================================
+           META INFORMATION
+           ========================================= */
+
+        .archive-sum-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .archive-sum-meta span {
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 999px;
+
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+
+            opacity: 0.75;
+        }
+
+        /* =========================================
+           PROBLEM
+           ========================================= */
+
+        .archive-sum-problem {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+
+            box-sizing: border-box;
+
+            line-height: 1.7;
+            font-size: 1rem;
+
+            overflow-x: auto;
+            overflow-y: hidden;
+
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* MathJax display equations */
+
+        .archive-sum-problem mjx-container[display="true"] {
+            display: block !important;
+
+            width: 100% !important;
+            max-width: 100% !important;
+
+            box-sizing: border-box;
+
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+
+            min-width: 0;
+
+            -webkit-overflow-scrolling: touch;
+
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+        }
+
+        .archive-sum-problem mjx-container[display="true"] svg {
+            max-width: none !important;
+        }
+
+        /* =========================================
+           LOADING / EMPTY / ERROR
+           ========================================= */
+
+        .archive-status {
+            text-align: center;
+            padding: 70px 20px;
+            opacity: 0.65;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           MOBILE
+           ========================================= */
+
+        @media (max-width: 700px) {
+
+            .all-sums-page {
+                padding: 60px 16px 80px;
+            }
+
+            .all-sums-header {
+                margin-bottom: 32px;
+            }
+
+            .sum-filters {
+                gap: 7px;
+                margin-bottom: 32px;
+            }
+
+            .sum-filter {
+                padding: 8px 13px;
+                font-size: 0.78rem;
+            }
+
+            .archive-sum-card {
+                padding: 20px;
+                border-radius: 11px;
+                margin-bottom: 20px;
+            }
+
+            .archive-sum-meta {
+                margin-bottom: 17px;
+            }
+
+            .archive-sum-meta span {
+                font-size: 0.65rem;
+                padding: 4px 8px;
+            }
+
+            .archive-sum-problem {
+                font-size: 0.95rem;
+            }
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
+
+    <!-- =========================================
+         NAVIGATION
+         ========================================= -->
+
     <header>
 
-        <div class="logo">
-            CALCULUS
-        </div>
+        <!-- Desktop navigation is handled by script.js -->
 
-        <nav class="desktop-nav">
-
-            <a href="index.html">Home</a>
-            <a href="about.html">About</a>
-            <a href="books.html">Books</a>
-            <a href="topics.html">Topics</a>
-            <a href="other-websites.html">Other Websites</a>
-            <a href="all-sums.html" class="active">All Sums</a>
-            <a href="login.html">Log In</a>
-
-        </nav>
+        <!-- Hamburger button -->
 
         <button
-            class="menu-toggle"
             id="menuToggle"
+            class="menu-toggle"
             aria-label="Open menu"
+            aria-expanded="false"
         >
             ☰
         </button>
 
+        <!-- Mobile menu -->
+
+        <nav
+            id="mobileMenu"
+            class="mobile-menu"
+        >
+
+            <!--
+                Existing navigation items are inserted/
+                handled by the site's JavaScript.
+            -->
+
+        </nav>
+
     </header>
 
 
-    <div
-        class="mobile-menu"
-        id="mobileMenu"
-    >
-
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="books.html">Books</a>
-        <a href="topics.html">Topics</a>
-        <a href="other-websites.html">
-            Other Websites
-        </a>
-        <a href="all-sums.html">
-            All Sums
-        </a>
-        <a href="login.html">
-            Log In
-        </a>
-
-    </div>
-
+    <!-- =========================================
+         MAIN CONTENT
+         ========================================= -->
 
     <main class="all-sums-page">
 
-        <section class="page-hero">
+
+        <section class="all-sums-header">
 
             <h1>All Sums</h1>
 
             <p>
-                The complete archive of CALCULUS challenges.
+                A permanent archive of the problems
+                published through the CALCULUS
+                Daily and Weekly Challenges.
             </p>
 
         </section>
 
 
-        <section class="sum-filters">
+        <!-- =====================================
+             FILTERS
+             ===================================== -->
+
+        <div
+            class="sum-filters"
+            aria-label="Filter sums"
+        >
 
             <button
+                type="button"
                 class="sum-filter active"
                 data-filter="all"
             >
@@ -95,6 +366,7 @@
             </button>
 
             <button
+                type="button"
                 class="sum-filter"
                 data-filter="daily"
             >
@@ -102,6 +374,7 @@
             </button>
 
             <button
+                type="button"
                 class="sum-filter"
                 data-filter="weekly"
             >
@@ -109,6 +382,7 @@
             </button>
 
             <button
+                type="button"
                 class="sum-filter"
                 data-filter="school"
             >
@@ -116,38 +390,54 @@
             </button>
 
             <button
+                type="button"
                 class="sum-filter"
                 data-filter="university"
             >
                 University
             </button>
 
-        </section>
+        </div>
 
+
+        <!-- =====================================
+             ARCHIVED SUMS
+             ===================================== -->
 
         <section
             id="allSumsContainer"
-            class="all-sums-container"
+            aria-live="polite"
         >
 
-            <p class="loading-message">
+            <div class="archive-status">
                 Loading sums...
-            </p>
+            </div>
 
         </section>
 
+
     </main>
 
+
+    <!-- =========================================
+         SITE JAVASCRIPT
+         ========================================= -->
 
     <script
         type="module"
         src="script.js"
     ></script>
 
+
+    <!-- =========================================
+         ALL SUMS JAVASCRIPT
+         ========================================= -->
+
     <script
         type="module"
         src="all-sums.js"
     ></script>
+
 
 </body>
 
