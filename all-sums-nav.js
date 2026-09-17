@@ -2,70 +2,162 @@
 // CALCULUS — ALL SUMS NAVIGATION
 // =========================================
 
-(function () {
+/*
+    Adds "All Sums" to:
 
-    function addAllSumsLink() {
+    1. Desktop navigation
+    2. Hamburger/mobile navigation
 
-        // Prevent duplicates
-        if (
-            document.querySelector(
+    This file is imported by script.js, so
+    individual HTML pages do not need to
+    contain the All Sums link manually.
+*/
+
+
+/* =========================================
+   ADD ALL SUMS LINK
+========================================= */
+
+function addAllSumsNavigation() {
+
+
+    /* =====================================
+       MOBILE / HAMBURGER MENU
+    ===================================== */
+
+    const mobileMenu =
+        document.getElementById(
+            "mobileMenu"
+        );
+
+
+    if (mobileMenu) {
+
+        /*
+           Do not add the link if it already
+           exists.
+        */
+
+        const existingMobileLink =
+            mobileMenu.querySelector(
                 'a[href="all-sums.html"]'
-            )
+            );
+
+
+        if (!existingMobileLink) {
+
+            const allSumsLink =
+                document.createElement("a");
+
+            allSumsLink.href =
+                "all-sums.html";
+
+            allSumsLink.textContent =
+                "All Sums";
+
+
+            mobileMenu.appendChild(
+                allSumsLink
+            );
+
+        }
+
+    }
+
+
+
+    /* =====================================
+       DESKTOP NAVIGATION
+    ===================================== */
+
+    /*
+       Find the desktop navigation.
+
+       We look for a navigation containing
+       the normal site links rather than
+       blindly modifying every <nav>.
+    */
+
+    const desktopCandidates =
+        document.querySelectorAll(
+            "header nav, .desktop-nav, nav"
+        );
+
+
+    let desktopNav = null;
+
+
+    desktopCandidates.forEach(nav => {
+
+        if (desktopNav) {
+            return;
+        }
+
+
+        /*
+           Do not accidentally select the
+           mobile menu.
+        */
+
+        if (
+            nav.id === "mobileMenu"
         ) {
             return;
         }
 
-        /*
-         * Try to find the existing navigation.
-         * We intentionally don't modify the existing
-         * navigation HTML directly.
-         */
 
-        const navs = document.querySelectorAll(
-            "nav"
-        );
+        desktopNav = nav;
 
-        if (!navs.length) {
-            return;
-        }
+    });
 
-        navs.forEach(nav => {
 
-            // Don't add it twice to the same nav
-            if (
-                nav.querySelector(
-                    'a[href="all-sums.html"]'
-                )
-            ) {
-                return;
-            }
+    if (desktopNav) {
 
-            const link =
+        const existingDesktopLink =
+            desktopNav.querySelector(
+                'a[href="all-sums.html"]'
+            );
+
+
+        if (!existingDesktopLink) {
+
+            const allSumsLink =
                 document.createElement("a");
 
-            link.href = "all-sums.html";
-            link.textContent = "All Sums";
+            allSumsLink.href =
+                "all-sums.html";
 
-            nav.appendChild(link);
-
-        });
-    }
+            allSumsLink.textContent =
+                "All Sums";
 
 
-    // Run when the page is ready
-    if (
-        document.readyState === "loading"
-    ) {
+            desktopNav.appendChild(
+                allSumsLink
+            );
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            addAllSumsLink
-        );
-
-    } else {
-
-        addAllSumsLink();
+        }
 
     }
 
-})();
+}
+
+
+/* =========================================
+   RUN AFTER DOM IS READY
+========================================= */
+
+if (
+    document.readyState ===
+    "loading"
+) {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        addAllSumsNavigation
+    );
+
+} else {
+
+    addAllSumsNavigation();
+
+}
