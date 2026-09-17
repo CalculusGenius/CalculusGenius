@@ -1,5 +1,5 @@
 // =========================================
-// CALCULUS — ALL SUMS ARCHIVE
+// CALCULUS — ALL SUMS
 // =========================================
 
 import {
@@ -15,7 +15,8 @@ import {
 } from "./firebase-config.js";
 
 
-const db = getFirestore(app);
+const db =
+    getFirestore(app);
 
 const container =
     document.getElementById(
@@ -28,14 +29,14 @@ const filterButtons =
     );
 
 
-let allChallenges = [];
+let challenges = [];
 
 
 // =========================================
 // LOAD ARCHIVE
 // =========================================
 
-async function loadChallenges() {
+async function loadArchive() {
 
     try {
 
@@ -44,6 +45,7 @@ async function loadChallenges() {
                 db,
                 "challengeArchive"
             );
+
 
         const archiveQuery =
             query(
@@ -54,15 +56,16 @@ async function loadChallenges() {
                 )
             );
 
+
         const snapshot =
             await getDocs(
                 archiveQuery
             );
 
 
-        allChallenges =
+        challenges =
             snapshot.docs.map(
-                (doc) => ({
+                doc => ({
                     id: doc.id,
                     ...doc.data()
                 })
@@ -76,13 +79,14 @@ async function loadChallenges() {
     } catch (error) {
 
         console.error(
-            "Failed to load challenge archive:",
+            "Archive loading failed:",
             error
         );
 
+
         container.innerHTML = `
-            <p class="loading-message">
-                Unable to load the challenge archive.
+            <p>
+                Unable to load the archive.
             </p>
         `;
 
@@ -92,20 +96,22 @@ async function loadChallenges() {
 
 
 // =========================================
-// DISPLAY CHALLENGES
+// DISPLAY
 // =========================================
 
-function displayChallenges(filter) {
+function displayChallenges(
+    filter
+) {
 
-    let challenges =
-        allChallenges;
+    let filtered =
+        challenges;
 
 
     if (filter !== "all") {
 
-        challenges =
-            allChallenges.filter(
-                (challenge) =>
+        filtered =
+            challenges.filter(
+                challenge =>
                     challenge.type === filter ||
                     challenge.level === filter
             );
@@ -113,10 +119,12 @@ function displayChallenges(filter) {
     }
 
 
-    if (challenges.length === 0) {
+    if (
+        filtered.length === 0
+    ) {
 
         container.innerHTML = `
-            <p class="loading-message">
+            <p>
                 No sums found.
             </p>
         `;
@@ -127,15 +135,10 @@ function displayChallenges(filter) {
 
 
     container.innerHTML =
-        challenges.map(
-            (challenge) => {
+        filtered
+            .map(
+                challenge => `
 
-                const date =
-                    challenge.date ||
-                    "";
-
-
-                return `
                     <article
                         class="archive-sum-card"
                     >
@@ -143,37 +146,41 @@ function displayChallenges(filter) {
                         <div
                             class="archive-sum-meta"
                         >
+
                             <span>
                                 ${
-                                    challenge.level ||
-                                    ""
+                                    challenge.level
                                 }
                             </span>
 
                             <span>
                                 ${
-                                    challenge.type ||
-                                    ""
+                                    challenge.type
                                 }
                             </span>
 
                             <span>
-                                ${date}
+                                ${
+                                    challenge.date
+                                }
                             </span>
+
                         </div>
 
 
                         <div
                             class="archive-sum-problem"
                         >
-                            ${challenge.problem}
+                            ${
+                                challenge.problem
+                            }
                         </div>
 
                     </article>
-                `;
 
-            }
-        ).join("");
+                `
+            )
+            .join("");
 
 
     if (window.MathJax) {
@@ -188,22 +195,23 @@ function displayChallenges(filter) {
 
 
 // =========================================
-// FILTER BUTTONS
+// FILTERS
 // =========================================
 
 filterButtons.forEach(
-    (button) => {
+    button => {
 
         button.addEventListener(
             "click",
             () => {
 
                 filterButtons.forEach(
-                    (btn) =>
-                        btn.classList.remove(
+                    other =>
+                        other.classList.remove(
                             "active"
                         )
                 );
+
 
                 button.classList.add(
                     "active"
@@ -225,4 +233,4 @@ filterButtons.forEach(
 // START
 // =========================================
 
-loadChallenges();
+loadArchive();
