@@ -3,137 +3,78 @@
 // =========================================
 
 /*
-    Adds "All Sums" to:
+    Adds "All Sums" to the existing CALCULUS
+    navigation without changing its structure
+    or styling.
 
-    1. Desktop navigation
-    2. Hamburger/mobile navigation
-
-    This file is imported by script.js, so
-    individual HTML pages do not need to
-    contain the All Sums link manually.
+    The page itself contains the normal desktop
+    and mobile navigation markup. This file only
+    inserts the additional link using the same
+    navigation classes/structure.
 */
-
-
-/* =========================================
-   ADD ALL SUMS LINK
-========================================= */
 
 function addAllSumsNavigation() {
 
-
-    /* =====================================
-       MOBILE / HAMBURGER MENU
-    ===================================== */
-
-    const mobileMenu =
-        document.getElementById(
-            "mobileMenu"
-        );
+    const href = "all-sums.html";
 
 
-    if (mobileMenu) {
-
-        /*
-           Do not add the link if it already
-           exists.
-        */
-
-        const existingMobileLink =
-            mobileMenu.querySelector(
-                'a[href="all-sums.html"]'
-            );
-
-
-        if (!existingMobileLink) {
-
-            const allSumsLink =
-                document.createElement("a");
-
-            allSumsLink.href =
-                "all-sums.html";
-
-            allSumsLink.textContent =
-                "All Sums";
-
-
-            mobileMenu.appendChild(
-                allSumsLink
-            );
-
-        }
-
-    }
-
-
-
-    /* =====================================
+    /* =========================================
        DESKTOP NAVIGATION
-    ===================================== */
+    ========================================= */
 
-    /*
-       Find the desktop navigation.
-
-       We look for a navigation containing
-       the normal site links rather than
-       blindly modifying every <nav>.
-    */
-
-    const desktopCandidates =
-        document.querySelectorAll(
-            "header nav, .desktop-nav, nav"
-        );
-
-
-    let desktopNav = null;
-
-
-    desktopCandidates.forEach(nav => {
-
-        if (desktopNav) {
-            return;
-        }
-
-
-        /*
-           Do not accidentally select the
-           mobile menu.
-        */
-
-        if (
-            nav.id === "mobileMenu"
-        ) {
-            return;
-        }
-
-
-        desktopNav = nav;
-
-    });
+    const desktopNav =
+        document.querySelector(".desktop-nav");
 
 
     if (desktopNav) {
 
         const existingDesktopLink =
             desktopNav.querySelector(
-                'a[href="all-sums.html"]'
+                `a[href="${href}"]`
             );
 
 
         if (!existingDesktopLink) {
 
-            const allSumsLink =
+            const link =
                 document.createElement("a");
 
-            allSumsLink.href =
-                "all-sums.html";
+            link.href = href;
+            link.className = "nav-link";
+            link.textContent = "All Sums";
 
-            allSumsLink.textContent =
-                "All Sums";
+            desktopNav.appendChild(link);
+
+        }
+
+    }
 
 
-            desktopNav.appendChild(
-                allSumsLink
+    /* =========================================
+       MOBILE NAVIGATION
+    ========================================= */
+
+    const mobileMenu =
+        document.getElementById("mobileMenu");
+
+
+    if (mobileMenu) {
+
+        const existingMobileLink =
+            mobileMenu.querySelector(
+                `a[href="${href}"]`
             );
+
+
+        if (!existingMobileLink) {
+
+            const link =
+                document.createElement("a");
+
+            link.href = href;
+            link.textContent = "All Sums";
+
+            mobileMenu.appendChild(link);
 
         }
 
@@ -146,10 +87,7 @@ function addAllSumsNavigation() {
    RUN AFTER DOM IS READY
 ========================================= */
 
-if (
-    document.readyState ===
-    "loading"
-) {
+if (document.readyState === "loading") {
 
     document.addEventListener(
         "DOMContentLoaded",
