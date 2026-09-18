@@ -129,25 +129,65 @@
 
         } else {
 
-            const requestRef =
-                doc(
-                    db,
-                    "premiumRequests",
-                    uid
-                );
+            /*
+               Authenticate the administrator BEFORE reading
+               the premium request. Requests are private.
+            */
 
-            const snapshot =
-                await getDoc(
-                    requestRef
-                );
+            const provider =
+                new GoogleAuthProvider();
 
 
-            if (!snapshot.exists()) {
+            try {
 
-                details.textContent =
-                    "Premium request not found.";
+                const result =
+                    await signInWithPopup(
+                        auth,
+                        provider
+                    );
 
-            } else {
+
+                const admin =
+                    result.user;
+
+
+                if (
+                    !admin.email ||
+                    admin.email.toLowerCase() !==
+                    ADMIN_EMAIL.toLowerCase()
+                ) {
+
+                    details.textContent =
+                        "Administrator account required.";
+
+                    return;
+
+                }
+
+
+                const requestRef =
+                    doc(
+                        db,
+                        "premiumRequests",
+                        uid
+                    );
+
+
+                const snapshot =
+                    await getDoc(
+                        requestRef
+                    );
+
+
+                if (!snapshot.exists()) {
+
+                    details.textContent =
+                        "Premium request not found.";
+
+                    return;
+
+                }
+
 
                 const data =
                     snapshot.data();
@@ -165,107 +205,111 @@
                         ${data.email || ""}
                     </p>
 
+                    <p>
+                        <strong>Status:</strong>
+                        ${data.status || "pending"}
+                    </p>
+
                 `;
 
 
-                const provider =
-                    new GoogleAuthProvider();
+                allowButton.style.display =
+                    "inline-block";
 
 
-                try {
+                allowButton.addEventListener(
+                    "click",
+                    async () => {
 
-                    const result =
-                        await signInWithPopup(
-                            auth,
-                            provider
-                        );
+                        allowButton.disabled =
+                            true;
 
-
-                    const admin =
-                        result.user;
+                        allowButton.textContent =
+                            "GRANTING...";
 
 
-                    if (
-                        admin.email
-                            .toLowerCase() !==
-                        ADMIN_EMAIL
-                            .toLowerCase()
-                    ) {
+                        try {
 
-                        details.innerHTML +=
-                            "<p>Administrator account required.</p>";
+                            await setDoc(
+                                doc(
+                                    db,
+                                    "premiumAccess",
+                                    uid
+                                ),
+                                {
+                                    uid:
+                                        uid,
 
-                    } else {
+                                    approved:
+                                        true,
 
-                        allowButton.style.display =
-                            "inline-block";
+                                    approvedAt:
+                                        serverTimestamp(),
 
-
-                        allowButton.addEventListener(
-                            "click",
-                            async () => {
-
-                                allowButton.disabled =
-                                    true;
-
-                                await setDoc(
-                                    doc(
-                                        db,
-                                        "premiumAccess",
-                                        uid
-                                    ),
-                                    {
-                                        uid:
-                                            uid,
-
-                                        approved:
-                                            true,
-
-                                        approvedAt:
-                                            serverTimestamp(),
-
-                                        approvedBy:
-                                            admin.email
-                                    }
-                                );
+                                    approvedBy:
+                                        admin.email
+                                }
+                            );
 
 
-                                await updateDoc(
-                                    requestRef,
-                                    {
-                                        status:
-                                            "approved",
+                            await updateDoc(
+                                requestRef,
+                                {
+                                    status:
+                                        "approved",
 
-                                        approvedAt:
-                                            serverTimestamp(),
+                                    approvedAt:
+                                        serverTimestamp(),
 
-                                        approvedBy:
-                                            admin.email
-                                    }
-                                );
+                                    approvedBy:
+                                        admin.email
+                                }
+                            );
 
 
-                                details.innerHTML =
-                                    "<h2>Premium access granted.</h2>";
+                            details.innerHTML =
+                                "<h2>Premium access granted.</h2>";
 
-                                allowButton.style.display =
-                                    "none";
+                            allowButton.style.display =
+                                "none";
 
-                            }
-                        );
+                        } catch (error) {
+
+                            console.error(
+                                "Premium approval error:",
+                                error
+                            );
+
+                            details.innerHTML =
+                                "<p>Unable to grant premium access.</p>" +
+                                "<p>" +
+                                (
+                                    error.code ||
+                                    error.message ||
+                                    "Unknown error"
+                                ) +
+                                "</p>";
+
+                            allowButton.disabled =
+                                false;
+
+                            allowButton.textContent =
+                                "ALLOW ACCESS";
+
+                        }
 
                     }
+                );
 
-                } catch (error) {
+            } catch (error) {
 
-                    console.error(
-                        error
-                    );
+                console.error(
+                    "Administrator authentication failed:",
+                    error
+                );
 
-                    details.textContent =
-                        "Administrator sign-in failed.";
-
-                }
+                details.textContent =
+                    "Administrator sign-in failed.";
 
             }
 
