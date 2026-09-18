@@ -124,198 +124,104 @@
 
         if (!uid) {
 
-            details.textContent =
-                "Invalid request.";
+            details.textContent = "Invalid request.";
 
         } else {
 
-            /*
-               Authenticate the administrator BEFORE reading
-               the premium request. Requests are private.
-            */
+            async function loadPremiumRequest(admin) {
 
-            const provider =
-                new GoogleAuthProvider();
-
-
-            try {
-
-                const result =
-                    await signInWithPopup(
-                        auth,
-                        provider
-                    );
-
-
-                const admin =
-                    result.user;
-
-
-                if (
-                    !admin.email ||
-                    admin.email.toLowerCase() !==
-                    ADMIN_EMAIL.toLowerCase()
-                ) {
-
-                    details.textContent =
-                        "Administrator account required.";
-
+                if (!admin) {
+                    details.innerHTML = "Administrator sign-in required." +
+                        "<br><br><button id=\"adminSignIn\" style=\"padding:14px 30px;border:0;cursor:pointer;font-weight:700;\">SIGN IN AS ADMIN</button>";
+                    attachAdminSignIn();
                     return;
-
                 }
 
-
-                const requestRef =
-                    doc(
-                        db,
-                        "premiumRequests",
-                        uid
-                    );
-
-
-                const snapshot =
-                    await getDoc(
-                        requestRef
-                    );
-
-
-                if (!snapshot.exists()) {
-
-                    details.textContent =
-                        "Premium request not found.";
-
+                if (!admin.email || admin.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
+                    details.textContent = "Administrator account required.";
                     return;
-
                 }
 
+                try {
+                    details.textContent = "Loading premium request...";
+                    const requestRef = doc(db, "premiumRequests", uid);
+                    const snapshot = await getDoc(requestRef);
 
-                const data =
-                    snapshot.data();
-
-
-                details.innerHTML = `
-
-                    <p>
-                        <strong>Name:</strong>
-                        ${data.name || ""}
-                    </p>
-
-                    <p>
-                        <strong>Email:</strong>
-                        ${data.email || ""}
-                    </p>
-
-                    <p>
-                        <strong>Status:</strong>
-                        ${data.status || "pending"}
-                    </p>
-
-                `;
-
-
-                allowButton.style.display =
-                    "inline-block";
-
-
-                allowButton.addEventListener(
-                    "click",
-                    async () => {
-
-                        allowButton.disabled =
-                            true;
-
-                        allowButton.textContent =
-                            "GRANTING...";
-
-
-                        try {
-
-                            await setDoc(
-                                doc(
-                                    db,
-                                    "premiumAccess",
-                                    uid
-                                ),
-                                {
-                                    uid:
-                                        uid,
-
-                                    approved:
-                                        true,
-
-                                    approvedAt:
-                                        serverTimestamp(),
-
-                                    approvedBy:
-                                        admin.email
-                                }
-                            );
-
-
-                            await updateDoc(
-                                requestRef,
-                                {
-                                    status:
-                                        "approved",
-
-                                    approvedAt:
-                                        serverTimestamp(),
-
-                                    approvedBy:
-                                        admin.email
-                                }
-                            );
-
-
-                            details.innerHTML =
-                                "<h2>Premium access granted.</h2>";
-
-                            allowButton.style.display =
-                                "none";
-
-                        } catch (error) {
-
-                            console.error(
-                                "Premium approval error:",
-                                error
-                            );
-
-                            details.innerHTML =
-                                "<p>Unable to grant premium access.</p>" +
-                                "<p>" +
-                                (
-                                    error.code ||
-                                    error.message ||
-                                    "Unknown error"
-                                ) +
-                                "</p>";
-
-                            allowButton.disabled =
-                                false;
-
-                            allowButton.textContent =
-                                "ALLOW ACCESS";
-
-                        }
-
+                    if (!snapshot.exists()) {
+                        details.textContent = "Premium request not found.";
+                        return;
                     }
-                );
 
-            } catch (error) {
+                    const data = snapshot.data();
+                    details.innerHTML =
+                        "<p><strong>Name:</strong> " + (data.name || "") + "</p>" +
+                        "<p><strong>Email:</strong> " + (data.email || "") + "</p>" +
+                        "<p><strong>Status:</strong> " + (data.status || "pending") + "</p>";
 
-                console.error(
-                    "Administrator authentication failed:",
-                    error
-                );
-
-                details.textContent =
-                    "Administrator sign-in failed.";
-
+                    allowButton.style.display = "inline-block";
+                    allowButton.onclick = async () => {
+                        allowButton.disabled = true;
+                        allowButton.textContent = "GRANTING...";
+                        try {
+                            await setDoc(doc(db, "premiumAccess", uid), {
+                                uid: uid,
+                                approved: true,
+                                approvedAt: serverTimestamp(),
+                                approvedBy: admin.email
+                            });
+                            await updateDoc(requestRef, {
+                                status: "approved",
+                                approvedAt: serverTimestamp(),
+                                approvedBy: admin.email
+                            });
+                            details.innerHTML = "<h2>Premium access granted.</h2>";
+                            allowButton.style.display = "none";
+                        } catch (error) {
+                            console.error("Premium approval error:", error);
+                            details.innerHTML = "<p>Unable to grant premium access.</p><p>" +
+                                (error.code || error.message || "Unknown error") + "</p>";
+                            allowButton.disabled = false;
+                            allowButton.textContent = "ALLOW ACCESS";
+                        }
+                    };
+                } catch (error) {
+                    console.error("Premium request loading error:", error);
+                    details.innerHTML = "<p>Unable to load premium request.</p><p>" +
+                        (error.code || error.message || "Unknown error") + "</p>";
+                }
             }
 
-        }
+            function attachAdminSignIn() {
+                const button = document.getElementById("adminSignIn");
+                if (!button) return;
+                button.addEventListener("click", async () => {
+                    button.disabled = true;
+                    button.textContent = "SIGNING IN...";
+                    try {
+                        const result = await signInWithPopup(auth, new GoogleAuthProvider());
+                        await loadPremiumRequest(result.user);
+                    } catch (error) {
+                        console.error("Administrator authentication failed:", error);
+                        details.innerHTML = "<p>Administrator sign-in failed.</p><p>" +
+                            (error.code || error.message || "Unknown error") + "</p>";
+                        button.disabled = false;
+                        button.textContent = "SIGN IN AS ADMIN";
+                    }
+                });
+            }
 
-    </script>
+            /*
+               Do not automatically open a Google popup when this
+               page is opened from an EmailJS email. Browsers may
+               block a popup that is not triggered by a user gesture.
+            */
+            if (auth.currentUser) {
+                await loadPremiumRequest(auth.currentUser);
+            } else {
+                attachAdminSignIn();
+            }
+        }
+</script>
 
 </body>
 
