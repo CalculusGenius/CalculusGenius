@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Premium Access Approval</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+    <main
+        style="
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:30px;
+        "
+    >
+
+        <div
+            style="
+                width:min(600px,100%);
+                padding:40px;
+                background:#141414;
+                border:1px solid rgba(255,255,255,.15);
+                text-align:center;
+            "
+        >
+
+            <h1>
+                Premium Access Request
+            </h1>
+
+            <div id="requestDetails">
+                Loading...
+            </div>
+
+            <button
+                id="allowPremium"
+                style="
+                    display:none;
+                    margin-top:30px;
+                    padding:14px 30px;
+                    border:0;
+                    cursor:pointer;
+                    font-weight:700;
+                "
+            >
+                ALLOW ACCESS
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <script type="module">
+
+        import {
+            getAuth,
+            GoogleAuthProvider,
+            signInWithPopup
+        } from
+        "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+
+        import {
+            getFirestore,
+            doc,
+            getDoc,
+            setDoc,
+            serverTimestamp,
+            updateDoc
+        } from
+        "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+
+        import {
+            app
+        } from "./firebase-config.js";
+
+
+        const ADMIN_EMAIL =
+            "calculusgenius67@gmail.com";
+
+
+        const auth =
+            getAuth(app);
+
+        const db =
+            getFirestore(app);
+
+
+        const uid =
+            new URLSearchParams(
+                window.location.search
+            ).get("uid");
+
+
+        const details =
+            document.getElementById(
+                "requestDetails"
+            );
+
+        const allowButton =
+            document.getElementById(
+                "allowPremium"
+            );
+
+
+        if (!uid) {
+
+            details.textContent =
+                "Invalid request.";
+
+        } else {
+
+            const requestRef =
+                doc(
+                    db,
+                    "premiumRequests",
+                    uid
+                );
+
+            const snapshot =
+                await getDoc(
+                    requestRef
+                );
+
+
+            if (!snapshot.exists()) {
+
+                details.textContent =
+                    "Premium request not found.";
+
+            } else {
+
+                const data =
+                    snapshot.data();
+
+
+                details.innerHTML = `
+
+                    <p>
+                        <strong>Name:</strong>
+                        ${data.name || ""}
+                    </p>
+
+                    <p>
+                        <strong>Email:</strong>
+                        ${data.email || ""}
+                    </p>
+
+                `;
+
+
+                const provider =
+                    new GoogleAuthProvider();
+
+
+                try {
+
+                    const result =
+                        await signInWithPopup(
+                            auth,
+                            provider
+                        );
+
+
+                    const admin =
+                        result.user;
+
+
+                    if (
+                        admin.email
+                            .toLowerCase() !==
+                        ADMIN_EMAIL
+                            .toLowerCase()
+                    ) {
+
+                        details.innerHTML +=
+                            "<p>Administrator account required.</p>";
+
+                    } else {
+
+                        allowButton.style.display =
+                            "inline-block";
+
+
+                        allowButton.addEventListener(
+                            "click",
+                            async () => {
+
+                                allowButton.disabled =
+                                    true;
+
+                                await setDoc(
+                                    doc(
+                                        db,
+                                        "premiumAccess",
+                                        uid
+                                    ),
+                                    {
+                                        uid:
+                                            uid,
+
+                                        approved:
+                                            true,
+
+                                        approvedAt:
+                                            serverTimestamp(),
+
+                                        approvedBy:
+                                            admin.email
+                                    }
+                                );
+
+
+                                await updateDoc(
+                                    requestRef,
+                                    {
+                                        status:
+                                            "approved",
+
+                                        approvedAt:
+                                            serverTimestamp(),
+
+                                        approvedBy:
+                                            admin.email
+                                    }
+                                );
+
+
+                                details.innerHTML =
+                                    "<h2>Premium access granted.</h2>";
+
+                                allowButton.style.display =
+                                    "none";
+
+                            }
+                        );
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        error
+                    );
+
+                    details.textContent =
+                        "Administrator sign-in failed.";
+
+                }
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
