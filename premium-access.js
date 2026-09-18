@@ -164,14 +164,11 @@ async function createPremiumRequest(user) {
             user.uid
         );
 
-    const existing =
-        await getDoc(requestRef);
-
-    if (existing.exists()) {
-
-        return;
-
-    }
+    /*
+       Do not read the request before creating it.
+       The previous getDoc() caused JOIN NOW to require
+       a read permission before the request could be created.
+    */
 
     await setDoc(
         requestRef,
