@@ -345,16 +345,15 @@ async function handleJoinNow(user) {
 
     } catch (error) {
 
-        console.error(
-            "Premium request error:",
-            error
-        );
+    console.error(
+        "Premium request error:",
+        error
+    );
 
-        alert(
-            "Something went wrong. Please try again."
-        );
-
-
+    alert(
+        "Premium error: " +
+        (error.code || error.message || "Unknown error")
+    );
     } finally {
 
         if (button) {
