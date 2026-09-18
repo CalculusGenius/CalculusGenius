@@ -24,6 +24,7 @@ import {
     SITE_URL,
     UPI_ID,
     UPI_NAME,
+    PREMIUM_AMOUNT,
     EMAILJS_PUBLIC_KEY,
     EMAILJS_SERVICE_ID,
     EMAILJS_PREMIUM_TEMPLATE_ID
@@ -267,6 +268,9 @@ async function startUPIPayment() {
 
             pn:
                 UPI_NAME,
+
+            am:
+                PREMIUM_AMOUNT,
 
             cu:
                 "INR",
