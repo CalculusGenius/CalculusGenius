@@ -463,6 +463,18 @@ function createPremiumScreen(user) {
 
 
 // =========================================
+// REMOVE EARLY PREMIUM PRELOADER
+// =========================================
+
+function removePremiumPreload() {
+
+    document.documentElement
+        .classList.remove("premium-preload");
+
+}
+
+
+// =========================================
 // LOCK PAGE
 // =========================================
 
@@ -522,9 +534,15 @@ if (isPremiumPage()) {
 
                 if (!approved) {
 
+                    removePremiumPreload();
+
                     lockPage(
                         user
                     );
+
+                } else {
+
+                    removePremiumPreload();
 
                 }
 
@@ -534,6 +552,8 @@ if (isPremiumPage()) {
                     "Premium access check failed:",
                     error
                 );
+
+                removePremiumPreload();
 
                 lockPage(
                     user
