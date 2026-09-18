@@ -57,4 +57,4 @@ export const EMAILJS_SERVICE_ID =
     "service_9m0ln9d";
 
 export const EMAILJS_PREMIUM_TEMPLATE_ID =
-    "YOUR_PREMIUM_TEMPLATE_ID";
+    "template_7axwh7n";
