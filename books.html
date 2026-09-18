@@ -24,63 +24,159 @@
 
     <style>
 
-        .temporary-page {
+        .books-page {
             min-height: 100vh;
             box-sizing: border-box;
-            padding: 150px 6% 90px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 150px 5% 90px;
             position: relative;
             z-index: 2;
         }
 
-        .temporary-container {
-            width: min(900px, 100%);
-            text-align: center;
+        .books-container {
+            width: min(1100px, 100%);
+            margin: 0 auto;
         }
 
-        .temporary-title {
-            margin: 0 0 3rem;
+        .books-title {
+            margin: 0 0 2.8rem;
+            text-align: center;
             font-family: "Cormorant Garamond", serif;
-            font-size: clamp(3rem, 8vw, 7rem);
+            font-size: clamp(3rem, 7vw, 6rem);
             line-height: 1;
             font-weight: 600;
             color: #ffffff;
         }
 
-        .temporary-card {
-            padding: clamp(2rem, 5vw, 4rem);
-            border: 1px solid rgba(255,255,255,0.35);
-            background: rgba(255,255,255,0.025);
-            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
-            backdrop-filter: blur(10px);
+        .books-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.4rem;
         }
 
-        .temporary-image {
-            display: block;
-            width: min(500px, 100%);
-            max-height: 500px;
-            object-fit: contain;
-            margin: 0 auto 3rem;
-        }
-
-        .temporary-message {
-            margin: 0;
-            font-family: "Cormorant Garamond", serif;
-            font-size: clamp(2rem, 5vw, 4rem);
-            font-weight: 600;
+        .book-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 92px;
+            padding: 0 1.7rem;
+            box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: linear-gradient(
+                135deg,
+                rgba(255,255,255,0.075),
+                rgba(255,255,255,0.025)
+            );
             color: #ffffff;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.24);
+            transition:
+                border-color 0.35s ease,
+                background 0.35s ease,
+                transform 0.35s ease,
+                box-shadow 0.35s ease;
         }
 
-        .temporary-note {
-            margin: 1.5rem auto 0;
-            max-width: 650px;
+        .book-item::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                100deg,
+                transparent 0%,
+                rgba(255,255,255,0.06) 50%,
+                transparent 100%
+            );
+            transform: translateX(-110%);
+            transition: transform 0.65s ease;
+        }
+
+        .book-item:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,255,255,0.38);
+            background: linear-gradient(
+                135deg,
+                rgba(255,255,255,0.11),
+                rgba(255,255,255,0.035)
+            );
+            box-shadow: 0 24px 55px rgba(0,0,0,0.34);
+        }
+
+        .book-item:hover::before {
+            transform: translateX(110%);
+        }
+
+        .book-item:focus-within {
+            border-color: rgba(255,255,255,0.38);
+        }
+
+        .book-name {
+            position: relative;
+            z-index: 1;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(1.45rem, 3vw, 2rem);
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .book-read {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
+            min-height: 46px;
+            padding: 0 1.2rem;
+            box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 0;
+            background: transparent;
+            color: rgba(255,255,255,0.82);
             font-family: "Inter", sans-serif;
-            font-size: clamp(0.95rem, 1.5vw, 1.15rem);
-            line-height: 1.8;
-            font-weight: 300;
-            color: rgba(255,255,255,0.72);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition:
+                transform 0.35s ease,
+                background 0.35s ease,
+                border-color 0.35s ease;
+        }
+
+        .book-read:hover {
+            transform: translateX(5px);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.35);
+        }
+
+        .book-read:focus-visible {
+            outline: 2px solid rgba(255,255,255,0.75);
+            outline-offset: 4px;
+        }
+
+        @media (max-width: 700px) {
+
+            .books-page {
+                padding: 130px 5% 70px;
+            }
+
+            .books-list {
+                grid-template-columns: 1fr;
+            }
+
+            .book-item {
+                min-height: 84px;
+                padding: 0 1.3rem;
+            }
+
+            .book-read {
+                min-width: 86px;
+                min-height: 42px;
+                padding: 0 1rem;
+            }
+
         }
 
     </style>
@@ -105,7 +201,7 @@
         <div class="nav-container">
 
             <a href="index.html" class="logo">
-    <img src="logo.png" alt="CALCULUS logo" width="40" height="40">
+                <img src="logo.png" alt="CALCULUS logo" width="40" height="40">
                 CALCULUS
             </a>
 
@@ -143,21 +239,22 @@
                 <span></span>
 
             </button>
+
             <!-- =========================================
-     LOGGED-IN PROFILE BUTTON
-========================================= -->
+                 LOGGED-IN PROFILE BUTTON
+            ========================================== -->
 
-<a href="profile.html"
-   class="user-profile-button"
-   id="userProfileButton"
-   aria-label="Open your profile"
-   style="display: none;">
+            <a href="profile.html"
+               class="user-profile-button"
+               id="userProfileButton"
+               aria-label="Open your profile"
+               style="display: none;">
 
-    <img id="userProfilePicture"
-         src=""
-         alt="Your profile">
+                <img id="userProfilePicture"
+                     src=""
+                     alt="Your profile">
 
-</a>
+            </a>
 
         </div>
 
@@ -179,29 +276,265 @@
 
     </header>
 
-    <main class="temporary-page">
+    <main class="books-page">
 
-        <div class="temporary-container">
+        <div class="books-container">
 
-            <h1 class="temporary-title">
+            <h1 class="books-title">
                 Books
             </h1>
 
-            <div class="temporary-card">
+            <div class="books-list">
 
-                <img src="dog.png"
-                     alt="Dog"
-                     class="temporary-image">
+                <div class="book-item">
+                    <span class="book-name">book1</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
 
-                <p class="temporary-message">
-                    We are still working on it.
-                </p>
+                <div class="book-item">
+                    <span class="book-name">book2</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
 
-                <p class="temporary-note">
-                    The Books section of the CALCULUS
-                    website is currently under development.
-                    Please check back later.
-                </p>
+                <div class="book-item">
+                    <span class="book-name">book3</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book4</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book5</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book6</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book7</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book8</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book9</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book10</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book11</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book12</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book13</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book14</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book15</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book16</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book17</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book18</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book19</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book20</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book21</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book22</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book23</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book24</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book25</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book26</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book27</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book28</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book29</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book30</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book31</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book32</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book33</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book34</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book35</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book36</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book37</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book38</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book39</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book40</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book41</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book42</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book43</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book44</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book45</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book46</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book47</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book48</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book49</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">book50</span>
+                    <a href="#" class="book-read">Read</a>
+                </div>
 
             </div>
 
