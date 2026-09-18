@@ -218,7 +218,7 @@
             if (auth.currentUser) {
                 await loadPremiumRequest(auth.currentUser);
             } else {
-                attachAdminSignIn();
+                await loadPremiumRequest(null);
             }
         }
 </script>
