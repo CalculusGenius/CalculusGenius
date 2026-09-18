@@ -4,12 +4,35 @@ service cloud.firestore {
 
     match /databases/{database}/documents {
 
-        match /premiumRequests/{userId} {
+        // =========================================
+        // PRIVATE USER PROFILES
+        // =========================================
 
-            allow create:
+        match /users/{userId} {
+
+            allow read, create, update:
                 if request.auth != null
                 && request.auth.uid == userId;
 
+            allow delete:
+                if false;
+        }
+
+
+        // =========================================
+        // PREMIUM REQUESTS
+        // =========================================
+
+        match /premiumRequests/{userId} {
+
+            // A signed-in user may create/update ONLY
+            // their own premium request.
+            allow create, update:
+                if request.auth != null
+                && request.auth.uid == userId;
+
+            // Users may read their own request.
+            // The administrator may read any request.
             allow read:
                 if request.auth != null
                 && (
@@ -18,7 +41,30 @@ service cloud.firestore {
                     request.auth.token.email == 'calculusgenius67@gmail.com'
                 );
 
-            allow update:
+            allow delete:
+                if false;
+        }
+
+
+        // =========================================
+        // PREMIUM ACCESS
+        // =========================================
+
+        match /premiumAccess/{userId} {
+
+            // A user may check only their own approval.
+            // The administrator may read any approval.
+            allow read:
+                if request.auth != null
+                && (
+                    request.auth.uid == userId
+                    ||
+                    request.auth.token.email == 'calculusgenius67@gmail.com'
+                );
+
+            // Only the administrator can grant/revoke
+            // premium access.
+            allow create, update:
                 if request.auth != null
                 && request.auth.token.email == 'calculusgenius67@gmail.com';
 
@@ -27,21 +73,13 @@ service cloud.firestore {
         }
 
 
-        match /premiumAccess/{userId} {
+        // =========================================
+        // DEFAULT DENY
+        // =========================================
 
-            allow read:
-                if request.auth != null
-                && (
-                    request.auth.uid == userId
-                    ||
-                    request.auth.token.email == 'calculusgenius67@gmail.com'
-                );
+        match /{document=**} {
 
-            allow create, update:
-                if request.auth != null
-                && request.auth.token.email == 'calculusgenius67@gmail.com';
-
-            allow delete:
+            allow read, write:
                 if false;
         }
 
