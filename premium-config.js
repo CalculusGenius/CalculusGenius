@@ -45,6 +45,11 @@ export const UPI_ID =
 export const UPI_NAME =
     "CALCULUS";
 
+// Fixed Premium Membership payment amount in INR.
+// This is intentionally not user-editable in the generated UPI URI.
+export const PREMIUM_AMOUNT =
+    "500.00";
+
 
 // =========================================
 // EMAILJS
