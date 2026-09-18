@@ -22,6 +22,66 @@
     <link rel="stylesheet"
           href="style.css">
 
+    <!-- Premium pages are visually locked before JavaScript/auth loads. -->
+    <style>
+        html.premium-preload,
+        html.premium-preload body {
+            background: #080808 !important;
+        }
+
+        html.premium-preload body > * {
+            visibility: hidden !important;
+        }
+
+        html.premium-preload body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 2147483646;
+            background: rgba(8, 8, 8, 0.98);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        html.premium-preload body::after {
+            content: "JOIN PREMIUM MEMBERSHIP NOW\\A\\A✅ Full Access to Ebooks\\A✅ Full Access to all study material\\A✅ More topics from University Calculus\\A✅ Access to the Mathematical Forum\\A✅ Access to the CalcGen AI\\A\\A        JOIN NOW";
+            white-space: pre-wrap;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: 2147483647;
+            width: min(680px, calc(100vw - 48px));
+            box-sizing: border-box;
+            transform: translate(-50%, -50%);
+            padding: 48px 42px;
+            text-align: center;
+            color: #ffffff;
+            background: rgba(20, 20, 20, 0.98);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.65);
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(1.15rem, 3vw, 1.65rem);
+            line-height: 1.65;
+            letter-spacing: 0.02em;
+        }
+
+        @media (max-width: 600px) {
+            html.premium-preload body::after {
+                padding: 36px 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+
+    <script>
+        /*
+         * This runs in the <head>, before the page can visibly render.
+         * The real premium system later removes this class after
+         * Firebase has determined whether the user is approved.
+         */
+        document.documentElement.classList.add("premium-preload");
+    </script>
+
     <style>
 
         .books-page {
