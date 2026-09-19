@@ -270,67 +270,97 @@ function initAI() {
      * the AI after a confirmed Puter identity exists.
      */
     async function ensurePuterTemporaryUser() {
-        try {
-            if (puter.auth.isSignedIn()) {
-                try {
-                    const currentUser = await puter.auth.getUser();
+        /*
+         * Puter authentication is independent from Firebase authentication.
+         * The only supported way for a website to obtain a Puter identity
+         * without asking the visitor to register a permanent Puter account
+         * is Puter's temporary-user option.
+         *
+         * IMPORTANT:
+         * - This function is called only from the Send click/Enter path.
+         * - We intentionally do NOT pass Firebase/Google credentials to Puter.
+         * - We intentionally do NOT use request_auth:true.
+         * - If a valid Puter session already exists in this browser, reuse it.
+         * - If no Puter session exists, explicitly request a temporary user.
+         *
+         * request_auth:false was removed here because it is unnecessary for
+         * temporary onboarding and can make the authentication path depend
+         * on a previously stored Puter token. The documented temporary-user
+         * option is sufficient on its own.
+         */
+        if (typeof puter === "undefined" || !puter.auth) {
+            throw new Error("Puter.js is not available.");
+        }
 
-                    if (currentUser) {
-                        return currentUser;
-                    }
-                } catch (sessionError) {
-                    console.warn(
-                        "Existing Puter session could not be validated. " +
-                        "Starting the temporary-user flow instead.",
-                        sessionError
-                    );
+        // Reuse an already authenticated Puter session when one exists.
+        if (puter.auth.isSignedIn()) {
+            try {
+                const existingUser = await puter.auth.getUser();
+
+                if (existingUser) {
+                    return existingUser;
                 }
+            } catch (error) {
+                console.warn(
+                    "The existing Puter session could not be read. " +
+                    "A fresh temporary-user authentication will be attempted.",
+                    error
+                );
             }
+        }
 
-            /*
-             * This call MUST remain directly in the user-triggered Send
-             * event path. Do not move it to page-load initialization:
-             * browsers can block the authentication popup otherwise.
-             *
-             * attempt_temp_user_creation tells Puter that this site wants
-             * an automatically-created temporary account rather than asking
-             * the visitor to register a permanent Puter account.
-             *
-             * request_auth is intentionally false so an existing Puter
-             * session is not forced through an account-selection screen.
-             */
-            const signInResult = await puter.auth.signIn({
-                attempt_temp_user_creation: true,
-                request_auth: false
+        /*
+         * No Puter session exists.
+         *
+         * Puter documents attempt_temp_user_creation:true as the mechanism
+         * for automatically creating a temporary user instead of requiring
+         * immediate permanent signup.
+         *
+         * Do not add request_auth:true here: that option is specifically for
+         * asking the user to re-pick an account and is not part of the
+         * temporary-user flow.
+         */
+        let signInResult;
+
+        try {
+            signInResult = await puter.auth.signIn({
+                attempt_temp_user_creation: true
             });
-
-            if (!signInResult || signInResult.success === false) {
-                throw new Error(
-                    signInResult?.msg ||
-                    signInResult?.error ||
-                    "Puter temporary authentication was not completed."
-                );
-            }
-
-            if (!puter.auth.isSignedIn()) {
-                throw new Error(
-                    "Puter authentication completed without an active session."
-                );
-            }
-
-            const authenticatedUser = await puter.auth.getUser();
-
-            if (!authenticatedUser) {
-                throw new Error(
-                    "Puter authentication completed without a user identity."
-                );
-            }
-
-            return authenticatedUser;
         } catch (error) {
-            console.error("Puter temporary authentication failed:", error);
+            console.error("Puter temporary-user sign-in failed:", error);
             throw error;
         }
+
+        if (!signInResult || signInResult.success === false) {
+            throw new Error(
+                signInResult?.msg ||
+                signInResult?.error ||
+                "Puter temporary authentication was not completed."
+            );
+        }
+
+        if (!puter.auth.isSignedIn()) {
+            throw new Error(
+                "Puter authentication completed without an active session."
+            );
+        }
+
+        const authenticatedUser = await puter.auth.getUser();
+
+        if (!authenticatedUser) {
+            throw new Error(
+                "Puter authentication completed without a user identity."
+            );
+        }
+
+        /*
+         * The returned user exposes is_temp according to Puter's User API.
+         * We do not reject a non-temporary user here: if the visitor already
+         * authenticated with Puter, Puter is allowed to return that existing
+         * identity. What matters is that this code never requires permanent
+         * registration when no Puter session exists.
+         */
+        return authenticatedUser;
     }
 
     async function ask() {
