@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CALCGEN AI — CALCULUS</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script>
+        document.documentElement.classList.add("calcgen-preload");
+    </script>
+
+    <style>
+        html.calcgen-preload,
+        html.calcgen-preload body {
+            background: #080808 !important;
+        }
+
+        html.calcgen-preload body > * {
+            visibility: hidden !important;
+        }
+
+        html.calcgen-preload::before {
+            content: "JOIN PREMIUM MEMBERSHIP NOW\A\AChecking Premium access...";
+            white-space: pre-wrap;
+            position: fixed;
+            inset: 0;
+            z-index: 2147483647;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            padding: 32px;
+            text-align: center;
+            color: #ffffff;
+            background: #080808;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(1.25rem, 4vw, 2rem);
+            line-height: 1.6;
+        }
+
+        .calcgen-page {
+            min-height: 100vh;
+            padding: 130px 5% 70px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+        }
+
+        .calcgen-container {
+            width: min(1050px, 100%);
+            margin: 0 auto;
+        }
+
+        .calcgen-heading {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .calcgen-title {
+            margin: 0;
+            color: #fff;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            line-height: 1;
+        }
+
+        .calcgen-subtitle {
+            margin: 0.8rem 0 0;
+            color: rgba(255,255,255,0.58);
+            font-family: "Inter", sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .calcgen-shell {
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(15,15,15,0.82);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.38);
+            backdrop-filter: blur(16px);
+            overflow: hidden;
+        }
+
+        .calcgen-messages {
+            min-height: 52vh;
+            max-height: 62vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            box-sizing: border-box;
+        }
+
+        .calcgen-message {
+            max-width: 86%;
+            margin-bottom: 1rem;
+            padding: 1rem 1.15rem;
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.9);
+            font-family: "Inter", sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.75;
+            white-space: normal;
+        }
+
+        .calcgen-message.ai {
+            background: rgba(255,255,255,0.045);
+            margin-right: auto;
+        }
+
+        .calcgen-message.user {
+            background: rgba(255,255,255,0.09);
+            margin-left: auto;
+        }
+
+        .calcgen-input-area {
+            display: flex;
+            gap: 0.8rem;
+            padding: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .calcgen-input {
+            flex: 1;
+            min-height: 54px;
+            max-height: 180px;
+            resize: vertical;
+            box-sizing: border-box;
+            padding: 1rem 1.1rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            outline: none;
+            background: rgba(255,255,255,0.035);
+            color: #fff;
+            font-family: "Inter", sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .calcgen-input:focus {
+            border-color: rgba(255,255,255,0.38);
+        }
+
+        .calcgen-send {
+            align-self: stretch;
+            min-width: 105px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: transparent;
+            color: rgba(255,255,255,0.88);
+            font-family: "Inter", sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .calcgen-send:hover:not(:disabled) {
+            background: rgba(255,255,255,0.09);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .calcgen-send:disabled {
+            opacity: 0.45;
+            cursor: wait;
+        }
+
+        .calcgen-status {
+            padding: 0 1rem 1rem;
+            color: rgba(255,255,255,0.42);
+            font-family: "Inter", sans-serif;
+            font-size: 0.75rem;
+        }
+
+        .calcgen-premium-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2147483640;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            box-sizing: border-box;
+            background: rgba(8,8,8,0.94);
+            backdrop-filter: blur(14px);
+        }
+
+        .calcgen-premium-box {
+            width: min(680px, 100%);
+            padding: 48px 42px;
+            box-sizing: border-box;
+            text-align: center;
+            color: #fff;
+            background: rgba(20,20,20,0.98);
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow: 0 30px 90px rgba(0,0,0,0.65);
+        }
+
+        .calcgen-premium-box h1 {
+            margin: 0 0 1.7rem;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+        }
+
+        .calcgen-premium-list {
+            text-align: left;
+            margin: 0 auto 2rem;
+            width: fit-content;
+            max-width: 100%;
+            color: rgba(255,255,255,0.82);
+            font-family: "Inter", sans-serif;
+            line-height: 2;
+        }
+
+        .calcgen-join-button {
+            min-width: 150px;
+            min-height: 48px;
+            padding: 0 1.5rem;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: transparent;
+            color: #fff;
+            font-family: "Inter", sans-serif;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+        }
+
+        .calcgen-join-button:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .calcgen-login-message {
+            color: rgba(255,255,255,0.62);
+            font-family: "Inter", sans-serif;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 650px) {
+            .calcgen-page {
+                padding: 115px 4% 55px;
+            }
+
+            .calcgen-input-area {
+                flex-direction: column;
+            }
+
+            .calcgen-send {
+                min-height: 48px;
+            }
+
+            .calcgen-message {
+                max-width: 94%;
+            }
+
+            .calcgen-premium-box {
+                padding: 36px 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="math-background" aria-hidden="true">
+        <span>∫</span><span>∫</span><span>∫</span><span>∫</span>
+        <span>∫</span><span>∫</span><span>∫</span><span>∫</span>
+    </div>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="CALCULUS logo" width="40" height="40">
+                CALCULUS
+            </a>
+
+            <nav class="desktop-nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="books.html" class="nav-link">Books</a>
+                <a href="topics.html" class="nav-link">Topics</a>
+                <a href="other-websites.html" class="nav-link">Other Websites</a>
+            </nav>
+
+            <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+
+            <a href="profile.html" class="user-profile-button" id="userProfileButton" aria-label="Open your profile" style="display:none;">
+                <img id="userProfilePicture" src="" alt="Your profile">
+            </a>
+        </div>
+
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="books.html">Books</a>
+            <a href="topics.html">Topics</a>
+            <a href="other-websites.html">Other Websites</a>
+        </div>
+    </header>
+
+    <main class="calcgen-page">
+        <div class="calcgen-container">
+            <div class="calcgen-heading">
+                <h1 class="calcgen-title">CalcGen AI</h1>
+                <p class="calcgen-subtitle">A mathematical AI for explanations, derivations and LaTeX.</p>
+            </div>
+
+            <section class="calcgen-shell">
+                <div class="calcgen-messages" id="calcgenMessages">
+                    <div class="calcgen-message ai">
+                        Hello. I am CalcGen AI. Ask me a mathematical question, request a derivation, or ask for an explanation. I will use LaTeX for mathematical expressions.
+                    </div>
+                </div>
+
+                <div class="calcgen-input-area">
+                    <textarea id="calcgenInput" class="calcgen-input" placeholder="Ask a mathematical question..." aria-label="Ask CalcGen AI"></textarea>
+                    <button id="calcgenSend" class="calcgen-send">Send</button>
+                </div>
+
+                <div class="calcgen-status" id="calcgenStatus">Powered by Puter.js AI infrastructure.</div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>© Ankit Brahamachary 2026</p>
+    </footer>
+
+    <script src="https://js.puter.com/v2/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="module" src="script.js"></script>
+    <script type="module" src="calcgen-ai.js"></script>
+</body>
+</html>
