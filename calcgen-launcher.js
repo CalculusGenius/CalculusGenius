@@ -80,7 +80,7 @@
     launcher.title = "CalcGen AI";
 
     launcher.innerHTML = `
-        <img src="logo.png" alt="CalcGen AI">
+        <img src="cglogo.png" alt="CalcGen AI">
         <span>CalcGen AI</span>
     `;
 
