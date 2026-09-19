@@ -200,6 +200,7 @@ function showPremiumBox(user) {
     `;
 
     document.body.appendChild(overlay);
+    removePreload();
 
     const button = overlay.querySelector("#calcgenJoinButton");
 
