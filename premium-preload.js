@@ -44,6 +44,25 @@ function reveal() {
     style.remove();
 }
 
+function revealWhenPremiumOverlayExists() {
+    if (document.getElementById("premiumOverlay")) {
+        reveal();
+        return;
+    }
+
+    const observer = new MutationObserver(() => {
+        if (document.getElementById("premiumOverlay")) {
+            observer.disconnect();
+            reveal();
+        }
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+}
+
 async function checkAccess() {
     try {
         const [{ watchAuthState }, { getFirestore, doc, getDoc }] =
@@ -77,7 +96,7 @@ async function checkAccess() {
                 }
 
                 if (!user) {
-                    reveal();
+                    revealWhenPremiumOverlayExists();
                     return;
                 }
 
@@ -85,15 +104,19 @@ async function checkAccess() {
                 const snapshot =
                     await getDoc(doc(db, "premiumAccess", user.uid));
 
-                reveal();
+                if (snapshot.exists() && snapshot.data().approved === true) {
+                    reveal();
+                } else {
+                    revealWhenPremiumOverlayExists();
+                }
             } catch (error) {
                 console.error("Premium first-paint check failed:", error);
-                reveal();
+                revealWhenPremiumOverlayExists();
             }
         });
     } catch (error) {
         console.error("Premium first-paint guard failed:", error);
-        reveal();
+        revealWhenPremiumOverlayExists();
     }
 }
 
