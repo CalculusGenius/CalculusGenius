@@ -398,6 +398,8 @@ function createPremiumScreen(user) {
 
                 <div>✅ Full Access to all study material</div>
 
+                <div>✅ Full Access to books</div>
+
                 <div>✅ More topics from University Calculus</div>
 
                 <div>✅ Access to the Mathematical Forum</div>
