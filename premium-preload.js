@@ -16,7 +16,7 @@ html.premium-first-paint-guard body > * {
 }
 
 html.premium-first-paint-guard::before {
-    content: "JOIN PREMIUM MEMBERSHIP NOW\\A\\AChecking Premium access...";
+    content: "Checking Premium access...";
     white-space: pre-wrap;
     position: fixed;
     inset: 0;
