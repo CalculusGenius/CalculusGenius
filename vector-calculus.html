@@ -9,7 +9,7 @@
           content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-          content="CALCULUS — Vector Calculus. This section is currently under development.">
+          content="CALCULUS — Vector Calculus. ">
 
     <title>CALCULUS — Vector Calculus</title>
 
@@ -43,169 +43,157 @@
 
     <style>
 
-        .temporary-page {
-
+        .books-page {
             min-height: 100vh;
-
             box-sizing: border-box;
-
-            padding:
-                150px 6% 90px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
+            padding: 150px 5% 90px;
             position: relative;
-
             z-index: 2;
         }
 
+        .books-container {
+            width: min(1100px, 100%);
+            margin: 0 auto;
+        }
 
-        .temporary-container {
-
-            width:
-                min(900px, 100%);
-
+        .books-title {
+            margin: 0 0 2.8rem;
             text-align: center;
-        }
-
-
-        .temporary-title {
-
-            margin:
-                0 0 3rem;
-
-            font-family:
-                "Cormorant Garamond",
-                serif;
-
-            font-size:
-                clamp(3rem, 8vw, 7rem);
-
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(3rem, 7vw, 6rem);
             line-height: 1;
-
             font-weight: 600;
-
-            color: #ffffff;
-
-            letter-spacing:
-                0.025em;
-        }
-
-
-        .temporary-card {
-
-            padding:
-                clamp(2rem, 5vw, 4rem);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.35);
-
-            background:
-                rgba(255,255,255,0.025);
-
-            box-shadow:
-                0 25px 80px
-                rgba(0,0,0,0.4);
-
-            backdrop-filter:
-                blur(10px);
-
-            -webkit-backdrop-filter:
-                blur(10px);
-        }
-
-
-        .temporary-image {
-
-            display: block;
-
-            width:
-                min(500px, 100%);
-
-            max-height:
-                500px;
-
-            object-fit:
-                contain;
-
-            margin:
-                0 auto 3rem;
-        }
-
-
-        .temporary-message {
-
-            margin: 0;
-
-            font-family:
-                "Cormorant Garamond",
-                serif;
-
-            font-size:
-                clamp(2rem, 5vw, 4rem);
-
-            line-height:
-                1.1;
-
-            font-weight: 600;
-
             color: #ffffff;
         }
 
-
-        .temporary-note {
-
-            margin:
-                1.5rem auto 0;
-
-            max-width:
-                650px;
-
-            font-family:
-                "Inter",
-                sans-serif;
-
-            font-size:
-                clamp(0.95rem, 1.5vw, 1.15rem);
-
-            line-height:
-                1.8;
-
-            font-weight: 300;
-
-            color:
-                rgba(255,255,255,0.72);
+        .books-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.4rem;
         }
 
+        .book-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 92px;
+            padding: 0 1.7rem;
+            box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.16);
+            background: linear-gradient(
+                135deg,
+                rgba(255,255,255,0.075),
+                rgba(255,255,255,0.025)
+            );
+            color: #ffffff;
+            overflow: hidden;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.24);
+            transition:
+                border-color 0.35s ease,
+                background 0.35s ease,
+                transform 0.35s ease,
+                box-shadow 0.35s ease;
+        }
 
-        @media (max-width: 600px) {
+        .book-item::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                100deg,
+                transparent 0%,
+                rgba(255,255,255,0.06) 50%,
+                transparent 100%
+            );
+            transform: translateX(-110%);
+            transition: transform 0.65s ease;
+        }
 
-            .temporary-page {
+        .book-item:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255,255,255,0.38);
+            background: linear-gradient(
+                135deg,
+                rgba(255,255,255,0.11),
+                rgba(255,255,255,0.035)
+            );
+            box-shadow: 0 24px 55px rgba(0,0,0,0.34);
+        }
 
-                padding:
-                    120px 5% 70px;
+        .book-item:hover::before {
+            transform: translateX(110%);
+        }
+
+        .book-item:focus-within {
+            border-color: rgba(255,255,255,0.38);
+        }
+
+        .book-name {
+            position: relative;
+            z-index: 1;
+            font-family: "Cormorant Garamond", serif;
+            font-size: clamp(1.45rem, 3vw, 2rem);
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .book-read {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
+            min-height: 46px;
+            padding: 0 1.2rem;
+            box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 0;
+            background: transparent;
+            color: rgba(255,255,255,0.82);
+            font-family: "Inter", sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition:
+                transform 0.35s ease,
+                background 0.35s ease,
+                border-color 0.35s ease;
+        }
+
+        .book-read:hover {
+            transform: translateX(5px);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.35);
+        }
+
+        .book-read:focus-visible {
+            outline: 2px solid rgba(255,255,255,0.75);
+            outline-offset: 4px;
+        }
+
+        @media (max-width: 700px) {
+
+            .books-page {
+                padding: 130px 5% 70px;
             }
 
-
-            .temporary-card {
-
-                padding:
-                    1.5rem 1.1rem 2rem;
+            .books-list {
+                grid-template-columns: 1fr;
             }
 
+            .book-item {
+                min-height: 84px;
+                padding: 0 1.3rem;
+            }
 
-            .temporary-image {
-
-                max-height:
-                    360px;
-
-                margin-bottom:
-                    2rem;
+            .book-read {
+                min-width: 86px;
+                min-height: 42px;
+                padding: 0 1rem;
             }
 
         }
@@ -454,51 +442,92 @@
          MAIN CONTENT
     ========================================== -->
 
-    <main class="temporary-page">
+    <main class="books-page">
 
-        <div class="temporary-container">
+        <div class="books-container">
 
-
-            <h1 class="temporary-title">
-
-                VECTOR CALCULUS
-
+            <h1 class="books-title">
+                Vector Calculus
             </h1>
 
+            <div class="books-list">
 
-            <section class="temporary-card">
+                <div class="book-item">
+                    <span class="book-name">Box 1</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
+                <div class="book-item">
+                    <span class="book-name">Box 2</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-                <!-- =================================
-                     DOG IMAGE
-                ================================== -->
+                <div class="book-item">
+                    <span class="book-name">Box 3</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-                <img src="dog.png"
-                     alt="A dog waiting patiently"
-                     class="temporary-image">
+                <div class="book-item">
+                    <span class="book-name">Box 4</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
+                <div class="book-item">
+                    <span class="book-name">Box 5</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-                <!-- =================================
-                     MESSAGE
-                ================================== -->
+                <div class="book-item">
+                    <span class="book-name">Box 6</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-                <h2 class="temporary-message">
+                <div class="book-item">
+                    <span class="book-name">Box 7</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-                    We are still working on it
+                <div class="book-item">
+                    <span class="book-name">Box 8</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-                </h2>
+                <div class="book-item">
+                    <span class="book-name">Box 9</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
+                <div class="book-item">
+                    <span class="book-name">Box 10</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-                <p class="temporary-note">
+                <div class="book-item">
+                    <span class="book-name">Box 11</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-                    This section of CALCULUS is currently
-                    under development. We are working on
-                    preparing the content and will bring
-                    it here soon.
+                <div class="book-item">
+                    <span class="book-name">Box 12</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-                </p>
+                <div class="book-item">
+                    <span class="book-name">Box 13</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
 
-            </section>
+                <div class="book-item">
+                    <span class="book-name">Box 14</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
+
+                <div class="book-item">
+                    <span class="book-name">Box 15</span>
+                    <a href="#" class="book-read">Go to</a>
+                </div>
+
+            </div>
 
         </div>
 
