@@ -251,6 +251,20 @@ function initAI() {
         }
     ];
 
+    async function ensurePuterTemporaryUser() {
+        if (puter.auth.isSignedIn()) return true;
+
+        try {
+            await puter.auth.signIn({
+                attempt_temp_user_creation: true
+            });
+            return puter.auth.isSignedIn();
+        } catch (error) {
+            console.error("Puter temporary authentication failed:", error);
+            throw error;
+        }
+    }
+
     async function ask() {
         const prompt = input.value.trim();
 
@@ -262,6 +276,10 @@ function initAI() {
         status.textContent = "CalcGen AI is thinking...";
 
         try {
+            status.textContent = "Preparing CalcGen AI...";
+
+            await ensurePuterTemporaryUser();
+
             history.push({
                 role: "user",
                 content: prompt
