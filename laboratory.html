@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CALCULUS Laboratory — an interactive mathematical playground for calculus, geometry, algebra and experimentation.">
+<title>Laboratory — CALCULUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="laboratory.css">
+<script defer src="https://cdn.jsdelivr.net/npm/mathjs@14.0.1/lib/browser/math.js"></script>
+<script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script defer src="https://www.geogebra.org/apps/deployggb.js"></script>
+</head>
+<body>
+<div class="math-background" aria-hidden="true">
+<span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span>
+</div>
+
+<header class="navbar">
+  <div class="nav-container">
+    <a href="index.html" class="logo"><img src="logo.png" alt="CALCULUS logo" width="40" height="40">CALCULUS</a>
+    <nav class="desktop-nav">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="books.html" class="nav-link">Books</a>
+      <a href="topics.html" class="nav-link">Topics</a>
+      <a href="laboratory.html" class="nav-link active">Laboratory</a>
+      <a href="other-websites.html" class="nav-link">Other Websites</a>
+      <a href="login.html" class="nav-link">Log In</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a><a href="about.html">About</a><a href="books.html">Books</a>
+    <a href="topics.html">Topics</a><a href="laboratory.html">Laboratory</a><a href="other-websites.html">Other Websites</a><a href="login.html">Log In</a>
+  </div>
+</header>
+
+<main>
+<section class="lab-hero">
+  <div>
+    <p class="lab-kicker">CALCULUS · EXPERIMENTAL MATHEMATICS</p>
+    <h1>THE LABORATORY</h1>
+    <div class="lab-title-line"></div>
+    <p>Do not merely read mathematics. Change it, break it, animate it, measure it, conjecture about it, and see what survives.</p>
+  </div>
+</section>
+
+<section class="lab-section">
+  <div class="lab-instrument-shell">
+    <aside class="lab-instruments">
+      <div class="lab-section-label">INSTRUMENTS</div>
+      <button class="instrument active" data-mode="function"><span>01</span>Function Observatory</button>
+      <button class="instrument" data-mode="derivative"><span>02</span>Derivative Microscope</button>
+      <button class="instrument" data-mode="integral"><span>03</span>Integral Observatory</button>
+      <button class="instrument" data-mode="limit"><span>04</span>Limit Telescope</button>
+      <button class="instrument" data-mode="newton"><span>05</span>Newton Basin</button>
+      <button class="instrument" data-mode="taylor"><span>06</span>Taylor Studio</button>
+      <button class="instrument" data-mode="phase"><span>07</span>Phase Space</button>
+    </aside>
+
+    <section class="lab-workbench" id="laboratory">
+      <div class="lab-workbench-head">
+        <div><span class="lab-section-label">LIVE WORKBENCH</span><h2 id="instrumentName">Function Observatory</h2></div>
+        <div class="lab-stats"><span><b id="expCount">0</b> experiments</span><span>session <b id="sessionNo">001</b></span><span>streak <b id="streak">0</b></span></div>
+      </div>
+      <div class="lab-grid">
+        <div class="lab-controls-panel">
+          <div id="controls"></div>
+          <div class="lab-actions">
+            <button id="run" class="lab-primary">RUN EXPERIMENT</button>
+            <button id="randomize">RANDOMIZE</button>
+            <button id="challenge">NEW CHALLENGE</button>
+            <button id="reset">RESET SESSION</button>
+          </div>
+          <div class="lab-readout"><span id="readoutLabel">Observation</span><strong id="readout">Waiting for an experiment.</strong></div>
+          <pre id="result" class="lab-result"></pre>
+        </div>
+        <div class="lab-plot-panel">
+          <div id="plot" aria-label="Interactive mathematical plot"></div>
+        </div>
+      </div>
+      <div class="lab-challenge">
+        <span class="lab-section-label">CHALLENGE</span>
+        <h3 id="challengeTitle">Conjecture Machine</h3>
+        <p id="challengeText">Run three experiments and write down one property you suspect they have in common.</p>
+      </div>
+      <div class="lab-log-wrap">
+        <div class="lab-section-label">OBSERVATION LOG</div>
+        <div id="log" class="lab-log"></div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<section class="lab-section latex-section">
+  <div class="lab-section-heading">
+    <span class="lab-section-label">MATHEMATICAL INPUT</span>
+    <h2>Type mathematics as mathematics</h2>
+    <p>The editor above becomes a true mathematical field: fractions, roots, powers, Greek letters and limits are rendered while you type. The buttons below are insertable LaTeX building blocks rather than plain-text symbols.</p>
+  </div>
+  <div class="latex-demo-grid">
+    <div class="latex-demo-card"><math-div>f(x)=\frac{\sin x}{x}</math-div><p>Fractions and functions</p></div>
+    <div class="latex-demo-card"><math-div>\int_a^b f(x)\,dx</math-div><p>Integrals</p></div>
+    <div class="latex-demo-card"><math-div>\lim_{x\to a}f(x)</math-div><p>Limits</p></div>
+    <div class="latex-demo-card"><math-div>\sum_{n=1}^{\infty}a_n</math-div><p>Infinite series</p></div>
+  </div>
+</section>
+
+<section class="lab-section universe-section">
+  <div class="lab-section-heading">
+    <span class="lab-section-label">THE OUTSIDE UNIVERSE</span>
+    <h2>A laboratory should not end at one graph</h2>
+    <p>CALCULUS now opens into GeoGebra's interactive ecosystem. These are not screenshots: they are live external mathematical instruments with their own construction tools, algebra input, geometry, 3D and CAS capabilities.</p>
+  </div>
+  <div class="external-grid">
+    <article class="external-card external-wide"><div class="external-head"><h3>Graphing Universe</h3><span>2D · functions · conics · sliders</span></div><div id="ggb-graphing" class="ggb-box"></div></article>
+    <article class="external-card"><div class="external-head"><h3>Geometry Studio</h3><span>constructions · loci · transformations</span></div><div id="ggb-geometry" class="ggb-box"></div></article>
+    <article class="external-card"><div class="external-head"><h3>3D Laboratory</h3><span>surfaces · solids · vectors</span></div><div id="ggb-3d" class="ggb-box"></div></article>
+    <article class="external-card external-wide"><div class="external-head"><h3>CAS Observatory</h3><span>symbolic algebra · calculus · exact computation</span></div><div id="ggb-cas" class="ggb-box"></div></article>
+  </div>
+</section>
+
+<section class="lab-section experiment-section">
+  <div class="lab-section-heading">
+    <span class="lab-section-label">EXPERIMENT UNIVERSE</span>
+    <h2>There is no final level</h2>
+    <p>Pick a direction, then mutate the experiment. Every card is a starting point, not a lesson with a fixed ending.</p>
+  </div>
+  <div class="experiment-grid" id="experimentGrid"></div>
+</section>
+</main>
+
+<footer><p>© Ankit Brahamachary 2026</p></footer>
+
+<script defer src="script.js"></script>
+<script defer src="laboratory.js"></script>
+<script type="module" src="laboratory-math.js"></script>
+<script defer src="laboratory-external.js"></script>
+</body>
+</html>
