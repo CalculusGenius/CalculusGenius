@@ -59,7 +59,7 @@ function render(){
  $("relicCount").textContent=state.found.size+" / 12";$("energy").style.width=state.energy+"%";
  $("runNo").textContent=String(state.run).padStart(3,"0");$("runStat").textContent=state.run;$("bestStat").textContent=state.best;$("bridgeStat").textContent=state.bridges;
  document.querySelectorAll(".tm-era").forEach((b,i)=>b.classList.toggle("active",i===state.era));
- document.querySelectorAll(".tm-relic").forEach((b,i)=>b.classList.toggle("found",state.found.has(i)));
+ document.querySelectorAll(".tm-relic").forEach((b,i)=>{b.classList.toggle("found",state.found.has(i));b.textContent=state.found.has(i)?relics[i]:"?";});
 }
 function timeline(){
  const box=$("timeline");box.innerHTML="";
