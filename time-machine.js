@@ -1,468 +1,146 @@
 /* =========================================================
-   CALCULUS — MATHEMATICAL TIME MACHINE ENGINE
+   CALCULUS — TIME MACHINE / SUM VAULT ENGINE
 ========================================================= */
-
-const page = document.getElementById("timeMachine");
-
-if (page) {
-
-const eras = [
-    {
-        year: -250,
-        short: "Archimedes",
-        era: "Ancient Greece",
-        title: "It's around 250 BCE.",
-        copy: "You are centuries before differential calculus. Approximation comes through geometry, exhaustion, ratios, and carefully controlled polygons.",
-        fact: "Archimedes used the method of exhaustion to obtain increasingly accurate areas and volumes.",
-        tools: ["Geometry", "Ratios", "Exhaustion", "Polygons"],
-        locked: ["Derivatives", "Limits", "Integrals", "Epsilon proofs"],
-        problemLabel: "Archimedes • exhaustion",
-        problem: "A circle has radius 1. Its area is trapped between polygonal approximations. Which classical method lets you approach the area arbitrarily closely?",
-        answers: ["exhaustion", "method of exhaustion"],
-        modernity: 3
-    },
-    {
-        year: 1635,
-        short: "Cavalieri",
-        era: "Indivisibles",
-        title: "It's 1635.",
-        copy: "You have entered Cavalieri's world. Geometric quantities can be compared through collections of indivisible lines or planes.",
-        fact: "Cavalieri's principle became a powerful bridge between classical geometry and later integral ideas.",
-        tools: ["Geometry", "Indivisibles", "Ratios", "Area comparison"],
-        locked: ["Formal limits", "Derivatives", "Epsilon proofs", "Modern notation"],
-        problemLabel: "Cavalieri • indivisibles",
-        problem: "Two solids have equal height and equal cross-sectional areas at every corresponding level. What principle lets you conclude that their volumes are equal?",
-        answers: ["cavalieri", "cavalieri's principle", "cavalieris principle"],
-        modernity: 12
-    },
-    {
-        year: 1665,
-        short: "Newton",
-        era: "Fluxions",
-        title: "It's 1665.",
-        copy: "You don't have modern calculus. Think in terms of fluent quantities and fluxions. The machine has deliberately hidden later notation.",
-        fact: "Newton developed his fluxional methods in the 1660s; publication and later presentation came in different stages.",
-        tools: ["Algebra", "Fluxions", "Infinite series", "Geometry"],
-        locked: ["ε-δ language", "Lebesgue integration", "Abstract manifolds", "Modern measure theory"],
-        problemLabel: "Newton • fluxions",
-        problem: "For y = x², what is the instantaneous rate of change at x = 2? Give the numerical value.",
-        answers: ["4", "4.0"],
-        modernity: 24
-    },
-    {
-        year: 1684,
-        short: "Leibniz",
-        era: "Differential calculus",
-        title: "It's 1684.",
-        copy: "A new symbolic language is emerging. Differentials and a compact notation make relationships between changing quantities easier to manipulate.",
-        fact: "Leibniz published his differential calculus in 1684, introducing notation that became extraordinarily influential.",
-        tools: ["Algebra", "Differentials", "Symbolic notation", "Product rules"],
-        locked: ["Formal epsilon proofs", "Measure theory", "Functional analysis", "Distribution theory"],
-        problemLabel: "Leibniz • differentials",
-        problem: "Using the emerging differential viewpoint, find the derivative of x³ at x = 2.",
-        answers: ["12", "12.0"],
-        modernity: 35
-    },
-    {
-        year: 1748,
-        short: "Euler",
-        era: "18th-century analysis",
-        title: "It's 1748.",
-        copy: "Calculus is now a powerful computational language. Infinite series, functions, differential equations and symbolic manipulation dominate the mathematical landscape.",
-        fact: "Euler's Introductio in analysin infinitorum was published in 1748 and strongly shaped analysis.",
-        tools: ["Calculus", "Infinite series", "Functions", "Differential equations"],
-        locked: ["ε-δ rigor", "Measure theory", "Modern topology", "Abstract functional analysis"],
-        problemLabel: "Euler • infinite series",
-        problem: "Euler's famous evaluation of Σ(1/n²) from n = 1 to ∞ is what constant multiple of π²?",
-        answers: ["1/6", "pi^2/6", "π²/6", "pi2/6"],
-        modernity: 48
-    },
-    {
-        year: 1821,
-        short: "Cauchy",
-        era: "Rigorous analysis",
-        title: "It's 1821.",
-        copy: "The demand for rigor is growing. Limits, continuity and convergence are becoming explicit mathematical objects rather than informal intuitions.",
-        fact: "Cauchy's Cours d'analyse helped push calculus toward a more systematic theory of limits and continuity.",
-        tools: ["Limits", "Continuity", "Sequences", "Series", "Inequalities"],
-        locked: ["Modern measure theory", "Abstract Banach spaces", "Lebesgue integration"],
-        problemLabel: "Cauchy • limit",
-        problem: "Evaluate lim(x→1) (x² − 1)/(x − 1).",
-        answers: ["2", "2.0"],
-        modernity: 65
-    },
-    {
-        year: 1872,
-        short: "Weierstrass",
-        era: "Arithmetization of analysis",
-        title: "It's the 1870s.",
-        copy: "Intuition is no longer enough. Precision is taking center stage: quantified definitions, carefully controlled inequalities and exact convergence arguments.",
-        fact: "Weierstrass became central to the rigorous, epsilon-based style of analysis that emerged in the nineteenth century.",
-        tools: ["ε-language", "Inequalities", "Sequences", "Proof"],
-        locked: ["Lebesgue measure", "Modern distributions", "Abstract operator theory"],
-        problemLabel: "Weierstrass • precision",
-        problem: "Which small Greek letter became the standard symbol for an arbitrarily small positive tolerance in rigorous limit proofs?",
-        answers: ["epsilon", "ε"],
-        modernity: 82
-    },
-    {
-        year: 2026,
-        short: "Modern Analysis",
-        era: "Present day",
-        title: "It's 2026.",
-        copy: "The full mathematical toolbox is restored. You may use limits, topology, measure, abstract spaces and modern notation.",
-        fact: "Modern analysis contains many distinct frameworks: real analysis, measure theory, functional analysis, harmonic analysis, PDE and more.",
-        tools: ["Limits", "Topology", "Measure", "Functional analysis", "Modern notation", "Computation"],
-        locked: [],
-        problemLabel: "Modern analysis • open toolkit",
-        problem: "Choose a method, prove a statement, compute an integral, or simply return to another century. The machine no longer restricts your toolkit.",
-        answers: ["anything", "modern", "return", "2026"],
-        modernity: 100
-    }
+const page=document.getElementById("timeMachine");
+if(page){
+const eras=[
+ {key:"archimedes",year:-250,name:"Archimedes",era:"Ancient Greece",symbol:"△",fact:"Archimedes used the method of exhaustion to obtain increasingly accurate areas and volumes.",base:1},
+ {key:"cavalieri",year:1635,name:"Cavalieri",era:"Indivisibles",symbol:"▱",fact:"Cavalieri's principle compares solids by their corresponding cross-sectional areas.",base:2},
+ {key:"newton",year:1665,name:"Newton",era:"Fluxions",symbol:"ẋ",fact:"Newton developed fluxional methods in the 1660s while studying changing quantities and motion.",base:3},
+ {key:"leibniz",year:1684,name:"Leibniz",era:"Differentials",symbol:"∂",fact:"Leibniz published his differential calculus in 1684 and introduced influential notation.",base:4},
+ {key:"euler",year:1748,name:"Euler",era:"18th-century analysis",symbol:"Σ",fact:"Euler's work made infinite series and symbolic analysis central tools of mathematics.",base:5},
+ {key:"cauchy",year:1821,name:"Cauchy",era:"Rigorous analysis",symbol:"ε",fact:"Cauchy helped make limits, continuity and convergence explicit parts of analysis.",base:6},
+ {key:"weierstrass",year:1872,name:"Weierstrass",era:"Arithmetization",symbol:"∀",fact:"Weierstrass became central to the precise epsilon-based style of nineteenth-century analysis.",base:7},
+ {key:"modern",year:2026,name:"Modern Analysis",era:"Present day",symbol:"∫",fact:"Modern analysis combines many frameworks, including real analysis, measure theory and functional analysis.",base:8}
 ];
+const modes=[
+ {key:"mental",name:"Mental Sprint",desc:"Fast arithmetic",weight:1},
+ {key:"series",name:"Series Vault",desc:"Summation puzzles",weight:2},
+ {key:"derivative",name:"Derivative Run",desc:"Rates of change",weight:2},
+ {key:"boss",name:"Boss Sum",desc:"Hard mixed challenge",weight:4}
+];
+const $=id=>document.getElementById(id);
+const eraList=$("eraList"),modeList=$("modeList"),question=$("question"),answer=$("answerInput"),feedback=$("feedback"),history=$("history");
+let currentEra=2,currentMode=0,currentChallenge=null,score=0,streak=0,combo=0,stability=100,xp=0,level=1,answered=false;
+const discoveries=new Set(JSON.parse(localStorage.getItem("tmDiscoveries")||"[]"));
+const saved=JSON.parse(localStorage.getItem("tmSession")||"null");
+if(saved){score=saved.score||0;streak=saved.streak||0;combo=saved.combo||0;stability=typeof saved.stability==="number"?saved.stability:100;xp=saved.xp||0;level=saved.level||1;}
 
-const universeNames = {
-    calculus: "The development of calculus",
-    algebra: "The development of algebra",
-    geometry: "The development of geometry",
-    number: "The development of number theory",
-    probability: "The development of probability",
-    physics: "The mathematical development of physics"
-};
-
-const symbols = {
-    calculus: "∫",
-    algebra: "∑",
-    geometry: "△",
-    number: "ℕ",
-    probability: "P",
-    physics: "∂"
-};
-
-const concept = document.getElementById("concept");
-const yearInput = document.getElementById("yearInput");
-const yearRange = document.getElementById("yearRange");
-const travelButton = document.getElementById("travelButton");
-const randomEra = document.getElementById("randomEra");
-const readoutYear = document.getElementById("readoutYear");
-const readoutEra = document.getElementById("readoutEra");
-const readoutCopy = document.getElementById("readoutCopy");
-const readoutFact = document.getElementById("readoutFact");
-const modernityValue = document.getElementById("modernityValue");
-const modernityFill = document.getElementById("modernityFill");
-const paradoxValue = document.getElementById("paradoxValue");
-const paradoxFill = document.getElementById("paradoxFill");
-const missionTitle = document.getElementById("missionTitle");
-const missionCopy = document.getElementById("missionCopy");
-const problemLabel = document.getElementById("problemLabel");
-const problemText = document.getElementById("problemText");
-const toolList = document.getElementById("toolList");
-const answerInput = document.getElementById("answerInput");
-const checkAnswer = document.getElementById("checkAnswer");
-const feedback = document.getElementById("feedback");
-const timeline = document.getElementById("timeline");
-const timelineTitle = document.getElementById("timelineTitle");
-const quickEras = document.getElementById("quickEras");
-const coreSymbol = document.getElementById("coreSymbol");
-const coordinateStatus = document.getElementById("coordinateStatus");
-const stars = document.getElementById("stars");
-
-let currentEra = eras[2];
-let currentConcept = "calculus";
-let paradox = 8;
-
-/* ---------- Ambient star field ---------- */
-
-for (let i = 0; i < 70; i++) {
-    const star = document.createElement("span");
-    star.className = "tm-star";
-    star.style.left = Math.random() * 100 + "%";
-    star.style.top = Math.random() * 100 + "%";
-    star.style.setProperty("--dx", (Math.random() * 140 - 70) + "px");
-    star.style.setProperty("--dy", (Math.random() * 140 - 70) + "px");
-    star.style.animationDuration = (5 + Math.random() * 12) + "s";
-    star.style.animationDelay = (-Math.random() * 12) + "s";
-    stars.appendChild(star);
+function save(){localStorage.setItem("tmSession",JSON.stringify({score,streak,combo,stability,xp,level}));localStorage.setItem("tmDiscoveries",JSON.stringify([...discoveries]));}
+function fmtYear(y){return y<0?Math.abs(y)+" BCE":y+" CE";}
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function gcd(a,b){while(b){[a,b]=[b,a%b]}return Math.abs(a)}
+function frac(n,d){const g=gcd(n,d);return [n/g,d/g]}
+function makeSeries(){
+ const n=rand(3,8),a=rand(1,6),d=rand(1,5),sum=n*(2*a+(n-1)*d)/2;
+ return {text:"Find the sum: "+Array.from({length:n},(_,i)=>a+i*d).join(" + ")+" .",answer:String(sum),type:"SERIES"};
 }
-
-/* ---------- Timeline ---------- */
-
-function buildTimeline() {
-    timeline.innerHTML = "";
-
-    const line = document.createElement("div");
-    line.className = "tm-timeline-line";
-    timeline.appendChild(line);
-
-    const progress = document.createElement("div");
-    progress.className = "tm-timeline-progress";
-    progress.id = "timelineProgress";
-    timeline.appendChild(progress);
-
-    eras.forEach((era, index) => {
-        const position = (index / (eras.length - 1)) * 100;
-
-        const node = document.createElement("button");
-        node.className = "tm-era-node";
-        node.style.left = position + "%";
-        node.title = era.short;
-        node.dataset.index = index;
-
-        node.addEventListener("click", () => {
-            travelToYear(era.year);
-        });
-
-        timeline.appendChild(node);
-
-        const caption = document.createElement("div");
-        caption.className = "tm-era-caption";
-        caption.style.left = position + "%";
-        caption.innerHTML =
-            '<span class="tm-era-year">' +
-            formatYear(era.year) +
-            '</span>' +
-            era.short;
-        timeline.appendChild(caption);
-    });
+function makeGeometric(){
+ const a=rand(1,5),r=rand(2,4),n=rand(3,5),sum=a*(Math.pow(r,n)-1)/(r-1);
+ return {text:"Find the finite geometric sum: "+a+" + "+a*r+" + … + "+a*Math.pow(r,n-1)+" .",answer:String(sum),type:"SERIES"};
 }
-
-function buildQuickEras() {
-    quickEras.innerHTML = "";
-
-    eras.slice(0, 7).forEach(era => {
-        const button = document.createElement("button");
-        button.className = "tm-concept";
-        button.textContent = era.short;
-        button.addEventListener("click", () => travelToYear(era.year));
-        quickEras.appendChild(button);
-    });
+function makeMental(){
+ const a=rand(8,45),b=rand(3,18),c=rand(2,9),ans=a*b+c;
+ return {text:"Calculate: ("+a+" × "+b+") + "+c+" .",answer:String(ans),type:"MENTAL"};
 }
-
-function formatYear(year) {
-    if (year < 0) return Math.abs(year) + " BCE";
-    if (year === 0) return "1 BCE / 1 CE";
-    return String(year) + " CE";
+function makeDerivative(){
+ const a=rand(2,9),n=rand(2,5),x=rand(1,4),ans=a*n*Math.pow(x,n-1);
+ return {text:"If f(x) = "+a+"x^"+n+", find f'("+x+").",answer:String(ans),type:"DERIVATIVE"};
 }
-
-function nearestEra(year) {
-    return eras.reduce((best, era) =>
-        Math.abs(era.year - year) < Math.abs(best.year - year)
-            ? era
-            : best
-    , eras[0]);
+function makeLimit(){
+ const a=rand(2,9),b=rand(1,7);
+ return {text:"Evaluate lim(x→"+b+") (x² − "+(b*b)+")/(x − "+b+").",answer:String(2*b),type:"LIMIT"};
 }
-
-function getParadox(year) {
-    const distance = Math.abs(year - 1665);
-    return Math.min(96, Math.round(6 + distance / 38));
+function makeIntegral(){
+ const n=rand(1,4),x=rand(1,4),ans=frac(Math.pow(x,n+1),n+1);
+ const val=ans[1]===1?String(ans[0]):ans[0]+"/"+ans[1];
+ return {text:"Evaluate ∫₀^"+x+" t^"+n+" dt.",answer:val,type:"INTEGRAL"};
 }
-
-function renderEra(era) {
-    currentEra = era;
-
-    readoutYear.textContent = formatYear(era.year);
-    readoutEra.textContent = era.era;
-    readoutCopy.textContent = era.copy;
-    readoutFact.textContent = era.fact;
-
-    missionTitle.textContent = era.title;
-    missionCopy.textContent = era.copy;
-    problemLabel.textContent = era.problemLabel;
-    problemText.textContent = era.problem;
-
-    modernityValue.textContent = era.modernity + "%";
-    modernityFill.style.width = era.modernity + "%";
-
-    paradox = getParadox(era.year);
-    paradoxValue.textContent = String(paradox).padStart(2, "0") + "%";
-    paradoxFill.style.width = paradox + "%";
-
-    yearInput.value = era.year;
-    yearRange.value = era.year;
-
-    coreSymbol.textContent = symbols[currentConcept];
-
-    coordinateStatus.textContent =
-        "TEMPORAL LOCK • " +
-        (era.year < 0 ? "BCE" : "CE") +
-        " • T+" +
-        String(Math.abs(era.year)).padStart(4, "0");
-
-    toolList.innerHTML = "";
-
-    era.tools.forEach(tool => {
-        const span = document.createElement("span");
-        span.className = "tm-tool";
-        span.textContent = "✓ " + tool;
-        toolList.appendChild(span);
-    });
-
-    era.locked.forEach(tool => {
-        const span = document.createElement("span");
-        span.className = "tm-tool locked";
-        span.textContent = "× " + tool;
-        toolList.appendChild(span);
-    });
-
-    feedback.textContent = "";
-    feedback.className = "tm-feedback";
-    answerInput.value = "";
-    answerInput.placeholder =
-        era.year === 2026
-            ? "Type anything to continue"
-            : "Enter your answer";
-
-    const index = eras.indexOf(era);
-    const progress = document.getElementById("timelineProgress");
-
-    if (progress) {
-        progress.style.width =
-            (index / (eras.length - 1)) * 100 + "%";
-    }
-
-    timeline.querySelectorAll(".tm-era-node").forEach((node, i) => {
-        node.classList.toggle("active", i === index);
-    });
-
-    timelineTitle.textContent =
-        universeNames[currentConcept];
-
-    document.title =
-        "Time Machine — " + era.short + " | CALCULUS";
+function makeBoss(){
+ const a=rand(2,6),n=rand(2,4),x=rand(2,4),sum=Array.from({length:n},(_,i)=>a+i).reduce((s,v)=>s+v*v,0);
+ return {text:"BOSS: Compute (1² + 2² + … + "+n+"²) × "+a+" − "+x+" .",answer:String(sum*a-x),type:"BOSS"};
 }
-
-function travelToYear(rawYear) {
-    let year = Number(rawYear);
-
-    if (!Number.isFinite(year)) {
-        year = 1665;
-    }
-
-    year = Math.max(-250, Math.min(2026, Math.round(year)));
-
-    const era = nearestEra(year);
-
-    page.classList.remove("traveling");
-    void page.offsetWidth;
-    page.classList.add("traveling");
-
-    travelButton.textContent = "Temporal jump in progress…";
-    travelButton.disabled = true;
-
-    setTimeout(() => {
-        renderEra(era);
-        travelButton.textContent = "Initiate temporal jump";
-        travelButton.disabled = false;
-        page.classList.remove("traveling");
-    }, 850);
+function makeChallenge(){
+ const mode=modes[currentMode].key;
+ let c;
+ if(mode==="mental")c=makeMental();
+ else if(mode==="series")c=Math.random()<.5?makeSeries():makeGeometric();
+ else if(mode==="derivative")c=Math.random()<.65?makeDerivative():makeLimit();
+ else c=Math.random()<.5?makeBoss():makeIntegral();
+ const difficulty=Math.min(5,1+Math.floor((level-1)/2)+Math.floor(streak/4));
+ c.difficulty=difficulty;
+ return c;
 }
-
-/* ---------- Controls ---------- */
-
-yearRange.addEventListener("input", () => {
-    yearInput.value = yearRange.value;
+function renderLists(){
+ eraList.innerHTML="";
+ eras.forEach((e,i)=>{const b=document.createElement("button");b.className="tm-era-btn"+(i===currentEra?" active":"");b.innerHTML=e.name+" <span style='float:right;opacity:.4'>"+fmtYear(e.year)+"</span>";b.onclick=()=>jumpTo(i);eraList.appendChild(b)});
+ modeList.innerHTML="";
+ modes.forEach((m,i)=>{const b=document.createElement("button");b.className="tm-mode-btn"+(i===currentMode?" active":"");b.textContent=m.name;b.title=m.desc;b.onclick=()=>{currentMode=i;renderLists();newChallenge()};modeList.appendChild(b)});
+}
+function updateStats(){
+ $("score").textContent=String(score).padStart(4,"0");
+ $("streak").textContent=streak+" ×";
+ $("level").textContent=level;
+ $("combo").childNodes[0].nodeValue=combo+" ";
+ $("missionStat").textContent=eras[currentEra].name+" · "+fmtYear(eras[currentEra].year);
+ $("stabilityValue").textContent=stability+"%";$("stabilityFill").style.width=stability+"%";
+ const needed=level*100,p=Math.min(100,Math.round(xp/needed*100));
+ $("xpValue").textContent=p+"%";$("xpFill").style.width=p+"%";$("xpSideFill").style.width=p+"%";
+ $("coordinateStatus").textContent="TEMPORAL LOCK • "+fmtYear(eras[currentEra].year);
+}
+function discovery(){
+ const e=eras[currentEra];
+ if(!discoveries.has(e.key)){discoveries.add(e.key);$("discovery").innerHTML="<strong>Discovery unlocked:</strong> "+e.fact;save()}
+ else $("discovery").innerHTML="<strong>Era fact:</strong> "+e.fact;
+}
+function newChallenge(){
+ answered=false;currentChallenge=makeChallenge();
+ $("challengeEra").textContent=eras[currentEra].name+" • "+eras[currentEra].era;
+ $("challengeTitle").textContent=currentMode===3?"BOSS SUM":"The Sum Vault";
+ $("difficulty").textContent=["WARM-UP","STEADY","SHARP","HARD","BOSS"][Math.min(4,currentChallenge.difficulty-1)];
+ $("promptLabel").textContent=currentChallenge.type+" • CHALLENGE";
+ question.textContent=currentChallenge.text;
+ answer.value="";feedback.textContent="";feedback.className="tm-feedback";
+ $("coreSymbol").textContent=eras[currentEra].symbol;
+ updateStats();discovery();
+}
+function addHistory(ok,points){
+ const item=document.createElement("div");item.className="tm-history-item";item.innerHTML="<span>"+eras[currentEra].name+" · "+currentChallenge.type+"</span><b>"+(ok?"+"+points:"MISS")+"</b>";history.prepend(item);while(history.children.length>7)history.lastChild.remove()
+}
+function submit(){
+ if(answered)return;
+ const raw=answer.value.trim().replace(/−/g,"-");
+ if(!raw){feedback.textContent="The console is waiting for an answer.";feedback.className="tm-feedback bad";return}
+ const correct=raw.toLowerCase()===currentChallenge.answer.toLowerCase();
+ answered=true;
+ if(correct){
+   streak++;combo++;stability=Math.min(100,stability+3);
+   const points=25*currentChallenge.difficulty+Math.min(100,combo*5);
+   score+=points;xp+=points;
+   while(xp>=level*100){xp-=level*100;level++;stability=Math.min(100,stability+5)}
+   feedback.textContent="LOCK STABLE. +"+points+" points — next jump is ready.";
+   feedback.className="tm-feedback good";page.classList.add("correct");setTimeout(()=>page.classList.remove("correct"),600);
+   addHistory(true,points);
+ }else{
+   streak=0;combo=0;stability=Math.max(0,stability-10);
+   feedback.textContent="Temporal mismatch. Correct answer: "+currentChallenge.answer;
+   feedback.className="tm-feedback bad";addHistory(false,0);
+ }
+ save();updateStats();
+}
+function jumpTo(i){
+ currentEra=Math.max(0,Math.min(eras.length-1,i));page.classList.remove("traveling");void page.offsetWidth;page.classList.add("traveling");
+ setTimeout(()=>{renderLists();newChallenge();page.classList.remove("traveling")},500);
+}
+function randomJump(){jumpTo(rand(0,eras.length-1))}
+$("checkAnswer").onclick=submit;$("nextButton").onclick=newChallenge;$("jumpButton").onclick=randomJump;
+answer.addEventListener("keydown",e=>{if(e.key==="Enter")submit()});
+document.addEventListener("keydown",e=>{
+ if(e.target.matches("input,textarea,select"))return;
+ const k=e.key.toLowerCase();
+ if(k==="n")newChallenge();if(k==="r")randomJump();
+ if(e.key==="ArrowLeft")jumpTo(currentEra-1);if(e.key==="ArrowRight")jumpTo(currentEra+1);
 });
-
-yearInput.addEventListener("input", () => {
-    let value = Number(yearInput.value);
-    if (!Number.isFinite(value)) return;
-    value = Math.max(-250, Math.min(2026, value));
-    yearRange.value = value;
-});
-
-travelButton.addEventListener("click", () => {
-    travelToYear(yearInput.value);
-});
-
-randomEra.addEventListener("click", () => {
-    const era = eras[Math.floor(Math.random() * eras.length)];
-    yearInput.value = era.year;
-    yearRange.value = era.year;
-    travelToYear(era.year);
-});
-
-concept.addEventListener("change", () => {
-    currentConcept = concept.value;
-    coreSymbol.textContent = symbols[currentConcept];
-    timelineTitle.textContent = universeNames[currentConcept];
-
-    paradox = Math.min(96, paradox + 2);
-    paradoxValue.textContent = String(paradox).padStart(2, "0") + "%";
-    paradoxFill.style.width = paradox + "%";
-});
-
-/* ---------- Problem checker ---------- */
-
-function normalize(value) {
-    return String(value)
-        .trim()
-        .toLowerCase()
-        .replace(/[−–—]/g, "-")
-        .replace(/\s+/g, " ")
-        .replace(/[.,!?]/g, "");
-}
-
-checkAnswer.addEventListener("click", () => {
-    const answer = normalize(answerInput.value);
-
-    if (!answer) {
-        feedback.textContent = "The temporal console is waiting for an answer.";
-        feedback.className = "tm-feedback bad";
-        return;
-    }
-
-    if (
-        currentEra.year === 2026 ||
-        currentEra.answers.some(valid => normalize(valid) === answer)
-    ) {
-        feedback.textContent =
-            "Temporal lock stable. Correct enough to continue the journey.";
-        feedback.className = "tm-feedback good";
-
-        paradox = Math.max(0, paradox - 8);
-        paradoxValue.textContent =
-            String(paradox).padStart(2, "0") + "%";
-        paradoxFill.style.width = paradox + "%";
-    } else {
-        feedback.textContent =
-            "The machine rejects that answer. Re-examine the tools of this era.";
-        feedback.className = "tm-feedback bad";
-
-        paradox = Math.min(100, paradox + 7);
-        paradoxValue.textContent =
-            String(paradox).padStart(2, "0") + "%";
-        paradoxFill.style.width = paradox + "%";
-    }
-});
-
-answerInput.addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-        checkAnswer.click();
-    }
-});
-
-/* ---------- Keyboard navigation ---------- */
-
-document.addEventListener("keydown", event => {
-    if (event.target.matches("input, select, textarea")) return;
-
-    if (event.key === "ArrowLeft") {
-        const i = Math.max(0, eras.indexOf(currentEra) - 1);
-        travelToYear(eras[i].year);
-    }
-
-    if (event.key === "ArrowRight") {
-        const i = Math.min(eras.length - 1, eras.indexOf(currentEra) + 1);
-        travelToYear(eras[i].year);
-    }
-
-    if (event.key.toLowerCase() === "r") {
-        randomEra.click();
-    }
-});
-
-buildTimeline();
-buildQuickEras();
-renderEra(currentEra);
-
+for(let i=0;i<65;i++){const s=document.createElement("span");s.className="tm-star";s.style.left=Math.random()*100+"%";s.style.top=Math.random()*100+"%";s.style.setProperty("--dx",(Math.random()*140-70)+"px");s.style.setProperty("--dy",(Math.random()*140-70)+"px");s.style.animationDuration=(5+Math.random()*12)+"s";s.style.animationDelay=(-Math.random()*12)+"s";$("stars").appendChild(s)}
+renderLists();newChallenge();updateStats();
 }
