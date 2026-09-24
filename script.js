@@ -3,6 +3,7 @@ import "./all-sums-nav.js";
 import "./access-control.js";
 import "./auth-ui.js";
 import "./calcgen-launcher.js";
+import "./global-time-machine-nav.js";
 /* =========================================
    CALCULUS — INTERACTIONS
 ========================================= */
@@ -53,10 +54,6 @@ if ("IntersectionObserver" in window) {
 
 } else {
 
-    /*
-       Fallback for older browsers.
-    */
-
     revealElements.forEach(element => {
 
         element.classList.add("visible");
@@ -64,7 +61,6 @@ if ("IntersectionObserver" in window) {
     });
 
 }
-
 
 
 /* =========================================
@@ -78,17 +74,7 @@ const mobileMenu =
     document.getElementById("mobileMenu");
 
 
-
-/* =========================================
-   SAFETY CHECK
-========================================= */
-
 if (hamburger && mobileMenu) {
-
-
-    /* =====================================
-       CLOSE MENU
-    ===================================== */
 
     function closeMobileMenu() {
 
@@ -104,11 +90,6 @@ if (hamburger && mobileMenu) {
     }
 
 
-
-    /* =====================================
-       OPEN MENU
-    ===================================== */
-
     function openMobileMenu() {
 
         mobileMenu.classList.add("open");
@@ -123,29 +104,16 @@ if (hamburger && mobileMenu) {
     }
 
 
-
-    /* =====================================
-       HAMBURGER BUTTON
-    ===================================== */
-
     hamburger.addEventListener(
         "click",
         (event) => {
 
-            /*
-               Prevent the document-level
-               outside-click listener from
-               immediately closing the menu.
-            */
-
             event.stopPropagation();
-
 
             const menuIsOpen =
                 mobileMenu.classList.contains(
                     "open"
                 );
-
 
             if (menuIsOpen) {
 
@@ -161,31 +129,14 @@ if (hamburger && mobileMenu) {
     );
 
 
-
-    /* =====================================
-       MENU CLICK
-    ===================================== */
-
     mobileMenu.addEventListener(
         "click",
         (event) => {
 
-            /*
-               Stop the click from reaching
-               the document.
-            */
-
             event.stopPropagation();
-
-
-            /*
-               If a navigation link was clicked,
-               close the menu.
-            */
 
             const clickedLink =
                 event.target.closest("a");
-
 
             if (clickedLink) {
 
@@ -197,11 +148,6 @@ if (hamburger && mobileMenu) {
     );
 
 
-
-    /* =====================================
-       OUTSIDE CLICK
-    ===================================== */
-
     document.addEventListener(
         "click",
         (event) => {
@@ -211,30 +157,21 @@ if (hamburger && mobileMenu) {
                     "open"
                 );
 
-
             if (!menuIsOpen) {
 
                 return;
 
             }
 
-
             const clickedInsideMenu =
                 mobileMenu.contains(
                     event.target
                 );
 
-
             const clickedHamburger =
                 hamburger.contains(
                     event.target
                 );
-
-
-            /*
-               Anything outside both the
-               menu and hamburger closes it.
-            */
 
             if (
                 !clickedInsideMenu &&
@@ -248,11 +185,6 @@ if (hamburger && mobileMenu) {
         }
     );
 
-
-
-    /* =====================================
-       ESCAPE KEY
-    ===================================== */
 
     document.addEventListener(
         "keydown",
@@ -268,6 +200,8 @@ if (hamburger && mobileMenu) {
     );
 
 }
+
+
 /* =========================================
    TOPICS SUBMENU
 ========================================= */
@@ -292,18 +226,11 @@ if (
         "click",
         (event) => {
 
-            /*
-               Prevent the click from being
-               treated as an outside click.
-            */
-
             event.stopPropagation();
-
 
             const isOpen =
                 topicsMenuContainer.classList
                     .toggle("open");
-
 
             topicsMenu.setAttribute(
                 "aria-expanded",
@@ -313,11 +240,6 @@ if (
         }
     );
 
-
-    /*
-       Close submenu when one of its
-       links is selected.
-    */
 
     topicsSubmenu
         .querySelectorAll("a")
@@ -342,6 +264,8 @@ if (
         });
 
 }
+
+
 /* =========================================
    CALCULUS — AUTHENTICATION UI
 ========================================= */
@@ -351,10 +275,6 @@ import {
     logOut
 } from "./auth.js";
 
-
-/* =========================================
-   PROFILE BUTTON
-========================================= */
 
 const userProfileButton =
     document.getElementById(
@@ -368,19 +288,11 @@ const userProfilePicture =
     );
 
 
-/* =========================================
-   MOBILE MENU
-========================================= */
-
 const authMenu =
     document.getElementById(
         "mobileMenu"
     );
 
-
-/* =========================================
-   AUTH STATE
-========================================= */
 
 if (
     userProfileButton &&
@@ -390,16 +302,7 @@ if (
     watchAuthState(
         (user) => {
 
-
-            /* =================================
-               USER IS LOGGED IN
-            ================================= */
-
             if (user) {
-
-                /*
-                   Show Google profile picture.
-                */
 
                 if (user.photoURL) {
 
@@ -409,11 +312,6 @@ if (
                 }
 
                 else {
-
-                    /*
-                       Fallback if Google does
-                       not provide a photo.
-                    */
 
                     userProfilePicture.src =
                         "logo.png";
@@ -430,10 +328,6 @@ if (
                 userProfileButton.style.display =
                     "flex";
 
-
-                /*
-                   Change Login → Logout
-                */
 
                 if (authMenu) {
 
@@ -459,11 +353,6 @@ if (
                 }
 
             }
-
-
-            /* =================================
-               USER IS LOGGED OUT
-            ================================= */
 
             else {
 
@@ -502,10 +391,6 @@ if (
 
 }
 
-
-/* =========================================
-   LOGOUT CLICK HANDLER
-========================================= */
 
 document.addEventListener(
     "click",
