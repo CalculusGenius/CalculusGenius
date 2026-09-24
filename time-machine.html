@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="CALCULUS Laboratory — an interactive mathematical universe for exploring functions, derivatives, integrals, limits, series and numerical experiments.">
+<meta name="description" content="CALCULUS Laboratory — an interactive mathematical laboratory for exploring functions, derivatives, integrals, limits, Newton iteration, Taylor approximation and phase space.">
 <title>Laboratory — CALCULUS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/mathjs@15.2.0/lib/browser/math.js"></script>
+<script src="https://cdn.plot.ly/plotly-4.1.1.min.js"></script>
 <style>
 .lab{min-height:100vh;padding:92px 3.5% 80px;position:relative;z-index:2}.lab *{box-sizing:border-box}
 .lab-shell{width:min(1500px,100%);margin:auto}.lab-hero{text-align:center;padding:1.5rem 1rem 2.4rem}
@@ -71,7 +73,7 @@
 
 <div class="lab-work">
 <div class="lab-controls" id="controls"></div>
-<div class="lab-stage"><canvas id="plot"></canvas><div class="lab-readout"><span id="readoutLabel">Observation</span><b id="readout">Ready</b></div></div>
+<div class="lab-stage"><div id="plot" role="img" aria-label="Interactive mathematical graph"></div><div class="lab-readout"><span id="readoutLabel">Observation</span><b id="readout">Ready</b></div></div>
 </div>
 
 <div class="lab-meter">
