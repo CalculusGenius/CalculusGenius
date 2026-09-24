@@ -3,56 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="CALCULUS Laboratory — an interactive mathematical workbench for calculus experiments, numerical exploration and conjecture.">
+<meta name="description" content="CALCULUS Laboratory — an interactive mathematical universe for exploring functions, derivatives, integrals, limits, series and numerical experiments.">
 <title>Laboratory — CALCULUS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-.lab{min-height:100vh;padding:94px 3% 70px;position:relative;z-index:2}.lab *{box-sizing:border-box}
-.lab-shell{width:min(1480px,100%);margin:auto}
-.lab-hero{text-align:center;padding:1rem 1rem 2.1rem}
-.lab-kicker{font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.38)}
-.lab-title{font:600 clamp(4.7rem,11vw,10rem)/.72 "Cormorant Garamond",serif;margin:.55rem 0 .75rem;text-shadow:0 0 70px rgba(255,255,255,.1)}
-.lab-sub{max-width:820px;margin:auto;color:rgba(255,255,255,.48);font-size:.78rem;line-height:1.8}
-.lab-sub b{color:#fff;font-weight:600}
-.lab-status{display:flex;justify-content:center;gap:.45rem;flex-wrap:wrap;margin-top:1.15rem}
-.lab-chip{border:1px solid rgba(255,255,255,.12);padding:.38rem .6rem;color:rgba(255,255,255,.38);font-size:.48rem;letter-spacing:.13em;text-transform:uppercase}
-.lab-chip.live{color:#fff}.lab-chip.live:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff;margin-right:.4rem}
-.lab-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(320px,.75fr);gap:.65rem}
-.lab-panel{border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012));box-shadow:0 20px 70px rgba(0,0,0,.3);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);position:relative;overflow:hidden}
-.lab-panel:after{content:"";position:absolute;inset:-80%;pointer-events:none;background:linear-gradient(115deg,transparent 45%,rgba(255,255,255,.04) 50%,transparent 55%);animation:labSweep 12s ease-in-out infinite}
-@keyframes labSweep{0%,65%,100%{transform:translateX(-25%) rotate(8deg)}80%{transform:translateX(25%) rotate(8deg)}}
-.lab-workbench{padding:1rem;min-height:700px}
-.lab-toolbar{display:flex;justify-content:space-between;align-items:center;gap:.7rem;border-bottom:1px solid rgba(255,255,255,.09);padding-bottom:.8rem;position:relative;z-index:2}
-.lab-label{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.32)}
-.lab-toolbar strong{font:600 1.4rem "Cormorant Garamond",serif}
-.lab-actions{display:flex;gap:.35rem;flex-wrap:wrap}
-.lab-btn{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.035);color:#fff;padding:.65rem .8rem;cursor:pointer;font:800 .5rem Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;transition:.2s;position:relative;z-index:3}
-.lab-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.09);box-shadow:0 12px 28px rgba(255,255,255,.07)}
-.lab-btn.primary{background:#fff;color:#08080a;border-color:#fff}
-.lab-grid{display:grid;grid-template-columns:320px minmax(0,1fr);gap:.65rem;margin-top:.65rem;position:relative;z-index:2}
-.lab-controls{border:1px solid rgba(255,255,255,.09);padding:.85rem;background:rgba(0,0,0,.13)}
-.lab-field{margin-bottom:.7rem}.lab-field label{display:block;font-size:.48rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.3rem}
-.lab-input,.lab-select{width:100%;border:1px solid rgba(255,255,255,.14);background:#0b0b0e;color:#fff;padding:.65rem;font:500 .6rem Inter,sans-serif;outline:none}
-.lab-input:focus,.lab-select:focus{border-color:rgba(255,255,255,.4)}
-.lab-row{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.lab-hint{font-size:.52rem;line-height:1.6;color:rgba(255,255,255,.32);margin:.75rem 0}
-.lab-stage{border:1px solid rgba(255,255,255,.09);background:#08080a;min-height:520px;position:relative}
-#plot{width:100%;height:100%;min-height:520px;display:block}
-.lab-readout{position:absolute;left:.75rem;top:.7rem;z-index:2;background:rgba(7,7,9,.8);border:1px solid rgba(255,255,255,.1);padding:.55rem .65rem;pointer-events:none}
-.lab-readout b{display:block;font:600 1rem "Cormorant Garamond",serif;color:#fff}.lab-readout span{font-size:.46rem;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase}
-.lab-side{display:grid;gap:.65rem}
-.lab-box{padding:1rem;position:relative;z-index:1}.lab-box h2{font:600 2.2rem/1 "Cormorant Garamond",serif;margin:.35rem 0 .55rem}.lab-box p{font-size:.61rem;line-height:1.7;color:rgba(255,255,255,.42);margin:.45rem 0}
-.lab-results{margin-top:.6rem;border-left:1px solid rgba(255,255,255,.28);padding:.55rem .7rem;background:rgba(255,255,255,.025);min-height:70px;color:rgba(255,255,255,.58);font-size:.56rem;line-height:1.65}
-.lab-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem;margin-bottom:.65rem;position:relative;z-index:3}.lab-tab{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.025);color:rgba(255,255,255,.38);padding:.55rem .35rem;cursor:pointer;font:700 .48rem Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase}.lab-tab.active{background:#fff;color:#08080a;border-color:#fff}
-.lab-section{display:none}.lab-section.active{display:block}
-.lab-notebook{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:.55rem}.lab-note{border:1px solid rgba(255,255,255,.08);padding:.55rem;min-height:68px}.lab-note small{display:block;color:rgba(255,255,255,.27);font-size:.42rem;letter-spacing:.1em;text-transform:uppercase}.lab-note strong{display:block;color:#fff;font:600 .9rem "Cormorant Garamond",serif;margin-top:.2rem}.lab-note span{display:block;color:rgba(255,255,255,.32);font-size:.45rem;margin-top:.12rem}
-.lab-log{max-height:210px;overflow:auto}.lab-log-entry{border-bottom:1px solid rgba(255,255,255,.07);padding:.55rem 0}.lab-log-entry:last-child{border-bottom:0}.lab-log-entry b{font-size:.55rem;color:#fff}.lab-log-entry span{display:block;font-size:.47rem;color:rgba(255,255,255,.32);margin-top:.15rem}
-.lab-footnote{margin-top:.65rem;color:rgba(255,255,255,.25);font-size:.47rem;line-height:1.6;position:relative;z-index:2}
-@media(max-width:1100px){.lab-layout{grid-template-columns:1fr}.lab-side{grid-template-columns:1fr 1fr}.lab-box:last-child{grid-column:1/-1}}
-@media(max-width:760px){.lab{padding:84px 4% 50px}.lab-grid{grid-template-columns:1fr}.lab-stage{min-height:420px}.lab-stage canvas{min-height:420px}.lab-workbench{min-height:auto}.lab-side{display:block}.lab-box+.lab-box{margin-top:.65rem}.lab-tabs{grid-template-columns:1fr 1fr}.lab-notebook{grid-template-columns:1fr}}
+.lab{min-height:100vh;padding:92px 3.5% 80px;position:relative;z-index:2}.lab *{box-sizing:border-box}
+.lab-shell{width:min(1500px,100%);margin:auto}.lab-hero{text-align:center;padding:1.5rem 1rem 2.4rem}
+.lab-kicker{font-size:.58rem;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.38)}
+.lab-title{font:600 clamp(4rem,10vw,9rem)/.78 "Cormorant Garamond",serif;margin:.6rem 0 .9rem;text-shadow:0 0 80px rgba(255,255,255,.12)}
+.lab-sub{max-width:880px;margin:auto;color:rgba(255,255,255,.5);font-size:.82rem;line-height:1.85}.lab-sub b{color:#fff}
+.lab-status{display:flex;justify-content:center;gap:.45rem;flex-wrap:wrap;margin-top:1.2rem}.lab-chip{border:1px solid rgba(255,255,255,.12);padding:.4rem .65rem;color:rgba(255,255,255,.4);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase}.lab-chip.live{color:#fff}.lab-chip.live:before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:0 0 12px #fff;margin-right:.4rem}
+.lab-universe{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(300px,.7fr);gap:.7rem}.lab-panel{border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012));box-shadow:0 25px 80px rgba(0,0,0,.34);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);position:relative;overflow:hidden}.lab-panel:before{content:"";position:absolute;inset:-70%;pointer-events:none;background:linear-gradient(115deg,transparent 46%,rgba(255,255,255,.035) 50%,transparent 54%);animation:sweep 14s ease-in-out infinite}@keyframes sweep{0%,65%,100%{transform:translateX(-22%) rotate(8deg)}80%{transform:translateX(22%) rotate(8deg)}}
+.lab-main{padding:1rem;position:relative}.lab-toolbar{display:flex;justify-content:space-between;align-items:center;gap:.8rem;border-bottom:1px solid rgba(255,255,255,.08);padding:.15rem 0 .8rem;position:relative;z-index:2}.lab-label{font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.32)}.lab-toolbar strong{display:block;font:600 1.45rem "Cormorant Garamond",serif;margin-top:.18rem}.lab-actions{display:flex;gap:.35rem;flex-wrap:wrap}.lab-btn{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.035);color:#fff;padding:.62rem .78rem;cursor:pointer;font:800 .48rem Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;transition:.2s;position:relative;z-index:3}.lab-btn:hover{transform:translateY(-2px);background:rgba(255,255,255,.09)}.lab-btn.primary{background:#fff;color:#08080a;border-color:#fff}
+.lab-instruments{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem;margin:.7rem 0;position:relative;z-index:3}.instrument{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.025);color:rgba(255,255,255,.42);padding:.6rem .25rem;cursor:pointer;font:700 .45rem Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;transition:.2s}.instrument:hover{border-color:rgba(255,255,255,.3);color:#fff}.instrument.active{background:#fff;color:#08080a;border-color:#fff}
+.lab-work{display:grid;grid-template-columns:310px minmax(0,1fr);gap:.65rem;position:relative;z-index:2}.lab-controls{border:1px solid rgba(255,255,255,.09);padding:.85rem;background:rgba(0,0,0,.14);min-height:590px}.lab-field{margin-bottom:.68rem}.lab-field label{display:block;font-size:.48rem;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.36);margin-bottom:.3rem}.lab-input,.lab-select{width:100%;border:1px solid rgba(255,255,255,.14);background:#0b0b0e;color:#fff;padding:.62rem .65rem;font:500 .6rem Inter,sans-serif;outline:none;border-radius:0}.lab-input:focus,.lab-select:focus{border-color:rgba(255,255,255,.5);box-shadow:0 0 0 2px rgba(255,255,255,.04)}.lab-row{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}.lab-hint{font-size:.51rem;line-height:1.65;color:rgba(255,255,255,.31);margin:.75rem 0}.lab-presets{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.55rem}.preset{border:1px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.48);padding:.38rem .5rem;cursor:pointer;font-size:.45rem}.preset:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+.lab-stage{border:1px solid rgba(255,255,255,.09);background:#070709;min-height:590px;position:relative;overflow:hidden}#plot{width:100%;height:100%;min-height:590px;display:block}.lab-readout{position:absolute;left:.8rem;top:.75rem;z-index:3;background:rgba(7,7,9,.82);border:1px solid rgba(255,255,255,.1);padding:.58rem .7rem;pointer-events:none;max-width:75%}.lab-readout span{display:block;font-size:.45rem;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase}.lab-readout b{display:block;font:600 1rem "Cormorant Garamond",serif;color:#fff;margin-top:.15rem}.lab-stage:after{content:"DRAG • EXPLORE • OBSERVE";position:absolute;right:.7rem;bottom:.55rem;color:rgba(255,255,255,.18);font-size:.4rem;letter-spacing:.16em;pointer-events:none}
+.lab-meter{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.55rem}.meter{border:1px solid rgba(255,255,255,.08);padding:.55rem}.meter small{display:block;color:rgba(255,255,255,.27);font-size:.4rem;text-transform:uppercase;letter-spacing:.1em}.meter strong{display:block;color:#fff;font:600 .9rem "Cormorant Garamond",serif;margin-top:.18rem}
+.lab-side{display:grid;gap:.7rem}.lab-box{padding:1rem;position:relative;z-index:1}.lab-box h2{font:600 2.2rem/1 "Cormorant Garamond",serif;margin:.35rem 0 .55rem}.lab-box p{font-size:.61rem;line-height:1.72;color:rgba(255,255,255,.42);margin:.45rem 0}.lab-result{margin-top:.65rem;border-left:1px solid rgba(255,255,255,.3);padding:.6rem .7rem;background:rgba(255,255,255,.025);min-height:72px;color:rgba(255,255,255,.58);font-size:.56rem;line-height:1.7}.lab-log{max-height:245px;overflow:auto}.lab-log-entry{border-bottom:1px solid rgba(255,255,255,.07);padding:.55rem 0}.lab-log-entry:last-child{border:0}.lab-log-entry b{font-size:.52rem;color:#fff}.lab-log-entry span{display:block;font-size:.46rem;color:rgba(255,255,255,.32);line-height:1.5;margin-top:.16rem}
+.lab-challenge{display:flex;align-items:center;justify-content:space-between;gap:.8rem;border:1px solid rgba(255,255,255,.09);padding:.7rem;background:rgba(255,255,255,.018);margin-top:.65rem}.lab-challenge strong{font:600 1.05rem "Cormorant Garamond",serif}.lab-challenge span{display:block;color:rgba(255,255,255,.35);font-size:.48rem;line-height:1.5}.lab-footnote{margin-top:.65rem;color:rgba(255,255,255,.24);font-size:.47rem;line-height:1.65;position:relative;z-index:2}
+@media(max-width:1100px){.lab-universe{grid-template-columns:1fr}.lab-side{grid-template-columns:1fr 1fr}.lab-box:last-child{grid-column:1/-1}}
+@media(max-width:850px){.lab-instruments{grid-template-columns:repeat(4,1fr)}.lab-work{grid-template-columns:1fr}.lab-controls{min-height:auto}.lab-side{display:block}.lab-box+.lab-box{margin-top:.7rem}}
+@media(max-width:600px){.lab{padding:82px 4% 50px}.lab-instruments{grid-template-columns:repeat(2,1fr)}.lab-meter{grid-template-columns:1fr 1fr}.lab-toolbar{align-items:flex-start;flex-direction:column}.lab-actions{width:100%}.lab-actions .lab-btn{flex:1}.lab-stage,#plot{min-height:430px}.lab-challenge{align-items:flex-start;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){.lab *,.lab *:before,.lab *:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -72,85 +46,59 @@
 <main class="lab" id="laboratory">
 <div class="lab-shell">
 <section class="lab-hero">
-<div class="lab-kicker">CALCULUS / MATHEMATICAL WORKBENCH / EXPERIMENTAL SESSION <span id="sessionNo">001</span></div>
+<div class="lab-kicker">CALCULUS / LIVING MATHEMATICAL WORKBENCH / SESSION <span id="sessionNo">001</span></div>
 <h1 class="lab-title">Laboratory</h1>
-<p class="lab-sub">A place to <b>experiment with calculus</b> rather than merely read it. Investigate functions, limits, derivatives, integrals and approximations; alter parameters; observe structure; and keep a compact record of what you discover.</p>
-<div class="lab-status"><span class="lab-chip live">Laboratory online</span><span class="lab-chip">Numerical engine</span><span class="lab-chip">Graphical analysis</span><span class="lab-chip">Local notebook</span></div>
+<p class="lab-sub">Not a collection of demonstrations. A <b>mathematical universe</b> you can keep exploring. Change a parameter, drag the world, generate a challenge, switch instruments, discover a pattern, and run another experiment. Your notebook stays with you.</p>
+<div class="lab-status"><span class="lab-chip live">Engine online</span><span class="lab-chip">Infinite parameter space</span><span class="lab-chip">Local notebook</span><span class="lab-chip">No account required</span></div>
 </section>
 
-<section class="lab-layout">
-<section class="lab-panel lab-workbench">
+<section class="lab-universe">
+<section class="lab-panel lab-main">
 <div class="lab-toolbar">
-<div><span class="lab-label">Primary instrument</span><strong id="instrumentName">Function Observatory</strong></div>
-<div class="lab-actions"><button class="lab-btn" id="reset">Reset</button><button class="lab-btn primary" id="run">Run experiment</button></div>
-</div>
-<div class="lab-grid">
-<div class="lab-controls">
-<div class="lab-tabs">
-<button class="lab-tab active" data-mode="function">Function</button>
-<button class="lab-tab" data-mode="riemann">Integral</button>
-<button class="lab-tab" data-mode="newton">Root</button>
-<button class="lab-tab" data-mode="taylor">Taylor</button>
+<div><span class="lab-label">Current instrument</span><strong id="instrumentName">Function Observatory</strong></div>
+<div class="lab-actions"><button class="lab-btn" id="randomize">Surprise me</button><button class="lab-btn" id="reset">New session</button><button class="lab-btn primary" id="run">Run experiment</button></div>
 </div>
 
-<div class="lab-section active" id="functionControls">
-<div class="lab-field"><label for="expr">Function f(x)</label><input class="lab-input" id="expr" value="sin(x) * exp(-x^2/8)" spellcheck="false"></div>
-<div class="lab-row"><div class="lab-field"><label for="xmin">x minimum</label><input class="lab-input" id="xmin" value="-8" type="number" step=".5"></div><div class="lab-field"><label for="xmax">x maximum</label><input class="lab-input" id="xmax" value="8" type="number" step=".5"></div></div>
-<p class="lab-hint">Try x^3 - 4*x, sin(x)/x, exp(-x^2), or log(abs(x)). The graph is sampled numerically; derivatives are estimated locally.</p>
+<div class="lab-instruments" id="instruments">
+<button class="instrument active" data-mode="function">Function</button>
+<button class="instrument" data-mode="derivative">Derivative</button>
+<button class="instrument" data-mode="integral">Integral</button>
+<button class="instrument" data-mode="limit">Limit</button>
+<button class="instrument" data-mode="newton">Newton</button>
+<button class="instrument" data-mode="taylor">Taylor</button>
+<button class="instrument" data-mode="phase">Phase Space</button>
 </div>
 
-<div class="lab-section" id="riemannControls">
-<div class="lab-field"><label for="rExpr">Integrand f(x)</label><input class="lab-input" id="rExpr" value="x^2" spellcheck="false"></div>
-<div class="lab-row"><div class="lab-field"><label for="a">Lower bound</label><input class="lab-input" id="a" value="0" type="number" step=".5"></div><div class="lab-field"><label for="b">Upper bound</label><input class="lab-input" id="b" value="3" type="number" step=".5"></div></div>
-<div class="lab-field"><label for="n">Subintervals</label><input class="lab-input" id="n" value="60" type="number" min="2" max="1000"></div>
-<p class="lab-hint">Increase n and compare the numerical approximation with the limiting integral. The visual partition is deliberately exposed.</p>
+<div class="lab-work">
+<div class="lab-controls" id="controls"></div>
+<div class="lab-stage"><canvas id="plot"></canvas><div class="lab-readout"><span id="readoutLabel">Observation</span><b id="readout">Ready</b></div></div>
 </div>
 
-<div class="lab-section" id="newtonControls">
-<div class="lab-field"><label for="nExpr">f(x)</label><input class="lab-input" id="nExpr" value="x^3 - 2*x - 5" spellcheck="false"></div>
-<div class="lab-row"><div class="lab-field"><label for="guess">Initial guess</label><input class="lab-input" id="guess" value="2" type="number" step=".1"></div><div class="lab-field"><label for="iterations">Iterations</label><input class="lab-input" id="iterations" value="8" type="number" min="1" max="30"></div></div>
-<p class="lab-hint">Observe Newton's method as an actual sequence x₀, x₁, … rather than only as a formula. A derivative is computed numerically.</p>
+<div class="lab-meter">
+<div class="meter"><small>Experiments</small><strong id="expCount">0</strong></div>
+<div class="meter"><small>Session</small><strong id="sessionCount">001</strong></div>
+<div class="meter"><small>Instrument</small><strong id="modeCount">Function</strong></div>
+<div class="meter"><small>Challenge streak</small><strong id="streak">0</strong></div>
 </div>
 
-<div class="lab-section" id="taylorControls">
-<div class="lab-field"><label for="tExpr">f(x)</label><input class="lab-input" id="tExpr" value="exp(x)" spellcheck="false"></div>
-<div class="lab-row"><div class="lab-field"><label for="center">Expansion point a</label><input class="lab-input" id="center" value="0" type="number" step=".5"></div><div class="lab-field"><label for="order">Order</label><input class="lab-input" id="order" value="6" type="number" min="1" max="12"></div></div>
-<p class="lab-hint">The coefficients are estimated from finite differences. Use the experiment to investigate where a Taylor polynomial approximates the original function well.</p>
-</div>
-</div>
-
-<div class="lab-stage">
-<canvas id="plot"></canvas>
-<div class="lab-readout"><span id="readoutLabel">Observed function</span><b id="readout">Ready</b></div>
-</div>
-</div>
-<p class="lab-footnote">The Laboratory is an exploratory instrument, not a proof assistant. Numerical output can suggest patterns and conjectures, but mathematical conclusions require appropriate hypotheses and proof.</p>
+<div class="lab-challenge"><div><strong id="challengeTitle">Mathematical Challenge</strong><span id="challengeText">Generate a challenge when you want something unpredictable.</span></div><button class="lab-btn" id="challenge">Generate</button></div>
+<p class="lab-footnote">Numerical experiments are evidence, not proofs. The Laboratory is deliberately designed to make patterns visible while keeping the distinction between observation and theorem explicit.</p>
 </section>
 
 <aside class="lab-side">
 <section class="lab-panel lab-box">
-<span class="lab-label">Experimental record</span>
-<h2>Notebook</h2>
-<p>Your strongest experiments should leave a trace. The record is stored locally in this browser.</p>
-<div class="lab-notebook">
-<div class="lab-note"><small>Experiments</small><strong id="expCount">0</strong><span>completed</span></div>
-<div class="lab-note"><small>Mode</small><strong id="modeCount">Function</strong><span>current instrument</span></div>
-<div class="lab-note"><small>Session</small><strong id="sessionCount">001</strong><span>local session</span></div>
-</div>
-<div class="lab-results" id="result">Run an experiment to obtain a numerical observation.</div>
+<span class="lab-label">Experimental record</span><h2>Notebook</h2>
+<p>Every successful run can leave an observation here. Nothing is sent to a server; the recent record is kept locally in this browser.</p>
+<div class="lab-result" id="result">Choose an instrument and run your first experiment.</div>
 </section>
-
 <section class="lab-panel lab-box">
-<span class="lab-label">Recent observations</span>
-<h2>Research log</h2>
-<div class="lab-log" id="log"><div class="lab-log-entry"><b>Laboratory initialized</b><span>No observations recorded yet.</span></div></div>
+<span class="lab-label">Recent observations</span><h2>Research Log</h2>
+<div class="lab-log" id="log"></div>
 </section>
-
 <section class="lab-panel lab-box">
-<span class="lab-label">Experimental discipline</span>
-<h2>Observe → conjecture → verify</h2>
-<p>Change one parameter at a time. Look for invariants, singular behaviour, convergence, symmetry and failure cases. Then ask what hypotheses would be required to turn the observation into a theorem.</p>
-<div class="lab-results">A useful experiment is not one that merely produces a beautiful graph. It is one that makes you ask a sharper mathematical question.</div>
+<span class="lab-label">How to use the universe</span><h2>Explore without a finish line.</h2>
+<p>Try a familiar function, then mutate it. Increase the order. Move the expansion point. Change the initial condition. Reverse an interval. Approach a singularity. Compare two experiments. Generate another challenge.</p>
+<p>There is no fixed sequence and no “last experiment”. The available parameter combinations create an open-ended space of investigations.</p>
 </section>
 </aside>
 </section>
