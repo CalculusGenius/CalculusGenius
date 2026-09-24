@@ -1,40 +1,824 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="CALCULUS — Time Machine. Enter a living archive of mathematical problems and challenge yourself.">
-<title>CALCULUS — Time Machine</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="all-sums.css">
-<script>window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'}};</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="CALCULUS — All Sums. A permanent archive of mathematical challenges published on the CALCULUS website.">
+
+    <title>CALCULUS — All Sums</title>
+
+
+    <!-- =========================================
+         GOOGLE FONTS
+    ========================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+
+    <!-- =========================================
+         GLOBAL STYLES
+    ========================================== -->
+
+    <link rel="stylesheet"
+          href="style.css">
+
+
+    <!-- =========================================
+         MATHJAX CONFIGURATION
+    ========================================== -->
+
+    <script>
+
+        window.MathJax = {
+
+            tex: {
+
+                inlineMath: [
+                    ['\\(', '\\)']
+                ],
+
+                displayMath: [
+                    ['\\[', '\\]']
+                ]
+
+            },
+
+            svg: {
+
+                fontCache:
+                    'global',
+
+                displayOverflow:
+                    'linebreak',
+
+                linebreaks: {
+                    width: '100%',
+                    lineleading: 0.2,
+                    inline: true
+                }
+
+            }
+
+        };
+
+    </script>
+
+
+    <!-- =========================================
+         MATHJAX
+    ========================================== -->
+
+    <script
+        defer
+        src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js">
+    </script>
+
+
+    <!-- =========================================
+         ALL SUMS STYLES
+    ========================================== -->
+
+    <style>
+
+        .all-sums-page {
+
+            min-height: 100vh;
+
+            padding: 130px 5% 80px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .all-sums-container {
+
+            width: min(1050px, 100%);
+
+            margin: 0 auto;
+
+        }
+
+
+        /* =====================================
+           HEADER
+        ====================================== */
+
+        .all-sums-header {
+
+            text-align: center;
+
+            margin-bottom: 3.5rem;
+
+        }
+
+
+        .all-sums-kicker {
+
+            display: inline-block;
+
+            margin-bottom: 0.7rem;
+
+            color: rgba(255,255,255,0.42);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.72rem;
+
+            font-weight: 500;
+
+            letter-spacing: 0.16em;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .all-sums-header h1 {
+
+            margin: 0;
+
+            font-family: "Cormorant Garamond", serif;
+
+            font-size: clamp(3.2rem, 8vw, 6rem);
+
+            font-weight: 600;
+
+            line-height: 0.95;
+
+        }
+
+
+        .all-sums-header p {
+
+            max-width: 680px;
+
+            margin: 1.2rem auto 0;
+
+            color: rgba(255,255,255,0.55);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.92rem;
+
+            line-height: 1.75;
+
+        }
+
+
+        /* =====================================
+           FILTERS
+        ====================================== */
+
+        .sum-filters {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-bottom: 2.5rem;
+
+        }
+
+
+        .sum-filter {
+
+            appearance: none;
+
+            border: 1px solid rgba(255,255,255,0.16);
+
+            background: rgba(255,255,255,0.025);
+
+            color: rgba(255,255,255,0.70);
+
+            padding: 0.65rem 1rem;
+
+            border-radius: 999px;
+
+            cursor: pointer;
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.75rem;
+
+            transition:
+                background 0.25s ease,
+                color 0.25s ease,
+                border-color 0.25s ease,
+                transform 0.25s ease;
+
+        }
+
+
+        .sum-filter:hover {
+
+            transform: translateY(-2px);
+
+            background: rgba(255,255,255,0.06);
+
+            border-color: rgba(255,255,255,0.30);
+
+        }
+
+
+        .sum-filter.active {
+
+            background: rgba(255,255,255,0.92);
+
+            color: #000000;
+
+            border-color: rgba(255,255,255,0.92);
+
+        }
+
+
+        /* =====================================
+           ARCHIVE
+        ====================================== */
+
+        #allSumsContainer {
+
+            width: 100%;
+
+        }
+
+
+        .archive-sum-card {
+
+            position: relative;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            margin-bottom: 1.5rem;
+
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+
+            border: 1px solid rgba(255,255,255,0.16);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.065),
+                    rgba(255,255,255,0.018)
+                );
+
+            box-shadow:
+                0 25px 75px
+                rgba(0,0,0,0.30);
+
+            backdrop-filter: blur(14px);
+
+            -webkit-backdrop-filter: blur(14px);
+
+            overflow: hidden;
+
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease,
+                background 0.3s ease;
+
+        }
+
+
+        .archive-sum-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 70px;
+
+            height: 1px;
+
+            background: rgba(255,255,255,0.7);
+
+        }
+
+
+        .archive-sum-card:hover {
+
+            transform: translateY(-3px);
+
+            border-color: rgba(255,255,255,0.28);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,0.08),
+                    rgba(255,255,255,0.022)
+                );
+
+        }
+
+
+        .archive-sum-meta {
+
+            display: flex;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-bottom: 1.5rem;
+
+        }
+
+
+        .archive-sum-meta span {
+
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            border: 1px solid rgba(255,255,255,0.14);
+
+            border-radius: 999px;
+
+            color: rgba(255,255,255,0.62);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.65rem;
+
+            letter-spacing: 0.08em;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .archive-sum-problem {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            color: rgba(255,255,255,0.92);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 1rem;
+
+            line-height: 1.8;
+
+            overflow-x: auto;
+
+            overflow-y: hidden;
+
+            -webkit-overflow-scrolling: touch;
+
+        }
+
+
+        .archive-sum-problem mjx-container[display="true"] {
+
+            display: block !important;
+
+            max-width: 100% !important;
+
+            overflow-x: auto !important;
+
+            overflow-y: hidden !important;
+
+            box-sizing: border-box;
+
+            min-width: 0;
+
+            -webkit-overflow-scrolling: touch;
+
+        }
+
+
+        .archive-sum-problem mjx-container[display="true"] svg {
+
+            max-width: none !important;
+
+        }
+
+
+        /* =====================================
+           STATUS / EMPTY / ERROR
+        ====================================== */
+
+        .archive-status {
+
+            padding: 4rem 1.25rem;
+
+            text-align: center;
+
+            color: rgba(255,255,255,0.40);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.82rem;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =====================================
+           BACK BUTTON
+        ====================================== */
+
+        .all-sums-back {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-top: 2.8rem;
+
+        }
+
+
+        .all-sums-back a {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 0.7rem;
+
+            padding: 0.8rem 1.2rem;
+
+            border: 1px solid rgba(255,255,255,0.16);
+
+            background: rgba(255,255,255,0.03);
+
+            color: rgba(255,255,255,0.70);
+
+            font-family: "Inter", sans-serif;
+
+            font-size: 0.8rem;
+
+            text-decoration: none;
+
+            transition:
+                transform 0.25s ease,
+                background 0.25s ease,
+                border-color 0.25s ease;
+
+        }
+
+
+        .all-sums-back a:hover {
+
+            transform: translateY(-2px);
+
+            background: rgba(255,255,255,0.08);
+
+            border-color: rgba(255,255,255,0.32);
+
+        }
+
+
+        .all-sums-back-arrow {
+
+            transition: transform 0.25s ease;
+
+        }
+
+
+        .all-sums-back a:hover .all-sums-back-arrow {
+
+            transform: translateX(-4px);
+
+        }
+
+
+        /* =====================================
+           MOBILE
+        ====================================== */
+
+        @media (max-width: 700px) {
+
+            .all-sums-page {
+
+                padding: 110px 4% 60px;
+
+            }
+
+            .all-sums-header {
+
+                margin-bottom: 2.8rem;
+
+            }
+
+            .sum-filters {
+
+                gap: 7px;
+
+                margin-bottom: 2rem;
+
+            }
+
+            .sum-filter {
+
+                padding: 0.55rem 0.8rem;
+
+                font-size: 0.7rem;
+
+            }
+
+            .archive-sum-card {
+
+                padding: 1.3rem;
+
+                margin-bottom: 1.1rem;
+
+            }
+
+            .archive-sum-problem {
+
+                font-size: 0.92rem;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
+
 <body>
-<div class="math-background" aria-hidden="true"><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span></div>
-<header class="navbar"><div class="nav-container">
-<a href="index.html" class="logo"><img src="logo.png" alt="CALCULUS logo" width="40" height="40">CALCULUS</a>
-<nav class="desktop-nav"><a href="index.html" class="nav-link">Home</a><a href="about.html" class="nav-link">About</a><a href="books.html" class="nav-link">Books</a><a href="topics.html" class="nav-link">Topics</a><a href="other-websites.html" class="nav-link">Other Websites</a><a href="login.html" class="nav-link" id="accountNav">Log In</a></nav>
-<button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false"><span></span><span></span><span></span></button></div>
-<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="about.html">About</a><a href="books.html">Books</a><a href="topics.html">Topics</a><a href="other-websites.html">Other Websites</a><a href="login.html" id="accountMobileNav">Log In</a></div></header>
-<main class="tm-page">
-<section class="tm-hero"><div class="tm-kicker"><span class="tm-pulse"></span> THE CALCULUS PROBLEM ENGINE</div><h1>Time <em>Machine</em></h1>
-<p>Don't browse a dead archive. <strong>Enter it.</strong> Jump between problems, build a streak, chase harder mathematics, and keep the ones worth remembering.</p>
-<div class="tm-stats"><div><span id="tmStreak">0</span><small>DAY STREAK</small></div><div><span id="tmXp">0</span><small>XP</small></div><div><span id="tmSolved">0</span><small>SOLVED</small></div><div><span id="tmVault">0</span><small>IN VAULT</small></div></div></section>
-<section class="tm-machine"><div class="tm-machine-top"><div><span class="tm-label">CURRENT TIMELINE</span><div class="tm-era" id="tmEra">Present · Challenge #001</div></div><div class="tm-difficulty" id="tmDifficulty">DIFFICULTY · ★★☆☆☆</div></div>
-<div class="tm-progress"><span id="tmProgress"></span></div>
-<div class="tm-problem-card"><div class="tm-problem-meta"><span id="tmLevel">SCHOOL</span><span id="tmTopic">ALGEBRA</span><span id="tmType">CHALLENGE</span></div>
-<div class="tm-problem" id="tmProblem">Loading the machine…</div>
-<div class="tm-answer-row"><label for="tmAnswer">YOUR ANSWER</label><div class="tm-answer-input"><input id="tmAnswer" autocomplete="off" inputmode="decimal" placeholder="Type your answer…"><button id="tmSubmit">CHECK</button></div></div>
-<div class="tm-feedback" id="tmFeedback"></div>
-<div class="tm-actions"><button class="tm-ghost" id="tmHint">HINT <span>−10 XP</span></button><button class="tm-ghost" id="tmSolution">REVEAL <span>−30 XP</span></button><button class="tm-ghost" id="tmVaultBtn">SAVE TO VAULT</button><button class="tm-next" id="tmNext">NEXT SUM <span>→</span></button></div></div>
-<div class="tm-hint" id="tmHintBox"></div><div class="tm-solution" id="tmSolutionBox"></div></section>
-<section class="tm-modes"><div class="tm-section-heading"><span>CHOOSE YOUR ROUTE</span><h2>How far do you want to go?</h2></div>
-<div class="tm-mode-grid"><button class="tm-mode active" data-mode="mix"><b>∞</b><strong>Infinite</strong><small>Randomly jump through the curated problem universe.</small></button><button class="tm-mode" data-mode="school"><b>∑</b><strong>School</strong><small>Olympiad-flavoured problems with clean answers.</small></button><button class="tm-mode" data-mode="university"><b>∂</b><strong>University</strong><small>Analysis, algebra, number theory and beyond.</small></button><button class="tm-mode" data-mode="hard"><b>≠</b><strong>Hard Mode</strong><small>Only the upper end of the difficulty ladder.</small></button></div></section>
-<section class="tm-vault-section"><div class="tm-section-heading inline"><span>YOUR PRIVATE ARCHIVE</span><h2>Vault</h2><button id="tmClearVault">CLEAR</button></div><div id="tmVaultList" class="tm-vault-list"><div class="tm-empty">Solve something worth keeping. Your saved problems will appear here.</div></div></section>
-<section class="tm-archive-section"><div class="tm-section-heading inline"><span>THE ORIGINAL CALCULUS ARCHIVE</span><h2>Published Sums</h2></div>
-<div class="tm-archive-tools"><button class="tm-filter active" data-filter="all">ALL</button><button class="tm-filter" data-filter="daily">DAILY</button><button class="tm-filter" data-filter="weekly">WEEKLY</button><button class="tm-filter" data-filter="school">SCHOOL</button><button class="tm-filter" data-filter="university">UNIVERSITY</button></div>
-<div id="allSumsContainer"><div class="archive-status">Loading published sums…</div></div></section>
-</main><footer><p>© Ankit Brahamachary 2026</p></footer>
-<script type="module" src="script.js"></script><script type="module" src="all-sums.js"></script>
-</body></html>
+
+
+    <!-- =========================================
+         MATHEMATICAL BACKGROUND
+    ========================================== -->
+
+    <div class="math-background"
+         aria-hidden="true">
+
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+        <span>∫</span>
+
+    </div>
+
+
+    <!-- =========================================
+         NAVIGATION
+    ========================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+            <a href="index.html"
+               class="logo">
+
+                <img
+                    src="logo.png"
+                    alt="CALCULUS logo"
+                    width="40"
+                    height="40">
+
+                CALCULUS
+
+            </a>
+
+
+            <nav class="desktop-nav">
+
+                <a href="index.html"
+                   class="nav-link">
+                    Home
+                </a>
+
+                <a href="about.html"
+                   class="nav-link">
+                    About
+                </a>
+
+                <a href="books.html"
+                   class="nav-link">
+                    Books
+                </a>
+
+                <a href="topics.html"
+                   class="nav-link">
+                    Topics
+                </a>
+
+                <a href="other-websites.html"
+                   class="nav-link">
+                    Other Websites
+                </a>
+
+                <a href="login.html"
+                   class="nav-link"
+                   id="accountNav">
+                    Log In
+                </a>
+
+            </nav>
+
+
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Open navigation menu"
+                aria-expanded="false">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+        </div>
+
+
+        <div class="mobile-menu"
+             id="mobileMenu">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="about.html">
+                About
+            </a>
+
+            <a href="books.html">
+                Books
+            </a>
+
+            <a href="topics.html">
+                Topics
+            </a>
+
+            <a href="other-websites.html">
+                Other Websites
+            </a>
+
+            <a href="login.html"
+               id="accountMobileNav">
+                Log In
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================
+         ALL SUMS
+    ========================================== -->
+
+    <main class="all-sums-page">
+
+        <div class="all-sums-container">
+
+            <header class="all-sums-header">
+
+                <span class="all-sums-kicker">
+                    Mathematical Archive
+                </span>
+
+                <h1>
+                    All Sums
+                </h1>
+
+                <p>
+                    A permanent archive of the problems
+                    published through the CALCULUS
+                    Daily and Weekly Challenges.
+                </p>
+
+            </header>
+
+
+            <div class="sum-filters"
+                 aria-label="Filter sums">
+
+                <button type="button"
+                        class="sum-filter active"
+                        data-filter="all">
+                    All
+                </button>
+
+                <button type="button"
+                        class="sum-filter"
+                        data-filter="daily">
+                    Daily
+                </button>
+
+                <button type="button"
+                        class="sum-filter"
+                        data-filter="weekly">
+                    Weekly
+                </button>
+
+                <button type="button"
+                        class="sum-filter"
+                        data-filter="school">
+                    School
+                </button>
+
+                <button type="button"
+                        class="sum-filter"
+                        data-filter="university">
+                    University
+                </button>
+
+            </div>
+
+
+            <section id="allSumsContainer"
+                     aria-live="polite">
+
+                <div class="archive-status">
+                    Loading sums...
+                </div>
+
+            </section>
+
+
+            <div class="all-sums-back">
+
+                <a href="index.html">
+
+                    <span class="all-sums-back-arrow"
+                          aria-hidden="true">
+                        ←
+                    </span>
+
+                    Back to Home
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================== -->
+
+    <footer>
+
+        <p>
+            © Ankit Brahamachary 2026
+        </p>
+
+    </footer>
+
+
+    <!-- =========================================
+         WEBSITE JAVASCRIPT
+    ========================================== -->
+
+    <script type="module"
+            src="script.js">
+    </script>
+
+    <script type="module"
+            src="all-sums.js">
+    </script>
+
+
+</body>
+
+</html>
