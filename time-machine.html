@@ -3,94 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="CALCULUS Time Machine — an interactive mathematical adventure through eras, sums, puzzles and discoveries.">
+<meta name="description" content="CALCULUS Time Machine — an interactive mathematical time-bending laboratory.">
 <title>Time Machine — CALCULUS</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
 /* =========================================================
-   CALCULUS — TIME MACHINE / SUM VAULT
-   Keeps the site's monochrome glass aesthetic, but turns the
-   page into a continuously changing mathematical playground.
+   CALCULUS — TIME MACHINE : TEMPORAL LAB
+   A completely new interactive experience.
+   The shared site's typography, monochrome glass language,
+   reveal feel and motion vocabulary are retained.
 ========================================================= */
-.tm-page{min-height:100vh;position:relative;z-index:2;padding:105px 3% 70px;overflow:hidden}
-.tm-shell{width:min(1500px,100%);margin:auto}
-.tm-hero{text-align:center;padding:2.2rem 1rem 1.5rem}
-.tm-kicker{display:inline-flex;align-items:center;gap:.7rem;color:rgba(255,255,255,.45);font-size:.68rem;letter-spacing:.3em;text-transform:uppercase}
-.tm-kicker:before,.tm-kicker:after{content:"";width:38px;height:1px;background:rgba(255,255,255,.22)}
-.tm-title{margin:.55rem 0 .35rem;font-family:"Cormorant Garamond",serif;font-size:clamp(4rem,9vw,8.5rem);line-height:.8;font-weight:600;letter-spacing:.035em;text-shadow:0 0 55px rgba(255,255,255,.08)}
-.tm-subtitle{max-width:760px;margin:1rem auto 0;color:rgba(255,255,255,.52);font-size:.88rem;line-height:1.75}
-.tm-topbar{display:grid;grid-template-columns:1.4fr .7fr .7fr .7fr;gap:.7rem;margin:1rem 0}
-.tm-stat,.tm-card{position:relative;border:1px solid rgba(255,255,255,.13);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012));box-shadow:0 20px 70px rgba(0,0,0,.32);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);overflow:hidden}
-.tm-stat{padding:.8rem 1rem}
-.tm-stat small{display:block;color:rgba(255,255,255,.32);font-size:.58rem;letter-spacing:.15em;text-transform:uppercase}
-.tm-stat strong{display:block;margin-top:.15rem;font:600 1.25rem "Cormorant Garamond",serif}
-.tm-xp{height:3px;background:rgba(255,255,255,.08);margin-top:.55rem;overflow:hidden}
-.tm-xp span{display:block;height:100%;width:0;background:#fff;box-shadow:0 0 14px rgba(255,255,255,.45);transition:width .5s cubic-bezier(.16,1,.3,1)}
-.tm-layout{display:grid;grid-template-columns:260px minmax(0,1fr) 280px;gap:1rem}
-.tm-card:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.035) 50%,transparent 65%);transform:translateX(-100%);animation:tm-scan 8s ease-in-out infinite}
-@keyframes tm-scan{0%,55%,100%{transform:translateX(-100%)}75%{transform:translateX(100%)}}
-.tm-inner{position:relative;z-index:1;padding:1.25rem}
-.tm-label{color:rgba(255,255,255,.34);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase}
-.tm-era-list{display:grid;gap:.45rem;margin-top:.8rem}
-.tm-era-btn,.tm-mode-btn{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.018);color:rgba(255,255,255,.55);padding:.7rem .65rem;text-align:left;cursor:pointer;font:500 .68rem Inter,sans-serif;transition:.22s ease}
-.tm-era-btn:hover,.tm-era-btn.active,.tm-mode-btn:hover,.tm-mode-btn.active{color:#fff;border-color:rgba(255,255,255,.34);background:rgba(255,255,255,.07);transform:translateX(3px)}
-.tm-mode-list{display:grid;gap:.4rem;margin-top:.7rem}
-.tm-machine{min-height:610px;display:flex;align-items:center;justify-content:center;position:relative;perspective:1100px;background:radial-gradient(circle at 50% 48%,rgba(255,255,255,.075),transparent 32%),radial-gradient(circle at 50% 100%,rgba(120,110,170,.1),transparent 45%),rgba(0,0,0,.16)}
-.tm-grid{position:absolute;inset:0;opacity:.16;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:38px 38px;mask-image:radial-gradient(circle,black,transparent 75%)}
-.tm-stars{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.tm-star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.45;animation:tm-star linear infinite}
-@keyframes tm-star{from{transform:translate3d(0,0,0);opacity:.1}50%{opacity:.8}to{transform:translate3d(var(--dx),var(--dy),0);opacity:.08}}
-.tm-core{position:relative;width:min(430px,75%);aspect-ratio:1;display:grid;place-items:center;transform-style:preserve-3d}
-.tm-ring{position:absolute;border:1px solid rgba(255,255,255,.25);border-radius:50%;box-shadow:0 0 25px rgba(255,255,255,.035),inset 0 0 25px rgba(255,255,255,.025)}
-.tm-ring.r1{inset:5%;animation:spin 14s linear infinite}.tm-ring.r2{inset:15%;animation:spinR 8s linear infinite;border-style:dashed}.tm-ring.r3{inset:25%;animation:spin 5s linear infinite;border-color:rgba(255,255,255,.42)}.tm-ring.r4{inset:36%;animation:pulse 3s ease-in-out infinite}
-@keyframes spin{to{transform:rotate(360deg)}}@keyframes spinR{to{transform:rotate(-360deg)}}@keyframes pulse{0%,100%{transform:scale(.95);opacity:.4}50%{transform:scale(1.05);opacity:1}}
-.tm-orbit{position:absolute;inset:0;transform-style:preserve-3d;animation:orbit 10s linear infinite}
-.tm-orbit:before,.tm-orbit:after{content:"";position:absolute;width:8px;height:8px;top:50%;left:50%;margin:-4px;border-radius:50%;background:#fff;box-shadow:0 0 18px rgba(255,255,255,.75)}
-.tm-orbit:before{transform:translateX(175px)}.tm-orbit:after{transform:translateX(-175px);opacity:.3}
-@keyframes orbit{from{transform:rotateX(62deg) rotateZ(0)}to{transform:rotateX(62deg) rotateZ(360deg)}}
-.tm-core-disc{position:relative;width:44%;aspect-ratio:1;border:1px solid rgba(255,255,255,.55);border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,255,255,.14),rgba(255,255,255,.025) 58%,transparent 60%);box-shadow:0 0 45px rgba(255,255,255,.1),inset 0 0 35px rgba(255,255,255,.08);animation:breathe 4s ease-in-out infinite}
-.tm-core-disc:before{content:"";position:absolute;inset:13%;border:1px solid rgba(255,255,255,.3);border-radius:50%;animation:spinR 5s linear infinite}
-@keyframes breathe{0%,100%{transform:scale(.96)}50%{transform:scale(1.04)}}
-.tm-core-symbol{font:600 clamp(3rem,7vw,6rem) "Cormorant Garamond",serif;text-shadow:0 0 30px rgba(255,255,255,.3);z-index:1}
-.tm-machine-readout{position:absolute;left:1rem;right:1rem;bottom:1rem;display:flex;justify-content:space-between;color:rgba(255,255,255,.36);font-size:.58rem;letter-spacing:.12em;text-transform:uppercase}
-.tm-live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 10px #fff;margin-right:.4rem;animation:blink 1.5s infinite}@keyframes blink{50%{opacity:.2}}
-.tm-challenge-head{display:flex;justify-content:space-between;gap:.5rem;align-items:start}
-.tm-challenge-title{font:600 clamp(2rem,4vw,3.5rem) "Cormorant Garamond",serif;margin:.3rem 0 0;line-height:.9}
-.tm-badge{border:1px solid rgba(255,255,255,.18);padding:.35rem .5rem;color:rgba(255,255,255,.48);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase}
-.tm-prompt{margin:1.3rem 0;padding:1.1rem;border-left:2px solid rgba(255,255,255,.5);background:rgba(255,255,255,.025)}
-.tm-prompt small{display:block;color:rgba(255,255,255,.32);font-size:.57rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.5rem}
-.tm-question{font:500 clamp(1.3rem,2.4vw,2.05rem) "Cormorant Garamond",serif;line-height:1.35}
-.tm-answer-row{display:grid;grid-template-columns:1fr auto;gap:.5rem}
-.tm-answer{width:100%;box-sizing:border-box;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.3);color:#fff;padding:.85rem;outline:none;font:500 .85rem Inter,sans-serif}
-.tm-answer:focus{border-color:rgba(255,255,255,.45);box-shadow:0 0 0 3px rgba(255,255,255,.035)}
-.tm-btn{border:1px solid rgba(255,255,255,.3);background:#fff;color:#08080a;padding:.82rem .95rem;cursor:pointer;font:700 .62rem Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;transition:.22s ease}
-.tm-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,255,255,.08)}
-.tm-btn.dark{background:rgba(255,255,255,.05);color:#fff}
-.tm-feedback{min-height:1.5em;margin-top:.65rem;color:rgba(255,255,255,.46);font-size:.7rem}
-.tm-feedback.good{color:#fff}.tm-feedback.bad{color:rgba(255,255,255,.38)}
-.tm-next{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.8rem}
-.tm-history{margin-top:1rem;border-top:1px solid rgba(255,255,255,.08);padding-top:1rem}
-.tm-history-list{display:grid;gap:.35rem;margin-top:.55rem;max-height:155px;overflow:auto}
-.tm-history-item{display:flex;justify-content:space-between;gap:.5rem;padding:.48rem .55rem;border:1px solid rgba(255,255,255,.06);font-size:.62rem;color:rgba(255,255,255,.46)}
-.tm-history-item b{color:rgba(255,255,255,.8)}
-.tm-side-section+.tm-side-section{margin-top:1.2rem;padding-top:1.1rem;border-top:1px solid rgba(255,255,255,.08)}
-.tm-meter{margin-top:.7rem}.tm-meter-row{display:flex;justify-content:space-between;color:rgba(255,255,255,.34);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase}.tm-track{height:4px;background:rgba(255,255,255,.08);margin-top:.4rem;overflow:hidden}.tm-fill{height:100%;width:0;background:#fff;box-shadow:0 0 12px rgba(255,255,255,.5);transition:width .45s ease}
-.tm-combo{font:600 3rem "Cormorant Garamond",serif;line-height:1;margin:.3rem 0}.tm-combo span{font:500 .65rem Inter,sans-serif;color:rgba(255,255,255,.35);letter-spacing:.12em}
-.tm-discovery{padding:.75rem;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.025);color:rgba(255,255,255,.54);font-size:.68rem;line-height:1.6}
-.tm-discovery strong{color:#fff}
-.tm-footer-note{text-align:center;margin:1rem 0;color:rgba(255,255,255,.25);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase}
-.tm-page.traveling .tm-core{animation:warp .85s cubic-bezier(.16,1,.3,1)}.tm-page.traveling .tm-grid{animation:gridwarp .85s ease}.tm-page.correct .tm-core-disc{animation:win .6s ease}
-@keyframes warp{0%{transform:scale(1);filter:blur(0)}35%{transform:scale(.68) rotateX(20deg);filter:blur(1px)}70%{transform:scale(1.3) rotateX(-12deg);filter:blur(2px)}100%{transform:scale(1);filter:blur(0)}}@keyframes gridwarp{50%{transform:scale(1.8);opacity:.4}}@keyframes win{50%{transform:scale(1.18);box-shadow:0 0 90px rgba(255,255,255,.3)}}
-@media(max-width:1100px){.tm-layout{grid-template-columns:220px minmax(0,1fr)}.tm-side{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.tm-side-section+.tm-side-section{margin-top:0;padding-top:0;border-top:0}}
-@media(max-width:780px){.tm-page{padding:90px 4% 55px}.tm-topbar{grid-template-columns:1fr 1fr}.tm-layout{grid-template-columns:1fr}.tm-side{display:block}.tm-side-section+.tm-side-section{margin-top:1.2rem;padding-top:1.1rem;border-top:1px solid rgba(255,255,255,.08)}.tm-machine{min-height:470px}.tm-core{width:min(350px,78%)}.tm-answer-row{grid-template-columns:1fr}.tm-next{grid-template-columns:1fr}.tm-title{font-size:clamp(3.6rem,17vw,6rem)}}
-@media(prefers-reduced-motion:reduce){.tm-page *, .tm-page *:before,.tm-page *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+.tm-page{min-height:100vh;position:relative;z-index:2;padding:96px 3% 70px;overflow:hidden}
+.tm-shell{width:min(1480px,100%);margin:auto}
+.tm-hero{text-align:center;padding:1.5rem 1rem 2rem}
+.tm-eyebrow{display:inline-flex;gap:.65rem;align-items:center;color:rgba(255,255,255,.38);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase}
+.tm-eyebrow:before,.tm-eyebrow:after{content:"";width:34px;height:1px;background:rgba(255,255,255,.2)}
+.tm-title{font:600 clamp(4.4rem,11vw,10rem)/.72 "Cormorant Garamond",serif;letter-spacing:.02em;margin:.7rem 0 .55rem;text-shadow:0 0 70px rgba(255,255,255,.09)}
+.tm-intro{max-width:720px;margin:auto;color:rgba(255,255,255,.48);font-size:.83rem;line-height:1.8}
+.tm-hud{display:grid;grid-template-columns:1.5fr repeat(4,.65fr);gap:.65rem;margin-bottom:.8rem}
+.tm-hud-card,.tm-panel{border:1px solid rgba(255,255,255,.12);background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.012));box-shadow:0 20px 70px rgba(0,0,0,.3);backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px)}
+.tm-hud-card{padding:.72rem .9rem;position:relative;overflow:hidden}
+.tm-hud-card small{display:block;color:rgba(255,255,255,.3);font-size:.53rem;letter-spacing:.16em;text-transform:uppercase}
+.tm-hud-card strong{display:block;margin-top:.18rem;font:600 1.35rem "Cormorant Garamond",serif}
+.tm-energy{height:3px;margin-top:.45rem;background:rgba(255,255,255,.08)}
+.tm-energy span{display:block;height:100%;width:100%;background:#fff;box-shadow:0 0 16px rgba(255,255,255,.45);transition:width .45s ease}
+.tm-main{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(300px,.8fr);gap:.8rem}
+.tm-panel{position:relative;overflow:hidden}
+.tm-panel:after{content:"";position:absolute;inset:-50%;pointer-events:none;background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.045) 50%,transparent 58%);transform:translateX(-35%) rotate(8deg);animation:sweep 9s ease-in-out infinite}
+@keyframes sweep{0%,58%,100%{transform:translateX(-35%) rotate(8deg)}76%{transform:translateX(35%) rotate(8deg)}}
+.tm-stage{min-height:690px;display:flex;flex-direction:column;position:relative;background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.07),transparent 27%),radial-gradient(circle at 50% 100%,rgba(90,80,150,.13),transparent 48%),#09090b}
+.tm-stage-grid{position:absolute;inset:0;opacity:.15;background-image:linear-gradient(rgba(255,255,255,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.09) 1px,transparent 1px);background-size:42px 42px;mask-image:radial-gradient(circle at center,black 5%,transparent 74%);animation:gridDrift 18s linear infinite}
+@keyframes gridDrift{to{background-position:42px 42px}}
+.tm-stage-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:1rem 1.1rem}
+.tm-coordinate{font-size:.56rem;letter-spacing:.13em;color:rgba(255,255,255,.36);text-transform:uppercase}
+.tm-live{color:#fff}.tm-live:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 12px #fff;margin-right:.42rem;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.18}}
+.tm-vortex{position:relative;z-index:2;flex:1;display:grid;place-items:center;perspective:900px}
+.tm-machine{width:min(510px,75%);aspect-ratio:1;position:relative;transform-style:preserve-3d}
+.tm-machine.warping{animation:warp .9s cubic-bezier(.16,1,.3,1)}
+@keyframes warp{0%{transform:scale(1) rotateZ(0)}35%{transform:scale(.55) rotateZ(20deg)}70%{transform:scale(1.28) rotateZ(-12deg)}100%{transform:scale(1) rotateZ(0)}}
+.tm-orbit{position:absolute;inset:4%;border:1px solid rgba(255,255,255,.19);border-radius:50%;box-shadow:0 0 50px rgba(255,255,255,.025);animation:rotate 18s linear infinite}
+.tm-orbit.o2{inset:14%;border-style:dashed;animation:rotateBack 11s linear infinite}
+.tm-orbit.o3{inset:25%;border-color:rgba(255,255,255,.38);animation:rotate 7s linear infinite}
+.tm-orbit.o4{inset:37%;border-color:rgba(255,255,255,.15);animation:pulse 3.2s ease-in-out infinite}
+@keyframes rotate{to{transform:rotate(360deg)}}@keyframes rotateBack{to{transform:rotate(-360deg)}}@keyframes pulse{50%{transform:scale(1.08);opacity:1}}
+.tm-orbit-dot{position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 22px rgba(255,255,255,.8);top:50%;left:-4px;margin-top:-4px}
+.tm-orbit.o2 .tm-orbit-dot{left:auto;right:-4px;opacity:.55}.tm-orbit.o3 .tm-orbit-dot{top:-4px;left:50%;margin:0 0 0 -4px}
+.tm-core{position:absolute;inset:35%;border:1px solid rgba(255,255,255,.58);border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(255,255,255,.17),rgba(255,255,255,.025) 58%,transparent 61%);box-shadow:0 0 60px rgba(255,255,255,.12),inset 0 0 35px rgba(255,255,255,.08);animation:coreBreathe 4s ease-in-out infinite}
+@keyframes coreBreathe{50%{transform:scale(1.07)}}
+.tm-core span{font:600 clamp(3rem,7vw,6rem) "Cormorant Garamond",serif;text-shadow:0 0 32px rgba(255,255,255,.35)}
+.tm-symbols{position:absolute;inset:0;pointer-events:none}
+.tm-symbol{position:absolute;color:rgba(255,255,255,.32);font:600 1.2rem "Cormorant Garamond",serif;animation:floatSymbol 6s ease-in-out infinite}
+@keyframes floatSymbol{50%{transform:translateY(-14px) rotate(8deg);color:rgba(255,255,255,.7)}}
+.tm-stage-bottom{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:.7rem;align-items:end;padding:1rem 1.1rem}
+.tm-event{color:rgba(255,255,255,.42);font-size:.62rem;line-height:1.6}.tm-event b{display:block;color:#fff;font-size:.8rem}
+.tm-jump{border:1px solid rgba(255,255,255,.3);background:#fff;color:#08080a;padding:.82rem 1rem;cursor:pointer;font:800 .6rem Inter,sans-serif;letter-spacing:.13em;text-transform:uppercase;transition:.22s}
+.tm-jump:hover{transform:translateY(-3px);box-shadow:0 15px 35px rgba(255,255,255,.1)}
+.tm-sidebar{display:flex;flex-direction:column;gap:.8rem}
+.tm-box{padding:1.1rem;position:relative;z-index:1}
+.tm-label{color:rgba(255,255,255,.3);font-size:.55rem;letter-spacing:.2em;text-transform:uppercase}
+.tm-box h2{font:600 2.3rem/1 "Cormorant Garamond",serif;margin:.35rem 0 .55rem}
+.tm-box p{color:rgba(255,255,255,.43);font-size:.67rem;line-height:1.65;margin:.4rem 0}
+.tm-game{min-height:260px}
+.tm-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-top:.8rem}
+.tm-choice{border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.025);color:rgba(255,255,255,.6);padding:.75rem .6rem;text-align:left;cursor:pointer;min-height:62px;transition:.2s}
+.tm-choice:hover{border-color:rgba(255,255,255,.34);background:rgba(255,255,255,.07);transform:translateY(-2px)}
+.tm-choice b{display:block;color:#fff;font-size:.67rem;margin-bottom:.2rem}.tm-choice span{font-size:.55rem;color:rgba(255,255,255,.34)}
+.tm-result{min-height:1.4em;margin-top:.65rem;font-size:.62rem;color:rgba(255,255,255,.48)}
+.tm-result.good{color:#fff}.tm-result.bad{color:rgba(255,255,255,.38)}
+.tm-action{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04);color:#fff;padding:.7rem .75rem;cursor:pointer;font:700 .57rem Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;width:100%;margin-top:.65rem;transition:.2s}
+.tm-action:hover{background:rgba(255,255,255,.09);transform:translateY(-2px)}
+.tm-timeline{height:112px;position:relative;margin-top:.8rem;overflow:hidden}
+.tm-timeline:before{content:"";position:absolute;left:4%;right:4%;top:50%;height:1px;background:rgba(255,255,255,.18)}
+.tm-node{position:absolute;top:calc(50% - 5px);width:10px;height:10px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:#09090b;cursor:pointer;transition:.25s}
+.tm-node:hover,.tm-node.active{background:#fff;box-shadow:0 0 18px rgba(255,255,255,.5);transform:scale(1.35)}
+.tm-node label{position:absolute;top:17px;left:50%;transform:translateX(-50%);white-space:nowrap;color:rgba(255,255,255,.35);font-size:.49rem}
+.tm-node em{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);white-space:nowrap;color:rgba(255,255,255,.52);font:600 .72rem "Cormorant Garamond",serif;font-style:normal}
+.tm-collection{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:.7rem}
+.tm-chip{border:1px solid rgba(255,255,255,.08);padding:.55rem .4rem;text-align:center;color:rgba(255,255,255,.35);font-size:.5rem;transition:.2s}
+.tm-chip.unlocked{color:#fff;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.045)}
+.tm-chip b{display:block;font:600 1rem "Cormorant Garamond",serif;margin-bottom:.1rem}
+.tm-log{max-height:135px;overflow:auto;margin-top:.55rem;display:grid;gap:.3rem}
+.tm-log-row{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);padding:.4rem 0;font-size:.55rem;color:rgba(255,255,255,.35)}
+.tm-log-row b{color:rgba(255,255,255,.75)}
+.tm-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:20;border:1px solid rgba(255,255,255,.2);background:rgba(10,10,12,.88);backdrop-filter:blur(14px);padding:.8rem 1.1rem;color:#fff;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;transition:.35s}
+.tm-toast.show{opacity:1;transform:translate(-50%,0)}
+.tm-flash{position:fixed;inset:0;pointer-events:none;z-index:15;background:#fff;opacity:0}
+.tm-flash.on{animation:flash .5s ease-out}
+@keyframes flash{20%{opacity:.1}100%{opacity:0}}
+.tm-page.jumping .tm-stage{animation:stageJump .9s ease}
+@keyframes stageJump{30%{filter:brightness(2)}50%{transform:scale(.985)}70%{filter:brightness(.7)}}
+.tm-page.success .tm-core{box-shadow:0 0 120px rgba(255,255,255,.35),inset 0 0 45px rgba(255,255,255,.12)}
+footer{position:relative;z-index:2}
+@media(max-width:1050px){.tm-hud{grid-template-columns:1.4fr repeat(2,1fr)}.tm-main{grid-template-columns:1fr}.tm-sidebar{display:grid;grid-template-columns:1fr 1fr}.tm-box:last-child{grid-column:1/-1}}
+@media(max-width:720px){.tm-page{padding:86px 4% 50px}.tm-title{font-size:clamp(4rem,19vw,7rem)}.tm-hud{grid-template-columns:1fr 1fr}.tm-hud-card:first-child{grid-column:1/-1}.tm-stage{min-height:590px}.tm-machine{width:82%}.tm-stage-bottom{grid-template-columns:1fr}.tm-sidebar{display:block}.tm-box+.tm-box{margin-top:.8rem}.tm-choice-grid{grid-template-columns:1fr}.tm-timeline{height:125px}}
+@media(prefers-reduced-motion:reduce){.tm-page *,.tm-page *:before,.tm-page *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 <div class="math-background" aria-hidden="true"><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span><span>∫</span></div>
+
 <header class="navbar">
 <div class="nav-container">
 <a href="index.html" class="logo">CALCULUS</a>
@@ -105,62 +120,72 @@
 <main class="tm-page" id="timeMachine">
 <div class="tm-shell">
 <section class="tm-hero">
-<span class="tm-kicker">Temporal Laboratory • Infinite Sum Vault</span>
+<div class="tm-eyebrow">Temporal Laboratory · Do Not Blink</div>
 <h1 class="tm-title">Time Machine</h1>
-<p class="tm-subtitle">Every jump changes the challenge. Solve sums, build a streak, discover mathematical eras and keep the machine alive. There is no fixed tour — the next problem is generated from your run.</p>
+<p class="tm-intro">Don't read a timeline. <b>Play with it.</b> Jump through mathematical history, make decisions, catch impossible equations, unlock artifacts and see how far your run can go.</p>
 </section>
 
-<section class="tm-topbar">
-<div class="tm-stat"><small>Current mission</small><strong id="missionStat">Calculus · 1665</strong><div class="tm-xp"><span id="xpFill"></span></div></div>
-<div class="tm-stat"><small>Score</small><strong id="score">0000</strong></div>
-<div class="tm-stat"><small>Streak</small><strong id="streak">0 ×</strong></div>
-<div class="tm-stat"><small>Level</small><strong id="level">1</strong></div>
+<section class="tm-hud">
+<div class="tm-hud-card"><small>Current coordinates</small><strong id="eraName">1665 · Newton</strong><div class="tm-energy"><span id="energy"></span></div></div>
+<div class="tm-hud-card"><small>Temporal score</small><strong id="score">0000</strong></div>
+<div class="tm-hud-card"><small>Streak</small><strong id="streak">0</strong></div>
+<div class="tm-hud-card"><small>Jumps</small><strong id="jumps">0</strong></div>
+<div class="tm-hud-card"><small>Artifacts</small><strong id="artifacts">0/12</strong></div>
 </section>
 
-<section class="tm-layout">
-<aside class="tm-card">
-<div class="tm-inner">
-<div class="tm-label">Choose a timeline</div>
-<div class="tm-era-list" id="eraList"></div>
-<div class="tm-side-section">
-<div class="tm-label">Challenge mode</div>
-<div class="tm-mode-list" id="modeList"></div>
+<section class="tm-main">
+<section class="tm-panel tm-stage" id="stage">
+<div class="tm-stage-grid"></div>
+<div class="tm-stage-top">
+<span class="tm-coordinate tm-live">MACHINE ONLINE</span>
+<span class="tm-coordinate" id="status">TEMPORAL LOCK · 1665 CE</span>
+</div>
+<div class="tm-vortex">
+<div class="tm-machine" id="machine">
+<div class="tm-symbols" id="symbols"></div>
+<div class="tm-orbit o1"><i class="tm-orbit-dot"></i></div>
+<div class="tm-orbit o2"><i class="tm-orbit-dot"></i></div>
+<div class="tm-orbit o3"><i class="tm-orbit-dot"></i></div>
+<div class="tm-orbit o4"></div>
+<div class="tm-core"><span id="core">ẋ</span></div>
 </div>
 </div>
+<div class="tm-stage-bottom">
+<div class="tm-event"><b id="eventTitle">THE NEXT JUMP IS UNKNOWN</b><span id="eventText">Choose a point on the timeline, or let the machine choose for you.</span></div>
+<button class="tm-jump" id="jump">⚡ RANDOM JUMP</button>
+</div>
+</section>
+
+<aside class="tm-sidebar">
+<section class="tm-panel tm-box tm-game">
+<div class="tm-label">Live anomaly</div>
+<h2 id="gameTitle">Catch the Impossible</h2>
+<p id="gamePrompt">One of these statements is temporally impossible. Tap it before the anomaly escapes.</p>
+<div class="tm-choice-grid" id="choices"></div>
+<div class="tm-result" id="result" aria-live="polite"></div>
+<button class="tm-action" id="newGame">New anomaly</button>
+</section>
+
+<section class="tm-panel tm-box">
+<div class="tm-label">Timeline navigator</div>
+<div class="tm-timeline" id="timeline"></div>
+<p id="eraFact">Newton's work in the 1660s included his fluxional methods.</p>
+<button class="tm-action" id="rewind">↶ Rewind to the beginning</button>
+</section>
+
+<section class="tm-panel tm-box">
+<div class="tm-label">Artifact cabinet</div>
+<div class="tm-collection" id="collection"></div>
+<div class="tm-label" style="margin-top:1rem">Jump log</div>
+<div class="tm-log" id="log"></div>
+</section>
 </aside>
-
-<section class="tm-card tm-machine" id="machine">
-<div class="tm-grid"></div><div class="tm-stars" id="stars"></div>
-<div class="tm-core"><div class="tm-ring r1"></div><div class="tm-ring r2"></div><div class="tm-ring r3"></div><div class="tm-ring r4"></div><div class="tm-orbit"></div><div class="tm-core-disc"><span class="tm-core-symbol" id="coreSymbol">Σ</span></div></div>
-<div class="tm-machine-readout"><span class="tm-live">MACHINE ONLINE</span><span id="coordinateStatus">TEMPORAL LOCK • 1665 CE</span></div>
 </section>
-
-<section class="tm-card">
-<div class="tm-inner">
-<div class="tm-challenge-head"><div><div class="tm-label" id="challengeEra">Newton • Fluxions</div><h2 class="tm-challenge-title" id="challengeTitle">The Sum Vault</h2></div><span class="tm-badge" id="difficulty">WARM-UP</span></div>
-<div class="tm-prompt"><small id="promptLabel">Your next sum</small><div class="tm-question" id="question">Loading the first challenge…</div></div>
-<div class="tm-answer-row"><input id="answerInput" class="tm-answer" autocomplete="off" spellcheck="false" placeholder="Enter the exact answer"><button id="checkAnswer" class="tm-btn">Submit</button></div>
-<div id="feedback" class="tm-feedback" aria-live="polite"></div>
-<div class="tm-next"><button id="nextButton" class="tm-btn dark">New challenge</button><button id="jumpButton" class="tm-btn dark">Random jump</button></div>
-<div class="tm-history"><div class="tm-label">Recent jumps</div><div class="tm-history-list" id="history"></div></div>
-</div>
-</section>
-
-<aside class="tm-card tm-side">
-<div class="tm-inner">
-<div class="tm-side-section">
-<div class="tm-label">Temporal stability</div>
-<div class="tm-meter"><div class="tm-meter-row"><span>Stability</span><span id="stabilityValue">100%</span></div><div class="tm-track"><div class="tm-fill" id="stabilityFill"></div></div></div>
-<div class="tm-meter"><div class="tm-meter-row"><span>XP to next level</span><span id="xpValue">0%</span></div><div class="tm-track"><div class="tm-fill" id="xpSideFill"></div></div></div>
-</div>
-<div class="tm-side-section"><div class="tm-label">Combo engine</div><div class="tm-combo" id="combo">0 <span>COMBO</span></div><div class="tm-discovery" id="discovery"><strong>Discovery:</strong> Solve your first sum to reveal a hidden fact.</div></div>
-<div class="tm-side-section"><div class="tm-label">Keyboard</div><div class="tm-discovery"><strong>Enter</strong> submit · <strong>N</strong> new sum · <strong>R</strong> random jump · <strong>← →</strong> change era</div></div>
-</div>
-</aside>
-</section>
-<div class="tm-footer-note">The machine remembers this session in your browser — refreshes do not erase your score.</div>
 </div>
 </main>
+
+<div class="tm-toast" id="toast"></div>
+<div class="tm-flash" id="flash"></div>
 <footer><p>© Ankit Brahamachary 2026</p></footer>
 <script type="module" src="script.js"></script>
 <script type="module" src="time-machine.js"></script>
