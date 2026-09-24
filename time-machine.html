@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="CALCULUS Time Machine — travel through the development of mathematical ideas and solve the problems of each era.">
+<title>Time Machine — CALCULUS</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* =========================================================
+   CALCULUS — MATHEMATICAL TIME MACHINE
+========================================================= */
+
+.tm-page {
+    min-height: 100vh;
+    position: relative;
+    z-index: 2;
+    padding: 115px 3% 80px;
+    overflow: hidden;
+}
+
+.tm-shell {
+    width: min(1500px, 100%);
+    margin: 0 auto;
+}
+
+/* ---------- Hero ---------- */
+
+.tm-hero {
+    text-align: center;
+    padding: 3.5rem 1rem 2rem;
+}
+
+.tm-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: .7rem;
+    color: rgba(255,255,255,.46);
+    font-size: .7rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+}
+
+.tm-kicker::before,
+.tm-kicker::after {
+    content: "";
+    width: 42px;
+    height: 1px;
+    background: rgba(255,255,255,.25);
+}
+
+.tm-title {
+    margin: .65rem 0 .4rem;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(4.3rem, 10vw, 9.5rem);
+    line-height: .82;
+    font-weight: 600;
+    letter-spacing: .035em;
+    text-shadow: 0 0 55px rgba(255,255,255,.08);
+}
+
+.tm-subtitle {
+    margin: 1.2rem auto 0;
+    max-width: 720px;
+    color: rgba(255,255,255,.53);
+    font-size: .92rem;
+    line-height: 1.8;
+}
+
+/* ---------- Control deck ---------- */
+
+.tm-deck {
+    display: grid;
+    grid-template-columns: 300px minmax(360px, 1fr) 300px;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.tm-panel {
+    position: relative;
+    border: 1px solid rgba(255,255,255,.14);
+    background:
+        linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.012));
+    box-shadow: 0 25px 80px rgba(0,0,0,.38);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    overflow: hidden;
+}
+
+.tm-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(120deg, transparent 0 35%, rgba(255,255,255,.035) 50%, transparent 65%);
+    transform: translateX(-100%);
+    animation: tm-scan 8s ease-in-out infinite;
+}
+
+@keyframes tm-scan {
+    0%, 55%, 100% { transform: translateX(-100%); }
+    75% { transform: translateX(100%); }
+}
+
+.tm-panel-inner {
+    position: relative;
+    z-index: 1;
+    padding: 1.35rem;
+}
+
+.tm-panel-label {
+    margin-bottom: 1rem;
+    color: rgba(255,255,255,.38);
+    font-size: .66rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+}
+
+.tm-select,
+.tm-year-input {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.25);
+    color: #fff;
+    padding: .82rem .9rem;
+    font: inherit;
+    outline: none;
+}
+
+.tm-select:focus,
+.tm-year-input:focus {
+    border-color: rgba(255,255,255,.48);
+    box-shadow: 0 0 0 3px rgba(255,255,255,.035);
+}
+
+.tm-select option {
+    background: #101014;
+    color: #fff;
+}
+
+.tm-year-row {
+    display: grid;
+    grid-template-columns: 1fr 88px;
+    gap: .55rem;
+    margin-top: .7rem;
+}
+
+.tm-range {
+    width: 100%;
+    accent-color: #fff;
+    cursor: pointer;
+}
+
+.tm-range-wrap {
+    margin-top: .9rem;
+}
+
+.tm-range-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: .35rem;
+    color: rgba(255,255,255,.32);
+    font-size: .62rem;
+}
+
+.tm-travel-btn {
+    position: relative;
+    width: 100%;
+    margin-top: 1rem;
+    padding: .95rem 1rem;
+    border: 1px solid rgba(255,255,255,.35);
+    background: #fff;
+    color: #08080a;
+    font: 600 .75rem "Inter", sans-serif;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.tm-travel-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 35%;
+    height: 100%;
+    background: rgba(0,0,0,.12);
+    transform: skewX(-25deg);
+}
+
+.tm-travel-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(255,255,255,.08);
+}
+
+.tm-travel-btn:hover::after {
+    animation: tm-button-sweep .7s ease forwards;
+}
+
+@keyframes tm-button-sweep {
+    to { left: 130%; }
+}
+
+.tm-control-group {
+    margin-top: 1.25rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.tm-concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .45rem;
+}
+
+.tm-concept {
+    padding: .65rem .45rem;
+    border: 1px solid rgba(255,255,255,.09);
+    background: rgba(255,255,255,.018);
+    color: rgba(255,255,255,.55);
+    font-size: .67rem;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.tm-concept:hover,
+.tm-concept.active {
+    color: #fff;
+    border-color: rgba(255,255,255,.34);
+    background: rgba(255,255,255,.07);
+}
+
+/* ---------- Machine ---------- */
+
+.tm-machine {
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1100px;
+    background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,.08), transparent 35%),
+        radial-gradient(circle at 50% 100%, rgba(120,110,170,.10), transparent 45%),
+        rgba(0,0,0,.16);
+}
+
+.tm-machine-grid {
+    position: absolute;
+    inset: 0;
+    opacity: .16;
+    background-image:
+        linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px);
+    background-size: 38px 38px;
+    mask-image: radial-gradient(circle, black, transparent 75%);
+}
+
+.tm-stars {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.tm-star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: .5;
+    animation: tm-star-drift linear infinite;
+}
+
+@keyframes tm-star-drift {
+    from { transform: translate3d(0,0,0); opacity: .15; }
+    50% { opacity: .8; }
+    to { transform: translate3d(var(--dx), var(--dy),0); opacity: .1; }
+}
+
+.tm-core {
+    position: relative;
+    width: min(430px, 80%);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    transform-style: preserve-3d;
+}
+
+.tm-ring {
+    position: absolute;
+    border: 1px solid rgba(255,255,255,.26);
+    border-radius: 50%;
+    box-shadow:
+        0 0 25px rgba(255,255,255,.035),
+        inset 0 0 25px rgba(255,255,255,.025);
+}
+
+.tm-ring.r1 { inset: 7%; animation: tm-spin 14s linear infinite; }
+.tm-ring.r2 { inset: 17%; animation: tm-spin-reverse 9s linear infinite; border-style: dashed; }
+.tm-ring.r3 { inset: 27%; animation: tm-spin 6s linear infinite; border-color: rgba(255,255,255,.42); }
+.tm-ring.r4 { inset: 36%; animation: tm-pulse-ring 3s ease-in-out infinite; }
+
+@keyframes tm-spin { to { transform: rotate(360deg); } }
+@keyframes tm-spin-reverse { to { transform: rotate(-360deg); } }
+@keyframes tm-pulse-ring {
+    0%,100% { transform: scale(.96); opacity: .45; }
+    50% { transform: scale(1.04); opacity: 1; }
+}
+
+.tm-orbit {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: tm-orbit 12s linear infinite;
+}
+
+.tm-orbit::before,
+.tm-orbit::after {
+    content: "";
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    top: 50%;
+    left: 50%;
+    margin: -4px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 18px rgba(255,255,255,.75);
+}
+
+.tm-orbit::before { transform: translateX(175px); }
+.tm-orbit::after { transform: translateX(-175px); opacity: .35; }
+
+@keyframes tm-orbit {
+    from { transform: rotateX(62deg) rotateZ(0deg); }
+    to { transform: rotateX(62deg) rotateZ(360deg); }
+}
+
+.tm-core-disc {
+    position: relative;
+    width: 42%;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,.55);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(255,255,255,.13), rgba(255,255,255,.025) 58%, transparent 60%);
+    box-shadow:
+        0 0 45px rgba(255,255,255,.10),
+        inset 0 0 35px rgba(255,255,255,.08);
+    animation: tm-core-breathe 4s ease-in-out infinite;
+}
+
+@keyframes tm-core-breathe {
+    0%,100% { transform: scale(.96); }
+    50% { transform: scale(1.04); }
+}
+
+.tm-core-disc::before {
+    content: "";
+    position: absolute;
+    inset: 14%;
+    border: 1px solid rgba(255,255,255,.28);
+    border-radius: 50%;
+    animation: tm-spin-reverse 5s linear infinite;
+}
+
+.tm-core-symbol {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 1;
+    text-shadow: 0 0 30px rgba(255,255,255,.25);
+}
+
+.tm-machine-status {
+    position: absolute;
+    left: 1.2rem;
+    right: 1.2rem;
+    bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: rgba(255,255,255,.38);
+    font-size: .61rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.tm-status-live {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+}
+
+.tm-status-live::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px #fff;
+    animation: tm-blink 1.5s infinite;
+}
+
+@keyframes tm-blink {
+    50% { opacity: .2; }
+}
+
+/* ---------- Readout ---------- */
+
+.tm-readout {
+    display: flex;
+    flex-direction: column;
+}
+
+.tm-readout-year {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(3.8rem, 6vw, 6.3rem);
+    line-height: .85;
+    margin: .4rem 0 .5rem;
+}
+
+.tm-readout-era {
+    color: rgba(255,255,255,.52);
+    font-size: .7rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+
+.tm-readout-copy {
+    margin-top: 1.2rem;
+    color: rgba(255,255,255,.64);
+    font-size: .82rem;
+    line-height: 1.75;
+}
+
+.tm-meter {
+    margin-top: 1.2rem;
+}
+
+.tm-meter-row {
+    display: flex;
+    justify-content: space-between;
+    color: rgba(255,255,255,.35);
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: .45rem;
+}
+
+.tm-meter-track {
+    height: 3px;
+    background: rgba(255,255,255,.08);
+    overflow: hidden;
+}
+
+.tm-meter-fill {
+    height: 100%;
+    width: 48%;
+    background: #fff;
+    box-shadow: 0 0 12px rgba(255,255,255,.5);
+    transition: width .8s cubic-bezier(.16,1,.3,1);
+}
+
+.tm-fact {
+    margin-top: 1.2rem;
+    padding: .9rem;
+    border-left: 1px solid rgba(255,255,255,.35);
+    color: rgba(255,255,255,.48);
+    font-size: .72rem;
+    line-height: 1.65;
+}
+
+/* ---------- Mission ---------- */
+
+.tm-mission {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 1rem;
+}
+
+.tm-mission-card {
+    border: 1px solid rgba(255,255,255,.13);
+    background: rgba(255,255,255,.018);
+    padding: 1.4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.tm-mission-card h2 {
+    margin: 0 0 .65rem;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    font-weight: 600;
+}
+
+.tm-mission-card p {
+    margin: 0;
+    color: rgba(255,255,255,.58);
+    font-size: .82rem;
+    line-height: 1.8;
+}
+
+.tm-tool-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin-top: 1rem;
+}
+
+.tm-tool {
+    padding: .5rem .65rem;
+    border: 1px solid rgba(255,255,255,.09);
+    color: rgba(255,255,255,.54);
+    font-size: .64rem;
+    letter-spacing: .05em;
+}
+
+.tm-tool.locked {
+    opacity: .24;
+    text-decoration: line-through;
+}
+
+.tm-problem {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.tm-problem-label {
+    color: rgba(255,255,255,.32);
+    font-size: .62rem;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+}
+
+.tm-problem-text {
+    margin: .65rem 0;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    line-height: 1.35;
+}
+
+.tm-answer-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: .5rem;
+}
+
+.tm-answer {
+    min-width: 0;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.24);
+    color: #fff;
+    padding: .75rem;
+    outline: none;
+    font: .82rem "Inter", sans-serif;
+}
+
+.tm-check {
+    border: 1px solid rgba(255,255,255,.22);
+    background: rgba(255,255,255,.06);
+    color: #fff;
+    padding: .75rem .9rem;
+    cursor: pointer;
+}
+
+.tm-feedback {
+    min-height: 1.2em;
+    margin-top: .6rem;
+    color: rgba(255,255,255,.48);
+    font-size: .7rem;
+}
+
+.tm-feedback.good {
+    color: rgba(255,255,255,.9);
+}
+
+.tm-feedback.bad {
+    color: rgba(255,255,255,.42);
+}
+
+/* ---------- Timeline ---------- */
+
+.tm-timeline-section {
+    margin-top: 1rem;
+    border: 1px solid rgba(255,255,255,.13);
+    background: rgba(255,255,255,.018);
+    padding: 1.4rem 1.2rem 1.6rem;
+}
+
+.tm-timeline-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: end;
+}
+
+.tm-timeline-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2rem;
+}
+
+.tm-timeline-hint {
+    color: rgba(255,255,255,.3);
+    font-size: .65rem;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.tm-timeline {
+    position: relative;
+    margin-top: 2rem;
+    height: 100px;
+}
+
+.tm-timeline-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 31px;
+    height: 1px;
+    background: rgba(255,255,255,.16);
+}
+
+.tm-timeline-progress {
+    position: absolute;
+    left: 0;
+    top: 30px;
+    height: 3px;
+    width: 50%;
+    background: #fff;
+    box-shadow: 0 0 14px rgba(255,255,255,.25);
+    transition: width .8s cubic-bezier(.16,1,.3,1);
+}
+
+.tm-era-node {
+    position: absolute;
+    top: 22px;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 50%;
+    background: #08080a;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.tm-era-node:hover,
+.tm-era-node.active {
+    background: #fff;
+    box-shadow: 0 0 20px rgba(255,255,255,.38);
+    transform: translateX(-50%) scale(1.3);
+}
+
+.tm-era-caption {
+    position: absolute;
+    top: 49px;
+    transform: translateX(-50%);
+    width: 110px;
+    text-align: center;
+    color: rgba(255,255,255,.42);
+    font-size: .62rem;
+    line-height: 1.35;
+}
+
+.tm-era-year {
+    display: block;
+    color: rgba(255,255,255,.72);
+    font-size: .67rem;
+    margin-bottom: .15rem;
+}
+
+/* ---------- Travel state ---------- */
+
+.tm-page.traveling .tm-core {
+    animation: tm-warp .95s cubic-bezier(.16,1,.3,1);
+}
+
+.tm-page.traveling .tm-ring {
+    border-color: rgba(255,255,255,.72);
+    box-shadow: 0 0 45px rgba(255,255,255,.14);
+}
+
+.tm-page.traveling .tm-machine-grid {
+    animation: tm-grid-warp .95s cubic-bezier(.16,1,.3,1);
+}
+
+.tm-page.traveling .tm-title {
+    animation: tm-title-shake .95s ease;
+}
+
+@keyframes tm-warp {
+    0% { transform: scale(1) rotateX(0); filter: blur(0); }
+    35% { transform: scale(.72) rotateX(20deg); filter: blur(1px); }
+    70% { transform: scale(1.35) rotateX(-12deg); filter: blur(2px); }
+    100% { transform: scale(1) rotateX(0); filter: blur(0); }
+}
+
+@keyframes tm-grid-warp {
+    0% { transform: scale(1); opacity: .16; }
+    50% { transform: scale(1.8); opacity: .4; }
+    100% { transform: scale(1); opacity: .16; }
+}
+
+@keyframes tm-title-shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(2px); }
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1150px) {
+    .tm-deck {
+        grid-template-columns: 250px minmax(320px, 1fr);
+    }
+
+    .tm-readout {
+        grid-column: 1 / -1;
+    }
+
+    .tm-mission {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 780px) {
+    .tm-page {
+        padding: 95px 4% 60px;
+    }
+
+    .tm-deck {
+        grid-template-columns: 1fr;
+    }
+
+    .tm-machine {
+        min-height: 460px;
+    }
+
+    .tm-readout {
+        grid-column: auto;
+    }
+
+    .tm-mission {
+        grid-template-columns: 1fr;
+    }
+
+    .tm-timeline {
+        overflow-x: auto;
+        height: 118px;
+    }
+
+    .tm-timeline-line,
+    .tm-timeline-progress {
+        min-width: 900px;
+        right: auto;
+        width: 900px;
+    }
+
+    .tm-era-node,
+    .tm-era-caption {
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tm-page *,
+    .tm-page *::before,
+    .tm-page *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="math-background" aria-hidden="true">
+    <span>∫</span><span>∫</span><span>∫</span><span>∫</span>
+    <span>∫</span><span>∫</span><span>∫</span><span>∫</span>
+</div>
+
+<header class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">CALCULUS</a>
+        <nav class="desktop-nav">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="books.html" class="nav-link">Books</a>
+            <a href="topics.html" class="nav-link">Topics</a>
+            <a href="time-machine.html" class="nav-link active">Time Machine</a>
+            <a href="other-websites.html" class="nav-link">Other Websites</a>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="books.html">Books</a>
+        <a href="topics.html">Topics</a>
+        <a href="time-machine.html" class="active">Time Machine</a>
+        <a href="other-websites.html">Other Websites</a>
+    </div>
+</header>
+
+<main class="tm-page" id="timeMachine">
+
+    <div class="tm-shell">
+
+        <section class="tm-hero">
+            <span class="tm-kicker">Temporal Laboratory • CALCULUS</span>
+            <h1 class="tm-title">Time Machine</h1>
+            <p class="tm-subtitle">
+                Do not merely read mathematical history. Enter an era, surrender modern tools,
+                recover the ideas available to its thinkers, and solve the problem waiting there.
+            </p>
+        </section>
+
+        <section class="tm-deck">
+
+            <aside class="tm-panel">
+                <div class="tm-panel-inner">
+                    <div class="tm-panel-label">Navigation Console</div>
+
+                    <label for="concept" class="tm-panel-label">Mathematical universe</label>
+                    <select id="concept" class="tm-select">
+                        <option value="calculus">Calculus</option>
+                        <option value="algebra">Algebra</option>
+                        <option value="geometry">Geometry</option>
+                        <option value="number">Number Theory</option>
+                        <option value="probability">Probability</option>
+                        <option value="physics">Mathematical Physics</option>
+                    </select>
+
+                    <div class="tm-control-group">
+                        <div class="tm-panel-label">Destination year</div>
+                        <div class="tm-year-row">
+                            <input id="yearInput" class="tm-year-input" type="number" min="-250" max="2026" value="1665" step="1">
+                            <button id="randomEra" class="tm-check" type="button" title="Random era">?</button>
+                        </div>
+
+                        <div class="tm-range-wrap">
+                            <input id="yearRange" class="tm-range" type="range" min="-250" max="2026" value="1665">
+                            <div class="tm-range-labels">
+                                <span>−250</span><span>2026</span>
+                            </div>
+                        </div>
+
+                        <button id="travelButton" class="tm-travel-btn" type="button">
+                            Initiate temporal jump
+                        </button>
+                    </div>
+
+                    <div class="tm-control-group">
+                        <div class="tm-panel-label">Quick coordinates</div>
+                        <div class="tm-concept-grid" id="quickEras"></div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="tm-panel tm-machine" aria-label="Time machine chamber">
+                <div class="tm-machine-grid"></div>
+                <div class="tm-stars" id="stars"></div>
+
+                <div class="tm-core">
+                    <div class="tm-ring r1"></div>
+                    <div class="tm-ring r2"></div>
+                    <div class="tm-ring r3"></div>
+                    <div class="tm-ring r4"></div>
+                    <div class="tm-orbit"></div>
+                    <div class="tm-core-disc">
+                        <span class="tm-core-symbol" id="coreSymbol">∫</span>
+                    </div>
+                </div>
+
+                <div class="tm-machine-status">
+                    <span class="tm-status-live">Temporal engine online</span>
+                    <span id="coordinateStatus">LAT 22.57° • LON 88.36° • T+000</span>
+                </div>
+            </section>
+
+            <aside class="tm-panel tm-readout">
+                <div class="tm-panel-inner">
+                    <div class="tm-panel-label">Temporal readout</div>
+                    <div class="tm-readout-year" id="readoutYear">1665</div>
+                    <div class="tm-readout-era" id="readoutEra">Newtonian breakthrough</div>
+
+                    <p class="tm-readout-copy" id="readoutCopy">
+                        You have arrived before the formal language of modern calculus.
+                        The machine has removed later notation from your toolkit.
+                    </p>
+
+                    <div class="tm-meter">
+                        <div class="tm-meter-row">
+                            <span>Modernity available</span>
+                            <span id="modernityValue">42%</span>
+                        </div>
+                        <div class="tm-meter-track">
+                            <div class="tm-meter-fill" id="modernityFill"></div>
+                        </div>
+                    </div>
+
+                    <div class="tm-meter">
+                        <div class="tm-meter-row">
+                            <span>Paradox pressure</span>
+                            <span id="paradoxValue">08%</span>
+                        </div>
+                        <div class="tm-meter-track">
+                            <div class="tm-meter-fill" id="paradoxFill"></div>
+                        </div>
+                    </div>
+
+                    <div class="tm-fact" id="readoutFact">
+                        Historical route: Archimedes → Cavalieri → Newton → Leibniz → Euler → Cauchy → Weierstrass → modern analysis.
+                    </div>
+                </div>
+            </aside>
+
+        </section>
+
+        <section class="tm-mission">
+
+            <article class="tm-mission-card">
+                <div class="tm-panel-label">Arrival protocol</div>
+                <h2 id="missionTitle">It's 1665.</h2>
+                <p id="missionCopy">
+                    You don't have modern calculus. Work with the mathematical language available to the era.
+                </p>
+
+                <div class="tm-tool-list" id="toolList"></div>
+            </article>
+
+            <article class="tm-mission-card">
+                <div class="tm-panel-label">Temporal problem</div>
+                <div class="tm-problem-label" id="problemLabel">Newton • fluxions</div>
+                <div class="tm-problem-text" id="problemText">
+                    A curve is given by y = x². At x = 2, determine the instantaneous rate of change using the language available in this era.
+                </div>
+
+                <div class="tm-answer-row">
+                    <input id="answerInput" class="tm-answer" type="text" autocomplete="off" placeholder="Enter your answer">
+                    <button id="checkAnswer" class="tm-check" type="button">Check</button>
+                </div>
+                <div class="tm-feedback" id="feedback" aria-live="polite"></div>
+            </article>
+
+        </section>
+
+        <section class="tm-timeline-section">
+            <div class="tm-timeline-top">
+                <div>
+                    <div class="tm-panel-label">Chronological corridor</div>
+                    <div class="tm-timeline-title" id="timelineTitle">The development of calculus</div>
+                </div>
+                <div class="tm-timeline-hint">Click a node to travel</div>
+            </div>
+            <div class="tm-timeline" id="timeline"></div>
+        </section>
+
+    </div>
+</main>
+
+<footer>
+    <p>© Ankit Brahamachary 2026</p>
+</footer>
+
+<script type="module" src="script.js"></script>
+<script type="module" src="time-machine.js"></script>
+</body>
+</html>
