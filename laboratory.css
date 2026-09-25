@@ -359,3 +359,15 @@ main,
   }
 
 }
+
+/* Laboratory hero title — compact enough for mobile without becoming small */
+@media (max-width: 700px) {
+  .lab-hero h1 {
+    font-size: clamp(3.1rem, 12vw, 5.8rem);
+  }
+}
+@media (max-width: 560px) {
+  .lab-hero h1 {
+    font-size: clamp(2.9rem, 13vw, 4.5rem);
+  }
+}
