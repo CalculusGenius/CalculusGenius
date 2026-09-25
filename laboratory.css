@@ -75,6 +75,31 @@ math-field.lab-mathfield:focus-within{border-color:rgba(255,255,255,.55)}
 .math-help{display:flex;flex-wrap:wrap;gap:.4rem;margin:.55rem 0 .7rem}
 .math-help button{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.035);color:#fff;cursor:pointer;padding:.45rem .65rem;min-height:38px}
 .math-help math-span{font-size:1rem}
-@media(max-width:1050px){.lab-grid{grid-template-columns:1fr}.lab-plot-panel{order:-1}.latex-demo-grid{grid-template-columns:1fr 1fr}.experiment-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:800px){.lab-instrument-shell{grid-template-columns:1fr}.lab-instruments{display:grid;grid-template-columns:1fr 1fr}.lab-instruments .lab-section-label{grid-column:1/-1}.external-grid{grid-template-columns:1fr}.external-wide{grid-column:auto}.graph-embed,#plot{height:430px}.lab-workbench{padding:.8rem}}
-@media(max-width:560px){.lab-hero{min-height:45vh}.lab-grid{gap:.6rem}.lab-row,.latex-demo-grid,.experiment-grid{grid-template-columns:1fr}.lab-instruments{grid-template-columns:1fr}.lab-workbench-head{display:block}.lab-stats{margin-top:.8rem}.lab-log-entry{grid-template-columns:1fr}.graph-embed,#plot{height:390px}}
+
+/* Laboratory-specific navigation fallback.
+   The global stylesheet hides the hamburger by default; this page
+   explicitly restores the mobile navigation at phone/tablet widths. */
+@media(max-width:800px){
+  .desktop-nav{display:none}
+  .nav-container{position:relative}
+  .hamburger{display:block;margin-left:auto}
+  .user-profile-button{position:absolute;right:56px;top:15px;width:46px;height:46px;align-items:center;justify-content:center;z-index:111}
+  .user-profile-button img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,.2)}
+  .lab-instrument-shell{grid-template-columns:1fr}
+  .lab-instruments{display:grid;grid-template-columns:1fr 1fr}
+  .lab-instruments .lab-section-label{grid-column:1/-1}
+  .external-grid{grid-template-columns:1fr}
+  .external-wide{grid-column:auto}
+  .graph-embed,#plot{height:430px}
+  .lab-workbench{padding:.8rem}
+}
+@media(max-width:560px){
+  .lab-hero{min-height:45vh}
+  .lab-grid{gap:.6rem}
+  .lab-row,.latex-demo-grid,.experiment-grid{grid-template-columns:1fr}
+  .lab-instruments{grid-template-columns:1fr}
+  .lab-workbench-head{display:block}
+  .lab-stats{margin-top:.8rem}
+  .lab-log-entry{grid-template-columns:1fr}
+  .graph-embed,#plot{height:390px}
+}
