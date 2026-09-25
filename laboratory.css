@@ -131,3 +131,231 @@ math-field.lab-mathfield:focus-within{border-color:rgba(255,255,255,.55)}
 }
 
 html,body{max-width:100%;overflow-x:hidden}
+
+/* =========================================================
+   MOBILE VIEWPORT STABILIZATION
+   Keep the Laboratory inside the same viewport discipline
+   used by the main site on small screens.
+========================================================= */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+main,
+.lab-section,
+.lab-hero,
+.lab-instrument-shell,
+.lab-workbench,
+.lab-grid,
+.lab-controls-panel,
+.lab-plot-panel,
+.external-grid,
+.external-card,
+.experiment-grid,
+.latex-demo-grid {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 700px) {
+
+  .lab-hero {
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .lab-hero > div {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .lab-hero h1 {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .lab-section {
+    width: 92%;
+    max-width: 92%;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  .lab-instrument-shell {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    box-sizing: border-box;
+  }
+
+  .lab-instruments,
+  .lab-workbench {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .lab-workbench-head,
+  .lab-stats,
+  .external-head {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .lab-workbench-head > div {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .lab-workbench h2,
+  .lab-section-heading h2,
+  .lab-section-heading p,
+  .lab-challenge h3,
+  .lab-challenge p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .lab-grid {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lab-controls-panel {
+    width: 100%;
+  }
+
+  .lab-input,
+  .lab-select,
+  math-field.lab-mathfield {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .lab-actions {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .lab-actions button {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .lab-plot-panel,
+  #plot {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  .js-plotly-plot,
+  .plot-container,
+  .svg-container {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .external-grid {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .external-card,
+  .graph-embed {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .graph-embed {
+    overflow: hidden;
+  }
+
+  .latex-demo-grid,
+  .experiment-grid {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .latex-demo-card,
+  .experiment-card {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+  }
+
+  .latex-demo-card math-div {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .lab-log {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .lab-log-entry {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+}
+
+@media (max-width: 560px) {
+
+  .lab-section {
+    width: 94%;
+    max-width: 94%;
+  }
+
+  .lab-workbench {
+    padding: .75rem;
+  }
+
+  .lab-instruments {
+    padding: .75rem;
+  }
+
+  .lab-workbench h2 {
+    font-size: 1.7rem;
+  }
+
+  .lab-stats {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .lab-row {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lab-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .external-head h3,
+  .external-head span {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .graph-embed,
+  #plot {
+    height: 320px !important;
+  }
+
+}
