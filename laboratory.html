@@ -54,10 +54,17 @@ section{padding:clamp(90px,12vw,165px) 0;border-bottom:1px solid var(--l)}.head{
 </main>
 <footer class="footer"><div class="wrap"><div class="k">THE MATHEMATICAL ATLAS</div><div class="big">Keep wandering.</div><p>One website cannot contain mathematics. It can become a doorway to the places where mathematics is visualised, taught, computed, proved, catalogued and discovered.</p></div></footer>
 
-<script type="module" src="script.js"></script>
 <script>
 (()=>{'use strict';
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const $=s=>document.querySelector(s),$=s=>[...document.querySelectorAll(s)];
+const hamburger=$('#hamburger'),mobileMenu=$('#mobileMenu');
+if(hamburger&&mobileMenu){
+  const close=()=>{mobileMenu.classList.remove('open');hamburger.classList.remove('open');hamburger.setAttribute('aria-expanded','false');};
+  hamburger.onclick=e=>{e.stopPropagation();mobileMenu.classList.toggle('open');hamburger.classList.toggle('open');hamburger.setAttribute('aria-expanded',mobileMenu.classList.contains('open'));};
+  mobileMenu.onclick=e=>{if(e.target.closest('a'))close();};
+  document.addEventListener('click',e=>{if(mobileMenu.classList.contains('open')&&!mobileMenu.contains(e.target)&&!hamburger.contains(e.target))close();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+}
 $$('[data-go]').forEach(b=>b.onclick=()=>$(b.dataset.go)?.scrollIntoView({behavior:'smooth'}));
 let ticking=false;addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{const m=document.documentElement.scrollHeight-innerHeight;$('#bar').style.width=(m?scrollY/m*100:0)+'%';ticking=false})},{passive:true});
 
