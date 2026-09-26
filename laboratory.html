@@ -1,112 +1,401 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="The Mathematical Atlas — 150 mathematical destinations, tools, courses, problems, databases and research portals.">
-<title>The Mathematical Atlas — CALCULUS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="The Mathematical Universe — a living gateway to 120+ mathematical tools, visualisations, courses, databases, problems and research resources.">
+<title>The Mathematical Universe — CALCULUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
-:root{--b:#050507;--w:#f7f6f1;--m:rgba(247,246,241,.64);--d:rgba(247,246,241,.34);--l:rgba(247,246,241,.13);--p:#09090c}
-html{scroll-behavior:smooth;scroll-padding-top:78px}body.atlas{margin:0;background:var(--b);color:var(--w);overflow-x:hidden;font-family:Inter,sans-serif}.atlas *{box-sizing:border-box}.atlas button,.atlas input,.atlas select{font:inherit}.atlas a{color:inherit}.atlas .navbar{z-index:1000}.wrap{width:min(1460px,92%);margin:auto}.bar{position:fixed;top:0;left:0;height:2px;width:0;background:#fff;z-index:1200}
-.hero{min-height:100svh;display:flex;align-items:center;position:relative;overflow:hidden;border-bottom:1px solid var(--l)}.gridbg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(#000,transparent 92%)}.orbit{position:absolute;width:min(75vw,900px);aspect-ratio:1;right:-18%;top:8%;border:1px solid rgba(255,255,255,.08);border-radius:50%;box-shadow:0 0 0 80px rgba(255,255,255,.012),0 0 0 190px rgba(255,255,255,.008)}.orbit:before,.orbit:after{content:"";position:absolute;border:1px dashed rgba(255,255,255,.08);border-radius:50%;inset:18%}.orbit:after{inset:40%;border-style:solid}.hero-core{position:absolute;inset:0;display:grid;place-items:center;font:600 clamp(8rem,20vw,18rem)/.7 "Cormorant Garamond",serif;color:rgba(255,255,255,.045)}.hero-copy{position:relative;z-index:2;padding:130px 0 90px}.k{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--d)}h1{font:600 clamp(5rem,13vw,13rem)/.73 "Cormorant Garamond",serif;letter-spacing:-.065em;margin:1rem 0 1.4rem;max-width:1100px}h1 em{font-style:normal;color:rgba(255,255,255,.35)}.lead{max-width:780px;color:var(--m);font-size:.86rem;line-height:1.95}.actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:2rem}.btn{border:1px solid var(--l);background:rgba(255,255,255,.035);color:#fff;padding:.8rem 1rem;cursor:pointer;text-transform:uppercase;letter-spacing:.11em;font-size:.5rem;transition:.22s}.btn:hover{transform:translateY(-2px);background:#fff;color:#000}.btn.primary{background:#fff;color:#000}.stats{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:3rem;padding-top:1rem;border-top:1px solid var(--l);max-width:900px}.stats strong{display:block;font:500 1.6rem "Cormorant Garamond",serif}.stats span{font-size:.45rem;text-transform:uppercase;letter-spacing:.12em;color:var(--d)}
-section{padding:clamp(90px,12vw,165px) 0;border-bottom:1px solid var(--l)}.head{display:grid;grid-template-columns:1.05fr .95fr;gap:5rem;align-items:end;margin-bottom:3rem}.num{font-size:.47rem;letter-spacing:.28em;text-transform:uppercase;color:var(--d)}h2{font:500 clamp(3.7rem,8vw,8rem)/.78 "Cormorant Garamond",serif;letter-spacing:-.055em;margin:.7rem 0}.head p{font-size:.69rem;line-height:1.9;color:var(--m);max-width:600px}
-.mapbox{border:1px solid var(--l);background:#07070a}.maptop{padding:1rem;border-bottom:1px solid var(--l);display:flex;justify-content:space-between;color:var(--d);font-size:.46rem;letter-spacing:.13em;text-transform:uppercase}.map{position:relative;min-height:650px;background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.05),transparent 36%),linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:auto,58px 58px}.ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:74%;aspect-ratio:1;border:1px solid rgba(255,255,255,.07);border-radius:50%}.ring:nth-child(2){width:48%;border-style:dashed}.ring:nth-child(3){width:22%}.center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center}.center b{display:block;font:600 2.2rem/.8 "Cormorant Garamond",serif}.center small{font-size:.42rem;letter-spacing:.18em;color:var(--d)}.node{position:absolute;transform:translate(-50%,-50%);min-width:100px;padding:.6rem .7rem;background:rgba(5,5,7,.94);color:#fff;border:1px solid rgba(255,255,255,.18);cursor:pointer;text-align:center;transition:.2s}.node:hover,.node.active{transform:translate(-50%,-50%) scale(1.07);background:#fff;color:#000;border-color:#fff}.node b{display:block;font:500 1.3rem/.95 "Cormorant Garamond",serif}.node span{font-size:.4rem;letter-spacing:.12em}.n1{left:50%;top:10%}.n2{left:77%;top:24%}.n3{left:89%;top:50%}.n4{left:76%;top:77%}.n5{left:50%;top:90%}.n6{left:24%;top:77%}.n7{left:11%;top:50%}.n8{left:23%;top:24%}.n9{left:66%;top:36%}.n10{left:67%;top:64%}.n11{left:33%;top:64%}.n12{left:34%;top:36%}.mapinfo{display:grid;grid-template-columns:.75fr 1.25fr;border-top:1px solid var(--l)}.mapinfo>div{padding:1.4rem}.mapinfo>div+div{border-left:1px solid var(--l)}.mapinfo h3{font:500 2.2rem/.9 "Cormorant Garamond",serif;margin:0 0 .5rem}.mapinfo p{font-size:.58rem;line-height:1.8;color:var(--m);margin:0}.quick{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.7rem}.quick button{background:transparent;color:var(--m);border:1px solid var(--l);padding:.45rem .55rem;font-size:.44rem;cursor:pointer}.quick button:hover{background:#fff;color:#000}
-.route{display:grid;grid-template-columns:.72fr 1.28fr;gap:1px;background:var(--l);border:1px solid var(--l)}.route>div{background:var(--p);padding:clamp(1.4rem,4vw,3rem)}.route h3{font:500 clamp(3rem,6vw,6rem)/.8 "Cormorant Garamond",serif;margin:.8rem 0 1rem}.route p{font-size:.62rem;line-height:1.85;color:var(--m)}.choices{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin:1.4rem 0}.choice{padding:.65rem;background:transparent;color:var(--m);border:1px solid var(--l);text-align:left;cursor:pointer}.choice b{display:block;color:#fff;font:500 1.2rem "Cormorant Garamond",serif}.choice span{font-size:.4rem;text-transform:uppercase;letter-spacing:.1em}.choice.active,.choice:hover{background:#fff;color:#000;border-color:#fff}.choice.active b,.choice:hover b{color:#000}.stops{display:grid;gap:1px;background:var(--l)}.stop{display:grid;grid-template-columns:60px 1fr auto;gap:1rem;align-items:center;background:#0b0b0e;padding:1rem}.stop i{font:500 1.8rem "Cormorant Garamond",serif;color:rgba(255,255,255,.28);font-style:normal}.stop h4{font:500 1.65rem/.95 "Cormorant Garamond",serif;margin:0}.stop p{font-size:.5rem;margin:.3rem 0 0;color:var(--d)}.stop a{font-size:.43rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none}.stop a:hover{text-decoration:underline}
-.toolbar{display:grid;grid-template-columns:1fr auto auto;gap:.5rem}.search,.select{background:#08080b;border:1px solid var(--l);color:#fff;padding:.85rem .8rem;outline:0}.search::placeholder{color:rgba(255,255,255,.28)}.select{font-size:.54rem}.meta{display:flex;justify-content:space-between;align-items:center;margin:.8rem 0 1rem;color:var(--d);font-size:.45rem;text-transform:uppercase;letter-spacing:.12em}.meta button{background:transparent;color:#fff;border:0;cursor:pointer;font-size:.45rem;text-transform:uppercase;letter-spacing:.12em}.archive{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--l);border:1px solid var(--l)}.card{background:#09090c;padding:1.1rem;min-height:215px;display:flex;flex-direction:column;contain:layout paint}.card:hover{background:#0e0e12}.cardtop{display:flex;justify-content:space-between;color:var(--d);font-size:.4rem;text-transform:uppercase;letter-spacing:.12em}.card h3{font:500 1.75rem/.93 "Cormorant Garamond",serif;margin:.65rem 0 .55rem}.card p{font-size:.54rem;line-height:1.7;color:var(--m);margin:0}.cardfoot{margin-top:auto;padding-top:1rem;display:flex;justify-content:space-between;gap:.4rem;align-items:end}.cardfoot span{font-size:.4rem;color:var(--d)}.cardfoot a{font-size:.43rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none}.cardfoot a:hover{text-decoration:underline}
-.wall{display:grid;grid-template-columns:repeat(12,1fr);gap:1px;background:var(--l);border:1px solid var(--l)}.tile{background:#08080b;min-height:145px;padding:1rem;display:flex;flex-direction:column;justify-content:space-between}.tile:nth-child(1),.tile:nth-child(8){grid-column:span 4;grid-row:span 2}.tile:nth-child(2),.tile:nth-child(5),.tile:nth-child(10){grid-column:span 3}.tile:nth-child(3),.tile:nth-child(6),.tile:nth-child(9),.tile:nth-child(12){grid-column:span 2}.tile:nth-child(4),.tile:nth-child(7),.tile:nth-child(11){grid-column:span 3}.tile b{font:500 2rem/.9 "Cormorant Garamond",serif}.tile p{font-size:.51rem;line-height:1.6;color:var(--m)}.tile span,.tile a{font-size:.42rem;text-transform:uppercase;letter-spacing:.12em;color:var(--d)}.tile a{text-decoration:none;color:#fff}.footer{padding:150px 0 90px;text-align:center}.footer .big{font:500 clamp(5rem,13vw,13rem)/.72 "Cormorant Garamond",serif;letter-spacing:-.06em;margin:1rem 0}.footer p{max-width:720px;margin:auto;color:var(--m);font-size:.66rem;line-height:1.9}
-@media(max-width:1050px){.head{grid-template-columns:1fr;gap:1rem}.route{grid-template-columns:1fr}.archive{grid-template-columns:repeat(2,1fr)}.wall{grid-template-columns:repeat(6,1fr)}.tile:nth-child(n){grid-column:span 2;grid-row:span 1}.tile:nth-child(1),.tile:nth-child(8){grid-column:span 3;grid-row:span 2}}@media(max-width:700px){.orbit{width:125vw;right:-45%}.hero-copy h1{font-size:clamp(4.4rem,20vw,7rem)}.stats{gap:1rem}.map{min-height:500px}.node{min-width:72px;padding:.45rem .3rem}.node b{font-size:.98rem}.node span{font-size:.34rem}.center b{font-size:1.55rem}.mapinfo{grid-template-columns:1fr}.mapinfo>div+div{border-left:0;border-top:1px solid var(--l)}.choices{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.archive{grid-template-columns:1fr}.wall{grid-template-columns:1fr 1fr}.tile:nth-child(n){grid-column:span 1!important;grid-row:span 1!important}.stop{grid-template-columns:40px 1fr}.stop a{grid-column:2}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.node{transition:none}}
+/* =========================================================
+   MATHEMATICAL UNIVERSE
+   Completely self-contained page layer.
+   Performance rule: no scroll-driven animation, no giant
+   backdrop-filter surfaces, no continuously animated canvas.
+========================================================= */
+:root{--u-bg:#050507;--u-panel:#0a0a0e;--u-line:rgba(255,255,255,.11);--u-soft:rgba(255,255,255,.055);--u-text:#f7f6f1;--u-muted:rgba(247,246,241,.62);--u-dim:rgba(247,246,241,.34)}
+html{scroll-behavior:smooth}
+body.universe{margin:0;background:var(--u-bg);color:var(--u-text);font-family:Inter,sans-serif;overflow-x:hidden}
+.universe *{box-sizing:border-box}
+.universe a{color:inherit}
+.universe button,.universe input,.universe select{font:inherit}
+.u-wrap{width:min(1450px,92%);margin:auto}
+.u-progress{position:fixed;top:0;left:0;height:2px;width:0;background:#fff;z-index:2000;pointer-events:none}
+.u-hero{min-height:100svh;position:relative;display:flex;align-items:center;overflow:hidden;border-bottom:1px solid var(--u-line)}
+.u-stars{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,255,255,.65) 0 1px,transparent 1.5px);background-size:127px 113px;opacity:.12}
+.u-stars:after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.5) 0 1px,transparent 1.4px);background-size:191px 167px;background-position:40px 70px;opacity:.7}
+.u-orbit{position:absolute;width:min(70vw,920px);aspect-ratio:1;border:1px solid rgba(255,255,255,.07);border-radius:50%;right:-17%;top:8%;transform:rotate(-19deg)}
+.u-orbit:before,.u-orbit:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.045);border-radius:50%;inset:15%;transform:rotate(37deg)}
+.u-orbit:after{inset:37%;border-style:dashed}
+.u-satellite{position:absolute;width:7px;height:7px;background:#fff;border-radius:50%;left:18%;top:12%;box-shadow:0 0 25px rgba(255,255,255,.7)}
+.u-satellite.s2{left:82%;top:66%;width:4px;height:4px;opacity:.65}
+.u-satellite.s3{left:47%;top:88%;width:5px;height:5px;opacity:.45}
+.u-hero-inner{position:relative;z-index:2;padding:120px 0 90px}
+.u-eyebrow{font-size:.5rem;letter-spacing:.3em;text-transform:uppercase;color:var(--u-dim)}
+.u-hero h1{font:600 clamp(5rem,14vw,14rem)/.72 "Cormorant Garamond",serif;letter-spacing:-.065em;margin:1rem 0 1.6rem;max-width:1100px}
+.u-hero h1 span{color:rgba(255,255,255,.28)}
+.u-lead{max-width:780px;color:var(--u-muted);font-size:.88rem;line-height:1.9}
+.u-actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:2rem}
+.u-btn{appearance:none;border:1px solid var(--u-line);background:rgba(255,255,255,.035);color:#fff;padding:.8rem 1rem;cursor:pointer;text-transform:uppercase;letter-spacing:.12em;font-size:.5rem;transition:transform .2s ease,background .2s ease,color .2s ease}
+.u-btn:hover{transform:translateY(-2px);background:#fff;color:#000}
+.u-btn.primary{background:#fff;color:#000}
+.u-readout{display:grid;grid-template-columns:repeat(4,auto);gap:2rem;margin-top:3.5rem;padding-top:1rem;border-top:1px solid var(--u-line);width:min(900px,100%)}
+.u-readout strong{display:block;font:500 1.65rem "Cormorant Garamond",serif}.u-readout span{font-size:.43rem;text-transform:uppercase;letter-spacing:.12em;color:var(--u-dim)}
+.u-section{padding:clamp(90px,11vw,155px) 0;border-bottom:1px solid var(--u-line);content-visibility:auto;contain-intrinsic-size:700px}
+.u-head{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:end;margin-bottom:3rem}
+.u-num{font-size:.46rem;letter-spacing:.28em;text-transform:uppercase;color:var(--u-dim)}
+.u-head h2{font:500 clamp(3.6rem,8vw,8rem)/.78 "Cormorant Garamond",serif;letter-spacing:-.055em;margin:.7rem 0}
+.u-head p{font-size:.7rem;line-height:1.9;color:var(--u-muted);max-width:610px}
+.u-console{display:grid;grid-template-columns:1.1fr .9fr;gap:1px;background:var(--u-line);border:1px solid var(--u-line)}
+.u-console-main,.u-console-side{background:var(--u-panel);padding:clamp(1.2rem,3vw,2.4rem)}
+.u-console-main{min-height:540px;position:relative;overflow:hidden}
+.u-console-main:before{content:"";position:absolute;width:560px;height:560px;border:1px solid rgba(255,255,255,.045);border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none}
+.u-radar{height:470px;position:relative;display:grid;place-items:center}
+.u-radar:before{content:"";position:absolute;width:280px;height:280px;border:1px solid rgba(255,255,255,.1);border-radius:50%;box-shadow:0 0 0 70px rgba(255,255,255,.012),0 0 0 140px rgba(255,255,255,.008)}
+.u-radar:after{content:"";position:absolute;width:1px;height:82%;background:rgba(255,255,255,.07);box-shadow:140px 0 rgba(255,255,255,.04),-140px 0 rgba(255,255,255,.04)}
+.u-radar-center{text-align:center;position:relative;z-index:2}
+.u-radar-center b{display:block;font:600 3rem/.8 "Cormorant Garamond",serif}.u-radar-center small{font-size:.42rem;letter-spacing:.2em;color:var(--u-dim);text-transform:uppercase}
+.u-dot{position:absolute;z-index:3;min-width:76px;border:1px solid rgba(255,255,255,.17);background:#08080b;color:#fff;padding:.55rem .45rem;text-align:center;cursor:pointer}
+.u-dot b{display:block;font:500 1.25rem/.9 "Cormorant Garamond",serif}.u-dot span{font-size:.37rem;text-transform:uppercase;letter-spacing:.1em;color:var(--u-dim)}
+.u-dot:hover,.u-dot.active{background:#fff;color:#000;border-color:#fff;transform:scale(1.05)}.u-dot.active span{color:#000}
+.d1{left:50%;top:3%;transform:translateX(-50%)}.d2{right:8%;top:22%}.d3{right:4%;top:52%}.d4{right:18%;bottom:7%}.d5{left:50%;bottom:1%;transform:translateX(-50%)}.d6{left:18%;bottom:7%}.d7{left:4%;top:52%}.d8{left:8%;top:22%}
+.u-console-side h3{font:500 clamp(2.5rem,5vw,5rem)/.8 "Cormorant Garamond",serif;margin:.8rem 0 1rem}.u-console-side p{font-size:.6rem;line-height:1.85;color:var(--u-muted)}
+.u-signal{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--u-line)}
+.u-signal-row{display:flex;justify-content:space-between;gap:1rem;padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.48rem}
+.u-signal-row span:last-child{color:var(--u-dim);text-align:right}
+.u-jump{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}.u-jump button{border:1px solid var(--u-line);background:transparent;color:var(--u-muted);padding:.5rem .6rem;font-size:.43rem;cursor:pointer}.u-jump button:hover{background:#fff;color:#000}
+.u-mission{display:grid;grid-template-columns:.8fr 1.2fr;border:1px solid var(--u-line);background:var(--u-panel)}
+.u-mission-copy{padding:clamp(1.5rem,4vw,3rem);border-right:1px solid var(--u-line)}
+.u-mission-copy h3{font:500 clamp(3rem,6vw,6rem)/.8 "Cormorant Garamond",serif;margin:.8rem 0}
+.u-mission-copy p{font-size:.62rem;line-height:1.9;color:var(--u-muted)}
+.u-mission-result{padding:1px;background:var(--u-line);display:grid;grid-template-columns:1fr 1fr}
+.u-mission-card{background:#08080b;padding:1.2rem;min-height:190px;display:flex;flex-direction:column;justify-content:space-between;border:0;color:#fff;text-align:left;cursor:pointer}
+.u-mission-card:hover{background:#101015}.u-mission-card:nth-child(3){grid-column:1/-1}
+.u-mission-card .tag{font-size:.4rem;letter-spacing:.12em;text-transform:uppercase;color:var(--u-dim)}
+.u-mission-card b{font:500 1.8rem/.9 "Cormorant Garamond",serif}.u-mission-card p{font-size:.5rem;line-height:1.6;color:var(--u-muted);margin:.4rem 0}.u-mission-card a{font-size:.43rem;text-transform:uppercase;letter-spacing:.12em;text-decoration:none}
+.u-portal{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--u-line);border:1px solid var(--u-line)}
+.u-portal-card{min-height:235px;background:#08080b;padding:1.25rem;display:flex;flex-direction:column;justify-content:space-between;text-decoration:none}
+.u-portal-card:hover{background:#101015}.u-portal-card .symbol{font:500 3rem "Cormorant Garamond",serif;color:rgba(255,255,255,.3)}.u-portal-card h3{font:500 2rem/.9 "Cormorant Garamond",serif;margin:.6rem 0}.u-portal-card p{font-size:.52rem;line-height:1.7;color:var(--u-muted);margin:0}.u-portal-card span{font-size:.42rem;text-transform:uppercase;letter-spacing:.12em;color:var(--u-dim)}
+.u-controls{display:grid;grid-template-columns:1fr auto auto;gap:.5rem}.u-search,.u-select{background:#08080b;border:1px solid var(--u-line);color:#fff;padding:.85rem .8rem;outline:0}.u-search::placeholder{color:rgba(255,255,255,.27)}.u-select{font-size:.52rem}.u-meta{display:flex;justify-content:space-between;align-items:center;margin:.8rem 0 1rem;color:var(--u-dim);font-size:.45rem;text-transform:uppercase;letter-spacing:.12em}.u-meta button{border:0;background:transparent;color:#fff;font-size:.45rem;text-transform:uppercase;letter-spacing:.12em;cursor:pointer}
+.u-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--u-line);border:1px solid var(--u-line)}
+.u-card{background:#08080b;min-height:225px;padding:1.05rem;display:flex;flex-direction:column;contain:content}
+.u-card:hover{background:#0e0e12}.u-card-top{display:flex;justify-content:space-between;gap:.5rem;color:var(--u-dim);font-size:.39rem;text-transform:uppercase;letter-spacing:.1em}.u-card h3{font:500 1.7rem/.92 "Cormorant Garamond",serif;margin:.7rem 0 .55rem}.u-card p{font-size:.51rem;line-height:1.65;color:var(--u-muted);margin:0}.u-card-foot{margin-top:auto;padding-top:1rem;display:flex;justify-content:space-between;align-items:end;gap:.4rem}.u-card-foot span{font-size:.39rem;color:var(--u-dim)}.u-card-foot a{font-size:.43rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none}.u-card-foot a:hover{text-decoration:underline}
+.u-more{display:flex;justify-content:center;margin-top:1rem}.u-more button{min-width:180px}
+.u-compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--u-line);border:1px solid var(--u-line)}.u-compare>div{background:var(--u-panel);padding:clamp(1.2rem,3vw,2rem)}.u-compare h3{font:500 2.6rem/.9 "Cormorant Garamond",serif;margin:.7rem 0}.u-compare select{width:100%;margin-bottom:.7rem}.u-vs{display:grid;place-items:center;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:500 2rem "Cormorant Garamond",serif;color:rgba(255,255,255,.35);pointer-events:none}.u-compare-wrap{position:relative}
+.u-verdict{margin-top:1rem;border-top:1px solid var(--u-line);padding-top:1rem;font-size:.58rem;line-height:1.8;color:var(--u-muted)}
+.u-footer{padding:150px 0 90px;text-align:center}.u-footer .big{font:500 clamp(5rem,13vw,13rem)/.72 "Cormorant Garamond",serif;letter-spacing:-.06em;margin:1rem 0}.u-footer p{max-width:720px;margin:auto;color:var(--u-muted);font-size:.65rem;line-height:1.9}
+@media(max-width:1100px){.u-head{grid-template-columns:1fr;gap:1rem}.u-console{grid-template-columns:1fr}.u-grid{grid-template-columns:repeat(3,1fr)}.u-portal{grid-template-columns:repeat(2,1fr)}.u-mission{grid-template-columns:1fr}.u-mission-copy{border-right:0;border-bottom:1px solid var(--u-line)}}
+@media(max-width:760px){.u-hero h1{font-size:clamp(4.4rem,20vw,7rem)}.u-readout{grid-template-columns:1fr 1fr;gap:1rem}.u-orbit{width:125vw;right:-48%}.u-radar{height:430px}.u-radar:before{width:210px;height:210px}.u-dot{min-width:62px}.u-dot b{font-size:1rem}.u-dot span{font-size:.32rem}.u-grid{grid-template-columns:1fr 1fr}.u-controls{grid-template-columns:1fr}.u-mission-result{grid-template-columns:1fr}.u-mission-card:nth-child(3){grid-column:auto}.u-portal{grid-template-columns:1fr}.u-compare{grid-template-columns:1fr}.u-vs{position:static;transform:none;text-align:center;padding:.7rem;background:#08080b}.u-console-side h3{font-size:3.4rem}}
+@media(max-width:480px){.u-grid{grid-template-columns:1fr}.u-readout strong{font-size:1.35rem}.u-radar{height:390px}.d2{right:2%}.d3{right:0}.d4{right:8%}.d6{left:8%}.d7{left:0}.d8{left:2%}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.u-btn,.u-dot{transition:none}}
 </style>
 </head>
-<body class="atlas">
-<div class="bar" id="bar"></div>
-<header class="navbar"><div class="nav-container">
-<a href="index.html" class="logo"><img src="logo.png" alt="CALCULUS logo" width="40" height="40"> CALCULUS</a>
-<nav class="desktop-nav"><a href="index.html" class="nav-link">Home</a><a href="about.html" class="nav-link">About</a><a href="books.html" class="nav-link">Books</a><a href="topics.html" class="nav-link">Topics</a><a href="laboratory.html" class="nav-link active">Atlas</a><a href="other-websites.html" class="nav-link">Other Websites</a><a href="login.html" class="nav-link">Log In</a></nav>
-<button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false"><span></span><span></span><span></span></button></div>
-<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="about.html">About</a><a href="books.html">Books</a><a href="topics.html">Topics</a><a href="laboratory.html">Atlas</a><a href="other-websites.html">Other Websites</a><a href="login.html">Log In</a></div></header>
+<body class="universe">
+<div class="u-progress" id="uProgress"></div>
+<header class="navbar">
+ <div class="nav-container">
+  <a href="index.html" class="logo"><img src="logo.png" alt="CALCULUS logo" width="40" height="40"> CALCULUS</a>
+  <nav class="desktop-nav">
+   <a href="index.html" class="nav-link">Home</a><a href="about.html" class="nav-link">About</a><a href="books.html" class="nav-link">Books</a><a href="topics.html" class="nav-link">Topics</a><a href="laboratory.html" class="nav-link active">Universe</a><a href="other-websites.html" class="nav-link">Other Websites</a><a href="login.html" class="nav-link">Log In</a>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Open navigation menu" aria-expanded="false"><span></span><span></span><span></span></button>
+ </div>
+ <div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="about.html">About</a><a href="books.html">Books</a><a href="topics.html">Topics</a><a href="laboratory.html">Universe</a><a href="other-websites.html">Other Websites</a><a href="login.html">Log In</a></div>
+</header>
 
 <main>
-<section class="hero"><div class="gridbg"></div><div class="orbit"><div class="hero-core">∫</div></div><div class="wrap"><div class="hero-copy">
-<div class="k">CALCULUS · NOT A LABORATORY</div><h1>The Mathematical <em>Atlas.</em></h1>
-<p class="lead">A launch system for mathematics on the web. Instead of repeating the same interaction in different boxes, this page connects people to tools, courses, visual explanations, problem collections, databases, software, history and research — 150 destinations arranged for wandering.</p>
-<div class="actions"><button class="btn primary" data-go="#map">Open the map</button><button class="btn" data-go="#archive">Enter the archive</button><button class="btn" id="surprise">Surprise me ↗</button></div>
-<div class="stats"><div><strong>150</strong><span>destinations</span></div><div><strong>15</strong><span>source worlds</span></div><div><strong>12</strong><span>mathematical regions</span></div><div><strong>0</strong><span>scroll-driven render loops</span></div></div>
-</div></div></section>
+<section class="u-hero">
+ <div class="u-stars"></div><div class="u-orbit"></div><i class="u-satellite"></i><i class="u-satellite s2"></i><i class="u-satellite s3"></i>
+ <div class="u-wrap"><div class="u-hero-inner">
+  <div class="u-eyebrow">CALCULUS · THE FORMER LABORATORY IS GONE</div>
+  <h1>The Mathematical <span>Universe.</span></h1>
+  <p class="u-lead">Not a calculator. Not a quiz. Not a row of identical cards. This is a launch point into the mathematical internet — places where mathematics can be seen, manipulated, computed, studied, solved, searched and researched.</p>
+  <div class="u-actions"><button class="u-btn primary" data-scroll="#navigator">Enter the universe</button><button class="u-btn" id="teleport">Teleport me ↗</button><button class="u-btn" data-scroll="#archive">Open 120+ doors</button></div>
+  <div class="u-readout"><div><strong>120+</strong><span>live destinations</span></div><div><strong>12</strong><span>mathematical worlds</span></div><div><strong>8</strong><span>discovery modes</span></div><div><strong>0</strong><span>scroll animation loops</span></div></div>
+ </div></div>
+</section>
 
-<section id="map"><div class="wrap"><div class="head"><div><div class="num">01 · THE MAP</div><h2>Mathematics is<br>connected.</h2></div><p>There is no single correct route through mathematics. Click a region and the archive reorients itself around it. The map is a navigation surface, not a decorative animation.</p></div>
-<div class="mapbox"><div class="maptop"><span>12 regions · click a node</span><span id="mapStatus">whole universe</span></div><div class="map"><i class="ring"></i><i class="ring"></i><i class="ring"></i><div class="center"><b>MATHEMATICS</b><small>choose a region</small></div>
-<button class="node n1" data-d="analysis"><span>01</span><b>Analysis</b></button><button class="node n2" data-d="geometry"><span>02</span><b>Geometry</b></button><button class="node n3" data-d="topology"><span>03</span><b>Topology</b></button><button class="node n4" data-d="algebra"><span>04</span><b>Algebra</b></button><button class="node n5" data-d="number"><span>05</span><b>Number Theory</b></button><button class="node n6" data-d="combinatorics"><span>06</span><b>Combinatorics</b></button><button class="node n7" data-d="probability"><span>07</span><b>Probability</b></button><button class="node n8" data-d="logic"><span>08</span><b>Logic</b></button><button class="node n9" data-d="computation"><span>09</span><b>Computation</b></button><button class="node n10" data-d="education"><span>10</span><b>Education</b></button><button class="node n11" data-d="history"><span>11</span><b>History</b></button><button class="node n12" data-d="physics"><span>12</span><b>Math Physics</b></button></div>
-<div class="mapinfo"><div><h3 id="domainTitle">The whole universe.</h3><p id="domainText">Choose a region to filter the archive. A destination may belong to several regions at once.</p></div><div><div class="k">FAST ROUTES</div><div class="quick" id="quick"></div></div></div></div></div></section>
+<section class="u-section" id="navigator">
+ <div class="u-wrap"><div class="u-head"><div><div class="u-num">01 · NAVIGATOR</div><h2>Find a<br>world.</h2></div><p>Click a mathematical world. The interface changes what it recommends instead of making you answer another question. Every world opens a different collection of real external resources.</p></div>
+ <div class="u-console">
+  <div class="u-console-main"><div class="u-eyebrow">LIVE NAVIGATION MAP</div>
+   <div class="u-radar" id="radar">
+    <button class="u-dot d1" data-world="analysis"><span>01</span><b>Analysis</b></button><button class="u-dot d2" data-world="geometry"><span>02</span><b>Geometry</b></button><button class="u-dot d3" data-world="topology"><span>03</span><b>Topology</b></button><button class="u-dot d4" data-world="algebra"><span>04</span><b>Algebra</b></button><button class="u-dot d5" data-world="number"><span>05</span><b>Number</b></button><button class="u-dot d6" data-world="discrete"><span>06</span><b>Discrete</b></button><button class="u-dot d7" data-world="probability"><span>07</span><b>Probability</b></button><button class="u-dot d8" data-world="logic"><span>08</span><b>Logic</b></button>
+    <div class="u-radar-center"><b>∞</b><small id="radarLabel">choose a world</small></div>
+   </div>
+  </div>
+  <aside class="u-console-side"><div class="u-eyebrow">CURRENT SIGNAL</div><h3 id="worldTitle">The whole universe.</h3><p id="worldText">Eight gateways cover the major structural directions of the collection. Selecting one immediately filters the archive below.</p><div class="u-signal"><div class="u-signal-row"><span>Resources in signal</span><span id="worldCount">120+</span></div><div class="u-signal-row"><span>Primary character</span><span id="worldKind">mixed</span></div><div class="u-signal-row"><span>Action</span><span>open / explore</span></div></div><div class="u-jump" id="worldJumps"></div></aside>
+ </div>
+ </div>
+</section>
 
-<section><div class="wrap"><div class="head"><div><div class="num">02 · EXPEDITION</div><h2>Build a route,<br>not a syllabus.</h2></div><p>Choose a starting region. The Atlas builds a five-stop path crossing different kinds of mathematics: visual work, serious study, computation, reference and problems or research.</p></div>
-<div class="route"><div><div class="k">PERSONAL ROUTE GENERATOR</div><h3>Where<br>do you<br>want to go?</h3><p>You are not answering a question. You are choosing a doorway. Generate another route whenever you want.</p><div class="choices" id="choices"></div><div class="k" id="routeText">Five-stop expedition.</div></div><div><div class="stops" id="stops"></div></div></div></div></section>
+<section class="u-section">
+ <div class="u-wrap"><div class="u-head"><div><div class="u-num">02 · MISSION CONTROL</div><h2>Don't know<br>where to begin?</h2></div><p>Press the button and receive a small expedition assembled from different parts of the mathematical internet. It deliberately crosses formats: a visualisation, a course, a database, a problem source and a computational tool.</p></div>
+ <div class="u-mission">
+  <div class="u-mission-copy"><div class="u-eyebrow">RANDOM EXPEDITION</div><h3>Five<br>doors.</h3><p id="missionText">Each press creates a new route. There is no score, streak or “correct” answer. The point is discovery.</p><button class="u-btn primary" id="newMission">Generate expedition</button></div>
+  <div class="u-mission-result" id="missionResult"></div>
+ </div>
+ </div>
+</section>
 
-<section id="archive"><div class="wrap"><div class="head"><div><div class="num">03 · THE ARCHIVE</div><h2>150 doors<br>outward.</h2></div><p>Everything points somewhere real. Search by title, source, type or mathematical region. Nothing is embedded into the page, so outside sites remain independent and the page stays light while you scroll.</p></div>
-<div class="toolbar"><input id="search" class="search" placeholder="Search mathematics, source, tool, course, database…" autocomplete="off"><select id="type" class="select"><option value="all">All types</option><option>Interactive</option><option>Course</option><option>Reference</option><option>Problems</option><option>Research</option><option>Software</option><option>History</option><option>Visual</option></select><select id="domain" class="select"><option value="all">All regions</option></select></div>
-<div class="meta"><span id="count">150 destinations</span><button id="reset">Reset filters</button></div><div class="archive" id="archiveGrid"></div></div></section>
+<section class="u-section">
+ <div class="u-wrap"><div class="u-head"><div><div class="u-num">03 · PORTALS</div><h2>Choose a<br>way in.</h2></div><p>Different people enter mathematics through different doors. These portals jump directly into a particular kind of experience.</p></div>
+ <div class="u-portal">
+  <a class="u-portal-card" href="https://www.geogebra.org/" target="_blank" rel="noopener"><div class="symbol">△</div><div><h3>Manipulate</h3><p>Move points, curves, shapes and constructions instead of merely reading about them.</p></div><span>Interactive mathematics ↗</span></a>
+  <a class="u-portal-card" href="https://www.3blue1brown.com/" target="_blank" rel="noopener"><div class="symbol">∫</div><div><h3>See</h3><p>Turn abstract ideas into visual structures, motion and intuition.</p></div><span>Visual mathematics ↗</span></a>
+  <a class="u-portal-card" href="https://oeis.org/" target="_blank" rel="noopener"><div class="symbol">aₙ</div><div><h3>Search</h3><p>Start with an object, sequence or pattern and see what the mathematical world knows about it.</p></div><span>Mathematical databases ↗</span></a>
+  <a class="u-portal-card" href="https://projecteuler.net/archives" target="_blank" rel="noopener"><div class="symbol">λ</div><div><h3>Compute</h3><p>Cross the boundary between mathematical ideas and executable algorithms.</p></div><span>Computational problems ↗</span></a>
+ </div>
+ </div>
+</section>
 
-<section><div class="wrap"><div class="head"><div><div class="num">04 · DISCOVERY WALL</div><h2>Things you<br>may not know exist.</h2></div><p>A mixed wall of mathematical culture: databases, visualisations, computation, history, problem solving and serious study. This is the part designed for accidental discovery.</p></div><div class="wall" id="wall"></div></div></section>
+<section class="u-section" id="archive">
+ <div class="u-wrap"><div class="u-head"><div><div class="u-num">04 · THE DOOR NETWORK</div><h2>120+ real<br>destinations.</h2></div><p>These are external destinations, not fake mini-apps pretending to be a universe. Search them, filter them, open them, get lost in them. The full catalogue stays in memory while only the visible batch is rendered, keeping scrolling smooth.</p></div>
+ <div class="u-controls"><input class="u-search" id="uSearch" placeholder="Search title, source, subject, type…" autocomplete="off"><select class="u-select" id="uType"><option value="all">All types</option><option>Interactive</option><option>Visual</option><option>Course</option><option>Reference</option><option>Problems</option><option>Research</option><option>Software</option><option>History</option></select><select class="u-select" id="uWorld"><option value="all">All worlds</option></select></div>
+ <div class="u-meta"><span id="uCount">0 destinations</span><button id="uReset">Reset</button></div><div class="u-grid" id="uGrid"></div><div class="u-more"><button class="u-btn" id="loadMore">Load more doors</button></div>
+ </div>
+</section>
 
-<section><div class="wrap"><div class="head"><div><div class="num">05 · LAST DOOR</div><h2>Do not<br>stop here.</h2></div><p>The point is to make the mathematical internet feel enormous, navigable and worth exploring — not to trap the user inside another miniature laboratory.</p></div><div class="actions"><button class="btn primary" id="finalSurprise">Open a random destination ↗</button><button class="btn" data-go="#map">Return to map ↑</button></div></div></section>
+<section class="u-section">
+ <div class="u-wrap"><div class="u-head"><div><div class="u-num">05 · TWO-WAY MIRROR</div><h2>Put two<br>doors together.</h2></div><p>This is not a ranking. Pick any two destinations and compare their character, subject and source. Sometimes the interesting thing is the difference between two ways of approaching the same mathematics.</p></div>
+ <div class="u-compare-wrap"><div class="u-compare">
+  <div><div class="u-eyebrow">DOOR A</div><select class="u-select" id="compareA"></select><h3 id="compareATitle">Choose a door.</h3><div class="u-verdict" id="compareAText">Select a destination.</div></div>
+  <div><div class="u-eyebrow">DOOR B</div><select class="u-select" id="compareB"></select><h3 id="compareBTitle">Choose a door.</h3><div class="u-verdict" id="compareBText">Select a destination.</div></div>
+ </div><div class="u-vs">↔</div></div>
+ </div>
+</section>
+
+<section class="u-section">
+ <div class="u-wrap"><div class="u-head"><div><div class="u-num">06 · THE UNEXPECTED</div><h2>Things hiding<br>in plain sight.</h2></div><p>Some of the best mathematical experiences are not labelled “calculus”. They live inside databases, programming environments, visual art, physics simulations, cryptography and historical archives.</p></div>
+ <div class="u-grid" id="unexpectedGrid"></div>
+ </div>
+</section>
 </main>
-<footer class="footer"><div class="wrap"><div class="k">THE MATHEMATICAL ATLAS</div><div class="big">Keep wandering.</div><p>One website cannot contain mathematics. It can become a doorway to the places where mathematics is visualised, taught, computed, proved, catalogued and discovered.</p></div></footer>
+
+<footer class="u-footer"><div class="u-wrap"><div class="u-eyebrow">CALCULUS · MATHEMATICAL UNIVERSE</div><div class="big">Keep wandering.</div><p>One webpage cannot contain mathematics. It can, however, become a doorway to an internet that is much larger than the webpage itself.</p></div></footer>
 
 <script>
 (()=>{'use strict';
-const $=s=>document.querySelector(s),$=s=>[...document.querySelectorAll(s)];
-const hamburger=$('#hamburger'),mobileMenu=$('#mobileMenu');
-if(hamburger&&mobileMenu){
-  const close=()=>{mobileMenu.classList.remove('open');hamburger.classList.remove('open');hamburger.setAttribute('aria-expanded','false');};
-  hamburger.onclick=e=>{e.stopPropagation();mobileMenu.classList.toggle('open');hamburger.classList.toggle('open');hamburger.setAttribute('aria-expanded',mobileMenu.classList.contains('open'));};
-  mobileMenu.onclick=e=>{if(e.target.closest('a'))close();};
-  document.addEventListener('click',e=>{if(mobileMenu.classList.contains('open')&&!mobileMenu.contains(e.target)&&!hamburger.contains(e.target))close();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
-}
-$$('[data-go]').forEach(b=>b.onclick=()=>$(b.dataset.go)?.scrollIntoView({behavior:'smooth'}));
-let ticking=false;addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{const m=document.documentElement.scrollHeight-innerHeight;$('#bar').style.width=(m?scrollY/m*100:0)+'%';ticking=false})},{passive:true});
-
-/* 15 source worlds × 10 destinations = 150 external materials. */
-const S=[
-['GeoGebra','Interactive','https://www.geogebra.org/','Graphing|graphing|analysis,education;Geometry|geometry|geometry,education;3D Calculator|3d|geometry,computation;CAS|cas|algebra,analysis;Probability|probability|probability,computation;Scientific|scientific|computation,analysis;Math Resources|math|education,geometry;Community Materials|materials|education,geometry;Classic|classic|analysis,geometry;Notes|notes|education,logic'],
-['Mathigon','Interactive','https://mathigon.org/','Polypad|polypad|geometry,education;Playground||education,geometry;Activities|activities|education,combinatorics;Timeline|activities/timeline|history,education;Fractals|course/fractals/introduction|geometry,analysis;Sequences|course/sequences/introduction|number,combinatorics;Graphs|course/graphs/introduction|combinatorics,logic;Origami|course/origami/introduction|geometry,combinatorics;Symmetry|course/symmetry/introduction|geometry,algebra;Number Almanac|activities/almanac|number,history'],
-['Desmos','Interactive','https://www.desmos.com/','Graphing Calculator|calculator|analysis,education;3D Calculator|3d|geometry,analysis;Geometry|geometry|geometry,education;Scientific|scientific|computation,analysis;Four Function|fourfunction|education,computation;Activities|activities|education,problems;Learn|learn|education,analysis;Classroom|classroom|education,logic;Matrix Guide|help-center/articles/4404851938445-matrix-calculator|algebra,computation;Actions Guide|help-center/articles/4407725009165-actions|computation,logic'],
-['3Blue1Brown','Visual','https://www.3blue1brown.com/','Essence of Calculus|topics/calculus|analysis,education;Linear Algebra|topics/linear-algebra|algebra,geometry;Differential Equations|topics/differential-equations|analysis,physics;Probability|topics/probability|probability,combinatorics;Fourier|topics/fourier-transforms|analysis,computation;Neural Networks|topics/neural-networks|computation,algebra;Computer Science|topics/computer-science|computation,logic;Visual Mathematics|topics|geometry,education;Lessons|lessons|education,analysis;Blog|blog|history,education'],
-['PhET','Interactive','https://phet.colorado.edu/en/simulations/','Function Builder|function-builder|analysis,education;Graphing Lines|graphing-lines|analysis,education;Graphing Quadratics|graphing-quadratics|analysis,education;Expression Exchange|expression-exchange|algebra,education;Equality Explorer|equality-explorer|algebra,logic;Fractions Intro|fractions-intro|education,number;Fraction Matcher|fraction-matcher|education,number;Area Model Algebra|area-model-algebra|algebra,geometry;Least Squares Regression|least-squares-regression|probability,analysis;Math Simulations|filter?subjects=math|education,physics'],
-['MIT OpenCourseWare','Course','https://ocw.mit.edu/courses/','Single Variable Calculus|18-01sc-single-variable-calculus-fall-2010/|analysis,education;Multivariable Calculus|18-02sc-multivariable-calculus-fall-2010/|analysis,geometry;Linear Algebra|18-06-linear-algebra-spring-2010/|algebra,geometry;Introduction to Analysis|18-100a-introduction-to-analysis-fall-2012/|analysis,logic;Algebra I|18-701-algebra-i-fall-2010/|algebra,number;Algebra II|18-702-algebra-ii-fall-2011/|algebra,number;Number Theory|18-781-theory-of-numbers-fall-2012/|number,algebra;Differential Geometry|18-950-differential-geometry-fall-2008/|geometry,analysis;PDE|18-152-introduction-to-partial-differential-equations-fall-2011/|analysis,physics;Topology|18-906-algebraic-topology-i-fall-2012/|topology,algebra'],
-['OpenStax','Course','https://openstax.org/books/','Precalculus|precalculus/|analysis,education;Calculus I|calculus-volume-1/|analysis,education;Calculus II|calculus-volume-2/|analysis,education;Calculus III|calculus-volume-3/|analysis,geometry;Statistics|introductory-statistics-2e/|probability,education;Algebra & Trig|algebra-and-trigonometry-2e/|algebra,education;College Physics|college-physics-2e/|physics,analysis;University Physics I|university-physics-volume-1/|physics,analysis;University Physics II|university-physics-volume-2/|physics,analysis;University Physics III|university-physics-volume-3/|physics,computation'],
-['NRICH','Problems','https://nrich.maths.org/','Problems|problems|problems,education;Mathematical Topics|mathematical-topics|education,analysis;Secondary Students|students/secondary|education,problems;Post-16|students/post-16|education,analysis;Interactive Resources|secondary-interactive-resources|education,geometry;Number Problems|number-short-problems|number,problems;Thinking Mathematically|thinking-mathematically-short-problems|logic,problems;University Preparation|prepare-university|education,analysis;Scientific Mathematics|core-scientific-mathematics|physics,computation;Secondary Topics|topics-mathematics-secondary-students|education,algebra'],
-['NIST DLMF','Reference','https://dlmf.nist.gov/','Digital Library||analysis,education;Gamma|5|analysis,number;Bessel|10|analysis,physics;Orthogonal Polynomials|18|analysis,algebra;Elliptic Integrals|19|analysis,geometry;Theta Functions|20|analysis,number;Zeta Functions|25|number,analysis;Combinatorial Analysis|26|combinatorics,number;Number Theory|27|number,algebra;Integral Transforms|13|analysis,computation'],
-['OEIS','Reference','https://oeis.org/','Integer Sequences||number,combinatorics;Fibonacci|A000045|number,combinatorics;Primes|A000040|number,algebra;Catalan|A000108|combinatorics,number;Partitions|A000041|number,combinatorics;Powers of Two|A000079|number,algebra;Bernoulli|A027641|number,analysis;Bell Numbers|A000110|combinatorics,number;Euler Numbers|A000364|number,analysis;Squares|A000290|number,geometry'],
-['LMFDB','Research','https://www.lmfdb.org/','Database Home||number,algebra;Elliptic Curves|EllipticCurve/|number,geometry;Number Fields|NumberField/|number,algebra;Modular Forms|ModularForm/|number,analysis;L-functions|L/|number,analysis;Genus 2 Curves|Genus2Curve/|geometry,number;Dirichlet Characters|Character/Dirichlet/|number,algebra;Hilbert Modular Forms|ModularForm/Hilbert/|number,analysis;Artin Representations|ArtinRepresentation/|algebra,number;Hecke Groups|Groups/Hecke/|algebra,geometry'],
-['Project Euler','Problems','https://projecteuler.net/','Problem Archive|archives|computation,problems;Multiples of 3 or 5|problem=1|number,computation;Even Fibonacci|problem=2|number,computation;Largest Prime Factor|problem=3|number,computation;Sum Square Difference|problem=6|number,computation;10001st Prime|problem=7|number,computation;Collatz Sequence|problem=14|number,analysis;Lattice Paths|problem=15|combinatorics,geometry;Combinatoric Selections|problem=53|combinatorics,number;Spiral Primes|problem=58|number,geometry'],
-['Art of Problem Solving','Problems','https://artofproblemsolving.com/wiki/index.php/','Mathematics Wiki|Mathematics|education,problems;Number Theory|Number_theory|number,algebra;Combinatorics|Combinatorics|combinatorics,problems;Geometry|Geometry|geometry,problems;Probability|Probability|probability,combinatorics;Proof Writing|Proof_writing|logic,education;Set Theory|Set_theory|logic,analysis;AIME|AIME|problems,number;Olympiad Archive|Olympiad_Archive|problems,geometry;Competitions|Category:Mathematics_competitions|education,problems'],
-['SageMath','Software','https://www.sagemath.org/','SageMath||computation,algebra;Documentation|documentation.html|computation,education;Tutorial|tutorial.html|education,computation;Reference Manual|reference.html|computation,algebra;Download|download.html|computation;Cloud|cloud.html|computation,education;Packages|packages.html|computation,algebra;Community|community.html|education,computation;Features|features.html|computation,algebra;Examples|examples.html|computation,analysis'],
-['SymPy','Software','https://www.sympy.org/','SymPy||computation,algebra;Documentation|docs/|computation,education;Tutorial|docs/tutorials/intro-tutorial/index.html|education,computation;Calculus|docs/tutorials/intro-tutorial/calculus.html|analysis,computation;Solvers|docs/tutorials/intro-tutorial/solvers.html|algebra,computation;Matrices|docs/tutorials/intro-tutorial/matrices.html|algebra,geometry;Integrals|docs/modules/integrals/integrals.html|analysis,computation;ODEs|docs/modules/solvers/ode.html|analysis,physics;Statistics|docs/modules/stats.html|probability,computation;Geometry|docs/modules/geometry/index.html|geometry,computation']
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const resources=[
+['GeoGebra','Interactive','Graphing Calculator','https://www.geogebra.org/graphing','analysis,geometry','Move mathematical objects and see relationships immediately.'],
+['GeoGebra','Interactive','3D Calculator','https://www.geogebra.org/3d','geometry,analysis','Explore surfaces, solids and three-dimensional geometry.'],
+['GeoGebra','Interactive','Geometry','https://www.geogebra.org/geometry','geometry','Construct and transform geometric objects.'],
+['GeoGebra','Interactive','CAS Calculator','https://www.geogebra.org/cas','algebra,analysis','Symbolic algebra and calculus experiments.'],
+['GeoGebra','Interactive','Probability Calculator','https://www.geogebra.org/probability','probability','Explore distributions and probability models.'],
+['GeoGebra','Interactive','Scientific Calculator','https://www.geogebra.org/scientific','analysis,computation','A fast numerical doorway for experimentation.'],
+['GeoGebra','Interactive','Graphing Resources','https://www.geogebra.org/materials','education,geometry','Community-created mathematical constructions.'],
+['GeoGebra','Interactive','Classic Calculator','https://www.geogebra.org/classic','analysis,geometry','A broad multi-tool mathematical workspace.'],
+['Mathigon','Interactive','Polypad','https://mathigon.org/polypad','geometry,discrete','Manipulatives for shapes, algebra and patterns.'],
+['Mathigon','Interactive','Mathematical Timeline','https://mathigon.org/timeline','history,education','A visual route through mathematical history.'],
+['Mathigon','Interactive','Fractals','https://mathigon.org/course/fractals/introduction','geometry,analysis','Interactive introduction to self-similarity.'],
+['Mathigon','Interactive','Sequences','https://mathigon.org/course/sequences/introduction','number,analysis','Visual exploration of sequences and patterns.'],
+['Mathigon','Interactive','Graphs','https://mathigon.org/course/graphs/introduction','discrete,logic','Learn graph structures through interaction.'],
+['Mathigon','Interactive','Origami','https://mathigon.org/course/origami/introduction','geometry','Mathematics through folding and construction.'],
+['Mathigon','Interactive','Symmetry','https://mathigon.org/course/symmetry/introduction','geometry,algebra','Explore symmetry as a mathematical structure.'],
+['Mathigon','Interactive','Number Almanac','https://mathigon.org/activities/almanac','number,history','Discover curious facts and structures about numbers.'],
+['Desmos','Interactive','Graphing Calculator','https://www.desmos.com/calculator','analysis,education','Fast browser graphing with sliders and expressions.'],
+['Desmos','Interactive','3D Calculator','https://www.desmos.com/3d','geometry,analysis','Plot and inspect three-dimensional objects.'],
+['Desmos','Interactive','Geometry','https://www.desmos.com/geometry','geometry','Dynamic geometry in the browser.'],
+['Desmos','Interactive','Scientific Calculator','https://www.desmos.com/scientific','analysis,computation','Numerical experimentation and calculation.'],
+['Desmos','Interactive','Four Function Calculator','https://www.desmos.com/fourfunction','education,computation','Minimal arithmetic environment.'],
+['Desmos','Interactive','Activities','https://www.desmos.com/activities','education,problems','Interactive classroom mathematics.'],
+['Desmos','Interactive','Learn','https://www.desmos.com/learn','education,analysis','Guides and activities for learning mathematics.'],
+['3Blue1Brown','Visual','Essence of Calculus','https://www.3blue1brown.com/topics/calculus','analysis,education','Visual explanations of core calculus ideas.'],
+['3Blue1Brown','Visual','Linear Algebra','https://www.3blue1brown.com/topics/linear-algebra','algebra,geometry','Geometric intuition for vectors and linear maps.'],
+['3Blue1Brown','Visual','Differential Equations','https://www.3blue1brown.com/topics/differential-equations','analysis,physics','See differential equations as dynamical systems.'],
+['3Blue1Brown','Visual','Probability','https://www.3blue1brown.com/topics/probability','probability,combinatorics','Visual probability and randomness.'],
+['3Blue1Brown','Visual','Fourier Transforms','https://www.3blue1brown.com/topics/fourier-transforms','analysis,computation','Frequency-domain thinking made visual.'],
+['3Blue1Brown','Visual','Neural Networks','https://www.3blue1brown.com/topics/neural-networks','computation,algebra','Mathematical structure behind neural networks.'],
+['3Blue1Brown','Visual','Computer Science','https://www.3blue1brown.com/topics/computer-science','computation,logic','Mathematical ideas appearing in computing.'],
+['3Blue1Brown','Visual','Lessons','https://www.3blue1brown.com/lessons','education,analysis','A library of mathematical visual explanations.'],
+['PhET','Interactive','Function Builder','https://phet.colorado.edu/en/simulations/function-builder','analysis,education','Build functions by experimenting with representations.'],
+['PhET','Interactive','Graphing Lines','https://phet.colorado.edu/en/simulations/graphing-lines','analysis,education','Manipulate line parameters and graphs.'],
+['PhET','Interactive','Graphing Quadratics','https://phet.colorado.edu/en/simulations/graphing-quadratics','analysis,algebra','Explore quadratic parameters dynamically.'],
+['PhET','Interactive','Expression Exchange','https://phet.colorado.edu/en/simulations/expression-exchange','algebra,education','Match equivalent algebraic expressions.'],
+['PhET','Interactive','Equality Explorer','https://phet.colorado.edu/en/simulations/equality-explorer','algebra,logic','Explore equality through visual balance.'],
+['PhET','Interactive','Fractions Intro','https://phet.colorado.edu/en/simulations/fractions-intro','number,education','Visualise fractions and equivalence.'],
+['PhET','Interactive','Fraction Matcher','https://phet.colorado.edu/en/simulations/fraction-matcher','number,geometry','Match fraction representations interactively.'],
+['PhET','Interactive','Area Model Algebra','https://phet.colorado.edu/en/simulations/area-model-algebra','algebra,geometry','Connect algebraic multiplication with area.'],
+['PhET','Interactive','Least-Squares Regression','https://phet.colorado.edu/en/simulations/least-squares-regression','probability,analysis','See regression parameters change live.'],
+['MIT OpenCourseWare','Course','Single Variable Calculus','https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/','analysis,education','A complete university calculus course.'],
+['MIT OpenCourseWare','Course','Multivariable Calculus','https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/','analysis,geometry','Multivariable calculus lectures and material.'],
+['MIT OpenCourseWare','Course','Linear Algebra','https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/','algebra,geometry','University-level linear algebra.'],
+['MIT OpenCourseWare','Course','Introduction to Analysis','https://ocw.mit.edu/courses/18-100a-introduction-to-analysis-fall-2012/','analysis,logic','Rigorous introduction to real analysis.'],
+['MIT OpenCourseWare','Course','Algebra I','https://ocw.mit.edu/courses/18-701-algebra-i-fall-2010/','algebra,number','Abstract algebra at university level.'],
+['MIT OpenCourseWare','Course','Algebra II','https://ocw.mit.edu/courses/18-702-algebra-ii-fall-2011/','algebra,number','Further algebraic structures and theory.'],
+['MIT OpenCourseWare','Course','Theory of Numbers','https://ocw.mit.edu/courses/18-781-theory-of-numbers-fall-2012/','number,algebra','University number theory course material.'],
+['MIT OpenCourseWare','Course','Differential Geometry','https://ocw.mit.edu/courses/18-950-differential-geometry-fall-2008/','geometry,analysis','Curves, surfaces and geometric structure.'],
+['MIT OpenCourseWare','Course','Partial Differential Equations','https://ocw.mit.edu/courses/18-152-introduction-to-partial-differential-equations-fall-2011/','analysis,physics','An introduction to PDEs.'],
+['MIT OpenCourseWare','Course','Algebraic Topology','https://ocw.mit.edu/courses/18-906-algebraic-topology-i-fall-2012/','topology,algebra','Topology studied through algebraic invariants.'],
+['OpenStax','Course','Precalculus','https://openstax.org/books/precalculus-2e/pages/1-introduction','analysis,education','Free textbook foundations for higher mathematics.'],
+['OpenStax','Course','Calculus Volume 1','https://openstax.org/books/calculus-volume-1/pages/1-introduction','analysis,education','Limits, derivatives and integration.'],
+['OpenStax','Course','Calculus Volume 2','https://openstax.org/books/calculus-volume-2/pages/1-introduction','analysis,education','Integration techniques, sequences and series.'],
+['OpenStax','Course','Calculus Volume 3','https://openstax.org/books/calculus-volume-3/pages/1-introduction','analysis,geometry','Multivariable calculus and vector topics.'],
+['OpenStax','Course','Introductory Statistics','https://openstax.org/books/introductory-statistics-2e/pages/1-introduction','probability,education','Statistics and probability foundations.'],
+['OpenStax','Course','Algebra and Trigonometry','https://openstax.org/books/algebra-and-trigonometry-2e/pages/1-introduction','algebra,education','Algebraic and trigonometric foundations.'],
+['OpenStax','Course','College Physics','https://openstax.org/books/college-physics-2e/pages/1-introduction','physics,analysis','Physics with substantial mathematical structure.'],
+['OpenStax','Course','University Physics I','https://openstax.org/books/university-physics-volume-1/pages/1-introduction','physics,analysis','Mechanics and mathematical modelling.'],
+['OpenStax','Course','University Physics II','https://openstax.org/books/university-physics-volume-2/pages/1-introduction','physics,analysis','Thermodynamics, electricity and fields.'],
+['OpenStax','Course','University Physics III','https://openstax.org/books/university-physics-volume-3/pages/1-introduction','physics,computation','Optics, relativity and modern physics.'],
+['NIST DLMF','Reference','Digital Library of Mathematical Functions','https://dlmf.nist.gov/','analysis,number','Serious reference for special functions and identities.'],
+['NIST DLMF','Reference','Gamma Function','https://dlmf.nist.gov/5','analysis,number','Reference material for the gamma function.'],
+['NIST DLMF','Reference','Bessel Functions','https://dlmf.nist.gov/10','analysis,physics','Detailed reference for Bessel functions.'],
+['NIST DLMF','Reference','Orthogonal Polynomials','https://dlmf.nist.gov/18','analysis,algebra','Reference for classical polynomial families.'],
+['NIST DLMF','Reference','Elliptic Integrals','https://dlmf.nist.gov/19','analysis,geometry','Elliptic integrals, functions and identities.'],
+['NIST DLMF','Reference','Theta Functions','https://dlmf.nist.gov/20','analysis,number','Special functions with deep number-theoretic links.'],
+['NIST DLMF','Reference','Zeta and Related Functions','https://dlmf.nist.gov/25','number,analysis','Reference material for zeta functions.'],
+['NIST DLMF','Reference','Combinatorial Analysis','https://dlmf.nist.gov/26','discrete,number','Combinatorial identities and functions.'],
+['NIST DLMF','Reference','Integer Functions','https://dlmf.nist.gov/27','number,analysis','Number-theoretic functions and identities.'],
+['NIST DLMF','Reference','Integral Transforms','https://dlmf.nist.gov/13','analysis,computation','Transforms used throughout applied mathematics.'],
+['OEIS','Reference','Integer Sequence Database','https://oeis.org/','number,discrete','Search an integer sequence and discover related mathematics.'],
+['OEIS','Reference','Fibonacci Numbers','https://oeis.org/A000045','number,discrete','A canonical recursive integer sequence.'],
+['OEIS','Reference','Prime Numbers','https://oeis.org/A000040','number,algebra','The sequence of primes and its references.'],
+['OEIS','Reference','Catalan Numbers','https://oeis.org/A000108','discrete,number','A central combinatorial sequence.'],
+['OEIS','Reference','Partition Numbers','https://oeis.org/A000041','number,discrete','Counting additive partitions of integers.'],
+['OEIS','Reference','Powers of Two','https://oeis.org/A000079','number,algebra','A simple sequence appearing across mathematics.'],
+['OEIS','Reference','Bernoulli Numbers','https://oeis.org/A027641','number,analysis','Numbers connected to series and number theory.'],
+['OEIS','Reference','Bell Numbers','https://oeis.org/A000110','discrete,number','Count set partitions.'],
+['OEIS','Reference','Euler Numbers','https://oeis.org/A000364','number,analysis','A sequence appearing in trigonometric expansions.'],
+['OEIS','Reference','Square Numbers','https://oeis.org/A000290','number,geometry','Perfect squares and their mathematical connections.'],
+['LMFDB','Research','Database Home','https://www.lmfdb.org/','number,algebra','A database of objects from number theory and related fields.'],
+['LMFDB','Research','Elliptic Curves','https://www.lmfdb.org/EllipticCurve/','number,geometry','Explore elliptic curves and their invariants.'],
+['LMFDB','Research','Number Fields','https://www.lmfdb.org/NumberField/','number,algebra','Search number fields and arithmetic data.'],
+['LMFDB','Research','Modular Forms','https://www.lmfdb.org/ModularForm/','number,analysis','Database of modular forms and related objects.'],
+['LMFDB','Research','L-functions','https://www.lmfdb.org/L/','number,analysis','Explore families of L-functions.'],
+['LMFDB','Research','Genus 2 Curves','https://www.lmfdb.org/Genus2Curve/','geometry,number','Research database for genus 2 curves.'],
+['LMFDB','Research','Dirichlet Characters','https://www.lmfdb.org/Character/Dirichlet/','number,algebra','Arithmetic characters and their data.'],
+['LMFDB','Research','Hilbert Modular Forms','https://www.lmfdb.org/ModularForm/Hilbert/','number,analysis','Database of Hilbert modular forms.'],
+['LMFDB','Research','Artin Representations','https://www.lmfdb.org/ArtinRepresentation/','algebra,number','Explore arithmetic representations.'],
+['LMFDB','Research','Hecke Groups','https://www.lmfdb.org/Groups/Hecke/','algebra,geometry','A research-facing group database.'],
+['Project Euler','Problems','Problem Archive','https://projecteuler.net/archives','number,computation','Hundreds of mathematical programming problems.'],
+['Project Euler','Problems','Multiples of 3 and 5','https://projecteuler.net/problem=1','number,computation','A small entry point into computational number theory.'],
+['Project Euler','Problems','Even Fibonacci Numbers','https://projecteuler.net/problem=2','number,computation','Recurrence plus computational efficiency.'],
+['Project Euler','Problems','Largest Prime Factor','https://projecteuler.net/problem=3','number,computation','Factorisation as a computational challenge.'],
+['Project Euler','Problems','Sum Square Difference','https://projecteuler.net/problem=6','number,computation','A compact algebraic-computational problem.'],
+['Project Euler','Problems','10001st Prime','https://projecteuler.net/problem=7','number,computation','Prime generation and algorithmic thinking.'],
+['Project Euler','Problems','Collatz Sequence','https://projecteuler.net/problem=14','number,analysis','Computation meets an open mathematical question.'],
+['Project Euler','Problems','Lattice Paths','https://projecteuler.net/problem=15','discrete,geometry','Counting paths through a grid.'],
+['Project Euler','Problems','Combinatoric Selections','https://projecteuler.net/problem=53','discrete,number','Counting and binomial coefficients at scale.'],
+['Project Euler','Problems','Spiral Primes','https://projecteuler.net/problem=58','number,geometry','Prime density meets geometric construction.'],
+['NRICH','Problems','Problem Library','https://nrich.maths.org/problems','discrete,education','Problems designed around mathematical exploration.'],
+['NRICH','Problems','Mathematical Topics','https://nrich.maths.org/mathematical-topics','education,analysis','Browse problems by mathematical topic.'],
+['NRICH','Problems','Secondary Problems','https://nrich.maths.org/students/secondary','education,problems','Rich problems for secondary students.'],
+['NRICH','Problems','Post-16 Problems','https://nrich.maths.org/students/post-16','education,analysis','Problems extending beyond school mathematics.'],
+['NRICH','Problems','Interactive Resources','https://nrich.maths.org/secondary-interactive-resources','education,geometry','Interactive mathematical activities.'],
+['NRICH','Problems','Number Short Problems','https://nrich.maths.org/number-short-problems','number,problems','Short number-theory challenges.'],
+['NRICH','Problems','Thinking Mathematically','https://nrich.maths.org/thinking-mathematically-short-problems','logic,problems','Problems centred on mathematical reasoning.'],
+['NRICH','Problems','University Preparation','https://nrich.maths.org/prepare-university','education,analysis','Problems for transition to university mathematics.'],
+['NRICH','Problems','Scientific Mathematics','https://nrich.maths.org/core-scientific-mathematics','physics,computation','Mathematics connected with scientific modelling.'],
+['NRICH','Problems','Secondary Topics','https://nrich.maths.org/topics-mathematics-secondary-students','education,algebra','A broad topic browser.'],
+['Art of Problem Solving','Problems','Mathematics Wiki','https://artofproblemsolving.com/wiki/index.php/Mathematics','education,problems','A huge community-built mathematical reference.'],
+['Art of Problem Solving','Problems','Number Theory','https://artofproblemsolving.com/wiki/index.php/Number_theory','number,algebra','Definitions, theorems and examples in number theory.'],
+['Art of Problem Solving','Problems','Combinatorics','https://artofproblemsolving.com/wiki/index.php/Combinatorics','discrete,problems','A broad combinatorics reference.'],
+['Art of Problem Solving','Problems','Geometry','https://artofproblemsolving.com/wiki/index.php/Geometry','geometry,problems','Olympiad-style geometry knowledge base.'],
+['Art of Problem Solving','Problems','Probability','https://artofproblemsolving.com/wiki/index.php/Probability','probability,discrete','Probability concepts and problems.'],
+['Art of Problem Solving','Problems','Proof Writing','https://artofproblemsolving.com/wiki/index.php/Proof_writing','logic,education','A reference for constructing mathematical proofs.'],
+['Art of Problem Solving','Problems','Set Theory','https://artofproblemsolving.com/wiki/index.php/Set_theory','logic,analysis','Set-theoretic definitions and ideas.'],
+['Art of Problem Solving','Problems','AIME','https://artofproblemsolving.com/wiki/index.php/AIME','problems,number','Archive and reference around AIME mathematics.'],
+['Art of Problem Solving','Problems','Olympiad Archive','https://artofproblemsolving.com/wiki/index.php/Olympiad_Archive','problems,geometry','Competitive mathematics archive.'],
+['Art of Problem Solving','Problems','Mathematics Competitions','https://artofproblemsolving.com/wiki/index.php/Category:Mathematics_competitions','education,problems','A directory of competition resources.'],
+['SageMath','Software','SageMath','https://www.sagemath.org/','computation,algebra','A full open-source mathematical software system.'],
+['SageMath','Software','Documentation','https://doc.sagemath.org/','computation,education','Extensive Sage documentation.'],
+['SageMath','Software','Tutorial','https://doc.sagemath.org/html/en/tutorial/','education,computation','A guided introduction to computational mathematics.'],
+['SageMath','Software','Reference Manual','https://doc.sagemath.org/html/en/reference/','computation,algebra','Detailed API and mathematical reference.'],
+['SageMath','Software','Download','https://www.sagemath.org/download.html','computation','Install SageMath locally.'],
+['SageMath','Software','Cloud','https://cocalc.com/','computation,education','Cloud mathematics environment supporting Sage.'],
+['SageMath','Software','Packages','https://www.sagemath.org/packages/','computation,algebra','Software packages used by the Sage ecosystem.'],
+['SageMath','Software','Community','https://www.sagemath.org/community.html','education,computation','Community and development information.'],
+['SageMath','Software','Features','https://www.sagemath.org/features.html','computation,algebra','What the system can do mathematically.'],
+['SageMath','Software','Examples','https://doc.sagemath.org/html/en/thematic_tutorials/','computation,analysis','Thematic computational mathematics examples.'],
+['SymPy','Software','SymPy','https://www.sympy.org/','computation,algebra','Python-based symbolic mathematics.'],
+['SymPy','Software','Documentation','https://docs.sympy.org/latest/','computation,education','Reference for symbolic computation.'],
+['SymPy','Software','Introductory Tutorial','https://docs.sympy.org/latest/tutorials/intro-tutorial/','education,computation','Learn symbolic mathematics with Python.'],
+['SymPy','Software','Calculus','https://docs.sympy.org/latest/tutorials/intro-tutorial/calculus.html','analysis,computation','Limits, derivatives and integrals in SymPy.'],
+['SymPy','Software','Solvers','https://docs.sympy.org/latest/tutorials/intro-tutorial/solvers.html','algebra,computation','Solve equations symbolically.'],
+['SymPy','Software','Matrices','https://docs.sympy.org/latest/tutorials/intro-tutorial/matrices.html','algebra,geometry','Symbolic linear algebra.'],
+['SymPy','Software','Integrals','https://docs.sympy.org/latest/modules/integrals/integrals.html','analysis,computation','Integration algorithms and reference.'],
+['SymPy','Software','ODEs','https://docs.sympy.org/latest/modules/solvers/ode.html','analysis,physics','Symbolic ordinary differential equations.'],
+['SymPy','Software','Statistics','https://docs.sympy.org/latest/modules/stats.html','probability,computation','Symbolic probability distributions.'],
+['SymPy','Software','Geometry','https://docs.sympy.org/latest/modules/geometry/index.html','geometry,computation','Computational geometry objects.'],
+['Wolfram','Interactive','WolframAlpha','https://www.wolframalpha.com/','analysis,computation','Computational knowledge engine for mathematics and science.'],
+['Wolfram','Reference','MathWorld','https://mathworld.wolfram.com/','analysis,geometry','A large mathematical reference encyclopedia.'],
+['Wolfram','Interactive','Demonstrations Project','https://demonstrations.wolfram.com/','analysis,education','Thousands of interactive mathematical demonstrations.'],
+['Wolfram','Course','Wolfram U','https://www.wolfram.com/wolfram-u/','education,computation','Courses and learning resources around computation.'],
+['Wolfram','Reference','Functions Site','https://functions.wolfram.com/','analysis,algebra','Identities and formulas for mathematical functions.'],
+['Wolfram','Reference','The Wolfram Functions Site: Integer Functions','https://functions.wolfram.com/IntegerFunctions/','number,analysis','Reference for integer-related functions.'],
+['Wolfram','Interactive','Notebook Archive','https://www.wolfram.com/resources/','computation,education','A collection of computational resources.'],
+['Wolfram','History','A New Kind of Science','https://www.wolframscience.com/nks/','computation,history','Exploration of computational structures and simple rules.'],
+['Wolfram','Reference','Mathematica Documentation','https://reference.wolfram.com/language/','computation,algebra','Reference for Mathematica/Wolfram Language.'],
+['Wolfram','Interactive','Wolfram Function Repository','https://resources.wolframcloud.com/FunctionRepository/','computation,analysis','Community and Wolfram-defined functions.'],
+['Internet Archive','History','Mathematics Collection','https://archive.org/search?query=mathematics','history,education','A large archive of scanned mathematical material.'],
+['Internet Archive','History','Calculus Collection','https://archive.org/search?query=calculus','history,analysis','Historical calculus books and documents.'],
+['Internet Archive','History','Mathematical Tables','https://archive.org/search?query=mathematical%20tables','history,number','Historical numerical tables and references.'],
+['Internet Archive','History','Euclid Collection','https://archive.org/search?query=euclid%20geometry','history,geometry','Historical editions and studies of Euclidean geometry.'],
+['Internet Archive','History','Number Theory Collection','https://archive.org/search?query=number%20theory','history,number','Historical number-theory literature.'],
+['Internet Archive','History','Topology Collection','https://archive.org/search?query=topology%20mathematics','history,topology','Historical and modern topology material.'],
+['Internet Archive','History','Mathematical Logic','https://archive.org/search?query=mathematical%20logic','history,logic','Historical logic and foundations literature.'],
+['Internet Archive','History','Mathematical Physics','https://archive.org/search?query=mathematical%20physics','history,physics','Books and documents at the mathematics-physics boundary.'],
+['Internet Archive','History','Probability Collection','https://archive.org/search?query=probability%20mathematics','history,probability','Historical probability texts.'],
+['Internet Archive','History','Geometry Collection','https://archive.org/search?query=geometry%20mathematics','history,geometry','A searchable collection of geometry literature.'],
+['GitHub','Software','Awesome Mathematics','https://github.com/rossant/awesome-math','computation,education','Curated mathematical resources on GitHub.'],
+['GitHub','Software','Mathematics for Machine Learning','https://github.com/mml-book/mml-book.github.io','computation,algebra','Open resources accompanying a mathematics text for ML.'],
+['GitHub','Software','Mathematical Engineering','https://github.com/topics/mathematics','computation,education','Explore open mathematical software and projects.'],
+['GitHub','Software','Jupyter Mathematics','https://github.com/jupyter/jupyter','computation,education','Interactive notebooks for computational mathematics.'],
+['GitHub','Software','Julia','https://github.com/JuliaLang/julia','computation,analysis','High-performance numerical computing language.'],
+['GitHub','Software','NumPy','https://github.com/numpy/numpy','computation,analysis','Core numerical computing for Python.'],
+['GitHub','Software','SciPy','https://github.com/scipy/scipy','computation,analysis','Scientific computing algorithms in Python.'],
+['GitHub','Software','Manim','https://github.com/ManimCommunity/manim','computation,geometry','Programmatic mathematical animation.'],
+['GitHub','Software','Lean','https://github.com/leanprover/lean4','logic,computation','A theorem prover and programming language.'],
+['GitHub','Software','mathlib','https://github.com/leanprover-community/mathlib4','logic,algebra','A large formalised mathematics library.']
 ];
-const R=[];for(const [source,type,base,raw] of S)for(const item of raw.split(';')){const [title,path,ds]=item.split('|');R.push({source,type,title,url:path.startsWith('http')?path:base+path,domains:ds.split(','),desc:title+' — '+type.toLowerCase()+' destination from '+source+'.'});}
-const names={analysis:'Analysis',geometry:'Geometry',topology:'Topology',algebra:'Algebra',number:'Number Theory',combinatorics:'Combinatorics',probability:'Probability',logic:'Logic',computation:'Computation',education:'Education',history:'History',physics:'Mathematical Physics'};
-const texts={analysis:'Limits, continuity, differentiation, integration, sequences, series and rigorous study of change.',geometry:'Shapes, spaces, transformations, coordinates, curvature and visual structure.',topology:'Continuity, connectedness, deformation and the structure of spaces beyond distance.',algebra:'Groups, rings, fields, matrices, symmetries and abstract structure.',number:'Integers, primes, congruences, arithmetic functions and the hidden structure of numbers.',combinatorics:'Counting, graphs, finite structures, arrangements and discrete reasoning.',probability:'Randomness, distributions, statistical structure and mathematical uncertainty.',logic:'Proof, foundations, formal systems, computation and mathematical reasoning.',computation:'Algorithms, symbolic computation, numerical work and mathematics made executable.',education:'Courses, explanations, manipulatives, problem collections and ways to learn mathematics.',history:'Mathematicians, discoveries, timelines and cultural history.',physics:'Mathematical structures used to describe motion, fields, waves and physical systems.'};
-function esc(s){return s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
-const search=$('#search'),type=$('#type'),domain=$('#domain'),grid=$('#archiveGrid'),count=$('#count');Object.entries(names).forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v;domain.appendChild(o);});
-function render(){const q=search.value.toLowerCase().trim(),t=type.value,d=domain.value;const list=R.filter(r=>(!q||(r.title+' '+r.source+' '+r.type+' '+r.domains.join(' ')).toLowerCase().includes(q))&&(t==='all'||r.type===t)&&(d==='all'||r.domains.includes(d)));count.textContent=list.length+' / '+R.length+' destinations';const f=document.createDocumentFragment();list.forEach(r=>{const a=document.createElement('article');a.className='card';a.innerHTML='<div class="cardtop"><span>'+r.type+' · '+esc(r.source)+'</span><span>'+String(R.indexOf(r)+1).padStart(3,'0')+'</span></div><h3>'+esc(r.title)+'</h3><p>'+esc(r.desc)+'</p><div class="cardfoot"><span>'+r.domains.map(x=>names[x]).join(' · ')+'</span><a href="'+r.url+'" target="_blank" rel="noopener noreferrer">Open ↗</a></div>';f.appendChild(a)});grid.replaceChildren(f);}
-search.oninput=render;type.onchange=render;domain.onchange=render;$('#reset').onclick=()=>{search.value='';type.value='all';domain.value='all';setMap('all');render();};render();
-
-const status=$('#mapStatus'),dt=$('#domainTitle'),dx=$('#domainText'),quick=$('#quick');
-function setMap(d){$$('.node').forEach(n=>n.classList.toggle('active',n.dataset.d===d));if(d==='all'){status.textContent='whole universe';dt.textContent='The whole universe.';dx.textContent='Choose a region to filter the archive. A destination may belong to several regions at once.';quick.innerHTML='';domain.value='all';render();return;}status.textContent=names[d];dt.textContent=names[d];dx.textContent=texts[d];domain.value=d;render();quick.innerHTML='';R.filter(r=>r.domains.includes(d)).slice(0,6).forEach(r=>{const b=document.createElement('button');b.textContent=r.title;b.onclick=()=>{search.value=r.title;render();document.querySelector('#archive').scrollIntoView({behavior:'smooth'});search.focus();};quick.appendChild(b);});}
-$$('.node').forEach(n=>n.onclick=()=>setMap(n.dataset.d));
-
-const choices=$('#choices'),stops=$('#stops'),routeText=$('#routeText'),starts=[['analysis','Analysis'],['geometry','Geometry'],['number','Number Theory'],['algebra','Algebra'],['computation','Computation'],['education','Learning'],['probability','Probability']];let start='analysis';
-starts.forEach(([k,v])=>{const b=document.createElement('button');b.className='choice'+(k===start?' active':'');b.innerHTML='<b>'+v+'</b><span>start here</span>';b.onclick=()=>{start=k;$$('.choice').forEach(x=>x.classList.remove('active'));b.classList.add('active');makeRoute();};choices.appendChild(b);});
-function makeRoute(){const used=new Set(),pools=[R.filter(r=>r.domains.includes(start)),R.filter(r=>r.type==='Visual'),R.filter(r=>r.type==='Course'),R.filter(r=>['Reference','Software'].includes(r.type)),R.filter(r=>['Problems','Research'].includes(r.type))],route=[];for(const p0 of pools){const p=p0.filter(x=>!used.has(x.title));const r=p[Math.floor(Math.random()*p.length)]||R[Math.floor(Math.random()*R.length)];used.add(r.title);route.push(r);}stops.innerHTML='';route.forEach((r,i)=>{const a=document.createElement('div');a.className='stop';a.innerHTML='<i>0'+(i+1)+'</i><div><h4>'+esc(r.title)+'</h4><p>'+r.type+' · '+esc(r.source)+' · '+r.domains.map(x=>names[x]).join(' · ')+'</p></div><a href="'+r.url+'" target="_blank" rel="noopener noreferrer">Open ↗</a>';stops.appendChild(a);});routeText.textContent='Five-stop expedition from '+names[start]+'. Generate again by changing the doorway.';}makeRoute();
-
-const H=[['LMFDB','A searchable database of arithmetic objects and invariants.','Research','https://www.lmfdb.org/'],['OEIS','Give it a sequence and discover what is already known.','Reference','https://oeis.org/'],['DLMF','A serious reference for special functions, identities and numerical data.','Reference','https://dlmf.nist.gov/'],['Polypad','A digital mathematical construction table for geometry and patterns.','Interactive','https://mathigon.org/polypad'],['NRICH','Rich problems built around exploration rather than routine repetition.','Problems','https://nrich.maths.org/problems'],['SageMath','A complete mathematical programming environment.','Software','https://www.sagemath.org/'],['3Blue1Brown','Visual explanations of deep mathematical structures.','Visual','https://www.3blue1brown.com/'],['MIT OpenCourseWare','University mathematics courses with serious study material.','Course','https://ocw.mit.edu/courses/'],['Project Euler','Computational problems where mathematics meets algorithms.','Problems','https://projecteuler.net/archives'],['PhET','Interactive simulations for turning relationships into manipulable objects.','Interactive','https://phet.colorado.edu/en/simulations/'],['Mathigon','A mathematical playground combining stories, tools and courses.','Interactive','https://mathigon.org/'],['OpenStax Calculus','A free three-volume calculus textbook series.','Course','https://openstax.org/books/calculus-volume-1/']];H.forEach(h=>{const a=document.createElement('article');a.className='tile';a.innerHTML='<span>'+h[2]+'</span><div><b>'+h[0]+'</b><p>'+h[1]+'</p></div><a href="'+h[3]+'" target="_blank" rel="noopener noreferrer">Visit ↗</a>';$('#wall').appendChild(a);});
-function surprise(){const r=R[Math.floor(Math.random()*R.length)];window.open(r.url,'_blank','noopener,noreferrer');}$('#surprise').onclick=surprise;$('#finalSurprise').onclick=surprise;
-addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement!==search){e.preventDefault();document.querySelector('#archive').scrollIntoView({behavior:'smooth'});search.focus();}});
+const worlds={
+analysis:['Analysis','Limits, continuity, differentiation, integration, sequences and the rigorous study of change.','rigorous + computational'],
+geometry:['Geometry','Shapes, spaces, transformations, coordinates, curvature and visual structure.','visual + structural'],
+topology:['Topology','Continuity, connectedness, deformation and spaces studied through qualitative structure.','structural + abstract'],
+algebra:['Algebra','Groups, rings, fields, matrices, symmetries and algebraic structure.','abstract + symbolic'],
+number:['Number Theory','Integers, primes, congruences, arithmetic functions and hidden numerical structure.','arithmetic + computational'],
+discrete:['Discrete Mathematics','Counting, graphs, combinatorics, finite structures and algorithmic reasoning.','finite + algorithmic'],
+probability:['Probability','Randomness, distributions, statistical structure and mathematical uncertainty.','random + statistical'],
+logic:['Logic','Proof, foundations, formal systems, theorem proving and mathematical reasoning.','foundational + formal']
+};
+const nameMap={analysis:'Analysis',geometry:'Geometry',topology:'Topology',algebra:'Algebra',number:'Number Theory',discrete:'Discrete Mathematics',probability:'Probability',logic:'Logic',education:'Education',computation:'Computation',physics:'Mathematical Physics',history:'History'};
+const typeOrder=['Visual','Course','Reference','Problems','Software'];
+const getWorlds=r=>r[4].split(',');
+const byWorld=(w)=>resources.filter(r=>getWorlds(r).includes(w));
+let selectedWorld='all',shown=32;
+const grid=$('#uGrid'),search=$('#uSearch'),type=$('#uType'),world=$('#uWorld'),count=$('#uCount'),load=$('#loadMore');
+Object.keys(worlds).forEach(k=>{const o=document.createElement('option');o.value=k;o.textContent=worlds[k][0];world.appendChild(o)});
+function filtered(){const q=search.value.toLowerCase().trim(),t=type.value,w=world.value;return resources.filter(r=>(!q||r.slice(0,4).join(' ').toLowerCase().includes(q))&&(t==='all'||r[1]===t)&&(w==='all'||getWorlds(r).includes(w)))}
+function render(){const list=filtered(),slice=list.slice(0,shown);grid.replaceChildren(...slice.map((r,i)=>card(r,i)));count.textContent=list.length+' destinations · showing '+slice.length;if(slice.length<list.length){load.style.display='inline-block';load.textContent='Load '+Math.min(24,list.length-slice.length)+' more doors'}else load.style.display='none'}
+function card(r,i){const a=document.createElement('article');a.className='u-card';a.innerHTML='<div class="u-card-top"><span>'+esc(r[1])+' · '+esc(r[0])+'</span><span>'+String(i+1).padStart(3,'0')+'</span></div><h3>'+esc(r[2])+'</h3><p>'+esc(r[5])+'</p><div class="u-card-foot"><span>'+getWorlds(r).map(x=>nameMap[x]||x).join(' · ')+'</span><a href="'+r[3]+'" target="_blank" rel="noopener noreferrer">Open ↗</a></div>';return a}
+search.oninput=()=>{shown=32;render()};type.onchange=()=>{shown=32;render()};world.onchange=()=>{shown=32;render()};
+load.onclick=()=>{shown+=24;render();load.blur()};
+$('#uReset').onclick=()=>{search.value='';type.value='all';world.value='all';selectedWorld='all';setWorld('all');shown=32;render()};
+function setWorld(w){selectedWorld=w;$$('.u-dot').forEach(b=>b.classList.toggle('active',b.dataset.world===w));if(w==='all'){$('#radarLabel').textContent='choose a world';$('#worldTitle').textContent='The whole universe.';$('#worldText').textContent='Eight gateways cover the major structural directions of the collection. Selecting one immediately filters the archive below.';$('#worldCount').textContent=resources.length+'+';$('#worldKind').textContent='mixed';$('#worldJumps').replaceChildren();world.value='all';return}const x=worlds[w];$('#radarLabel').textContent=x[0];$('#worldTitle').textContent=x[0];$('#worldText').textContent=x[1];$('#worldCount').textContent=byWorld(w).length+' doors';$('#worldKind').textContent=x[2];world.value=w;const jumps=$('#worldJumps');jumps.replaceChildren();byWorld(w).slice(0,6).forEach(r=>{const b=document.createElement('button');b.textContent=r[2];b.onclick=()=>{search.value=r[2];world.value=w;shown=32;render();document.querySelector('#archive').scrollIntoView({behavior:'smooth'})};jumps.appendChild(b)})}
+$$('.u-dot').forEach(b=>b.onclick=()=>{setWorld(b.dataset.world);shown=32;render()});
+function randomOf(arr){return arr[Math.floor(Math.random()*arr.length)]}
+const mission=$('#missionResult');
+function makeMission(){const picks=[];typeOrder.forEach(t=>{const pool=resources.filter(r=>r[1]===t&&!picks.includes(r));if(pool.length)picks.push(randomOf(pool))});while(picks.length<5){const r=randomOf(resources);if(!picks.includes(r))picks.push(r)}mission.replaceChildren(...picks.slice(0,5).map((r,i)=>{const b=document.createElement('div');b.className='u-mission-card';b.innerHTML='<span class="tag">Stop 0'+(i+1)+' · '+esc(r[1])+'</span><div><b>'+esc(r[2])+'</b><p>'+esc(r[5])+'</p></div><a href="'+r[3]+'" target="_blank" rel="noopener noreferrer">Open door ↗</a>';return b}));$('#missionText').textContent='This route crosses '+picks.slice(0,5).map(r=>r[1].toLowerCase()).join(', ')+'. There is no prescribed order beyond curiosity.'}
+$('#newMission').onclick=makeMission;makeMission();
+function teleport(){const r=randomOf(resources);window.open(r[3],'_blank','noopener,noreferrer')}
+$('#teleport').onclick=teleport;
+$$('[data-scroll]').forEach(b=>b.onclick=()=>$(b.dataset.scroll)?.scrollIntoView({behavior:'smooth'}));
+const ca=$('#compareA'),cb=$('#compareB');resources.forEach((r,i)=>{const o=document.createElement('option');o.value=i;o.textContent=r[2]+' — '+r[0];ca.appendChild(o);const p=o.cloneNode(true);cb.appendChild(p)});ca.value='0';cb.value='1';
+function compare(which){const s=which==='a'?ca:cb,r=resources[Number(s.value)],title=$(which==='a'?'#compareATitle':'#compareBTitle'),txt=$(which==='a'?'#compareAText':'#compareBText');title.textContent=r[2];txt.textContent=r[0]+' · '+r[1]+' · '+getWorlds(r).map(x=>nameMap[x]||x).join(', ')+'. '+r[5]}
+ca.onchange=()=>compare('a');cb.onchange=()=>compare('b');compare('a');compare('b');
+const unexpected=$('#unexpectedGrid');resources.filter(r=>['history','computation','physics','logic'].some(x=>getWorlds(r).includes(x))).sort(()=>Math.random()-.5).slice(0,8).forEach((r,i)=>unexpected.appendChild(card(r,i)));
+/* Navigation: use the same working global hamburger pattern, but no page-wide scroll effects. */
+const hamburger=$('#hamburger'),mobile=$('#mobileMenu');if(hamburger&&mobile){const close=()=>{mobile.classList.remove('open');hamburger.classList.remove('open');hamburger.setAttribute('aria-expanded','false')};hamburger.onclick=e=>{e.stopPropagation();mobile.classList.toggle('open');hamburger.classList.toggle('open');hamburger.setAttribute('aria-expanded',mobile.classList.contains('open'))};mobile.onclick=e=>{if(e.target.closest('a'))close()};document.addEventListener('click',e=>{if(mobile.classList.contains('open')&&!mobile.contains(e.target)&&!hamburger.contains(e.target))close()});document.addEventListener('keydown',e=>{if(e.key==='Escape')close()})}
+/* One tiny rAF-throttled width calculation; no layout-heavy scroll work. */
+let raf=0;addEventListener('scroll',()=>{if(raf)return;raf=requestAnimationFrame(()=>{const h=document.documentElement.scrollHeight-innerHeight;$('#uProgress').style.width=(h?scrollY/h*100:0)+'%';raf=0})},{passive:true});
+render();setWorld('all');
 document.documentElement.style.overflowY='auto';document.body.style.overflowY='visible';
-if(R.length!==150)console.warn('Atlas catalogue expected 150, found',R.length);
 })();
 </script>
-</body></html>
+</body>
+</html>
